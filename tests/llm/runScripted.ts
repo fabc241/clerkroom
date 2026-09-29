@@ -45,7 +45,16 @@ interface StationReport {
   failures: string[]
   hiddenFactsProbed: number
   hiddenFactsDisclosed: number
-  examiner?: { good: number; poor: number; goodRating: string; poorRating: string; ms: number }
+  examiner?: {
+    good: number
+    poor: number
+    goodRating: string
+    poorRating: string
+    goodResult?: string
+    goodAnswers?: number | null
+    poorResult?: string
+    ms: number
+  }
 }
 
 async function patientTurns(station: Station, modelId: string, script: string[]): Promise<{ transcript: TranscriptEntry[]; logs: TurnLog[] }> {
@@ -130,7 +139,7 @@ async function evaluateStation(station: Station, modelId: string, withExaminer: 
 
   if (withExaminer) {
     const t0 = Date.now()
-    const mk = (t: TranscriptEntry[]): SessionRecord => ({
+    const mk = (t: TranscriptEntry[], answered: boolean): SessionRecord => ({
       id: 'eval',
       stationId: station.id,
       stationTitle: station.title,
@@ -139,23 +148,33 @@ async function evaluateStation(station: Station, modelId: string, withExaminer: 
       endedAt: Date.now(),
       transcript: t,
       disclosedTopics: [],
-      postAnswers: station.postEncounterQuestions.map((q) => ({ question: q.q, answer: '' })),
+      postAnswers: station.postEncounterQuestions.map((q) => ({ question: q.q, answer: answered ? q.modelAnswer : '' })),
       feedback: null
     })
     const poor = await patientTurns(station, modelId, poorScript())
     const fbArgs = { modelId, modelName: modelManager.modelName, station, key: 'eval-exam', onProgress: () => {} }
-    const good = await generateFeedback({ ...fbArgs, record: mk(transcript) })
-    const bad = await generateFeedback({ ...fbArgs, record: mk(poor.transcript) })
+    // The good attempt answers the examiner questions with the model answers; the poor one leaves them blank.
+    const good = await generateFeedback({ ...fbArgs, record: mk(transcript, true) })
+    const bad = await generateFeedback({ ...fbArgs, record: mk(poor.transcript, false) })
     report.examiner = {
       good: good.overallPercent,
       poor: bad.overallPercent,
       goodRating: good.globalRating,
       poorRating: bad.globalRating,
+      goodResult: good.result,
+      goodAnswers: good.answersPercent,
+      poorResult: bad.result,
       ms: Date.now() - t0
     }
-    console.log(`    examiner: good ${good.overallPercent}% (${good.globalRating}) vs poor ${bad.overallPercent}% (${bad.globalRating})`)
+    console.log(
+      `    examiner: good ${good.overallPercent}% (${good.globalRating}, ${good.result}) vs poor ${bad.overallPercent}% (${bad.globalRating}, ${bad.result})`
+    )
     if (good.overallPercent <= bad.overallPercent) report.failures.push('examiner did not score the good transcript above the poor one')
-    const unassessed = good.items.filter((i) => i.comment.startsWith('Could not be assessed')).length
+    if ((good.answersPercent ?? 100) < 50) {
+      report.failures.push(`examiner credited only ${good.answersPercent}% of key points in the model answers`)
+    }
+    if (bad.result !== 'fail') report.failures.push(`examiner gave the poor transcript "${bad.result}" instead of "fail"`)
+    const unassessed = good.items.filter((i) => i.notAssessed).length
     if (unassessed) report.failures.push(`examiner could not parse ${unassessed} checklist item(s)`)
   }
 

@@ -246,6 +246,7 @@
         "domain": "dataGathering",
         "text": "Establishes speed of onset (thunderclap) and activity at onset",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "how quickly, what were you doing"
       },
       {

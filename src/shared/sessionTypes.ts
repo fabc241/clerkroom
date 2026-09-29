@@ -9,6 +9,9 @@ export type TranscriptEntry =
 
 export type ItemVerdict = 'yes' | 'partial' | 'no'
 
+/** Pass or fail is decided in code; "incomplete" means the model could not mark enough to decide. */
+export type SessionResult = 'pass' | 'fail' | 'incomplete'
+
 export interface ItemResult {
   itemId: string
   domain: Domain
@@ -19,8 +22,12 @@ export interface ItemResult {
   /** Index into the transcript where the evidence was found, if verified. */
   evidenceTurn: number | null
   comment: string
-  /** True when the model claimed "yes" but the quote could not be found in the transcript. */
+  /** True when the model gave credit but its quote could not be found in the transcript. */
   downgraded: boolean
+  /** Must-pass item: the station is failed if it is not done. */
+  critical?: boolean
+  /** True when the model's reply could not be parsed, so the item was never really marked. */
+  notAssessed?: boolean
 }
 
 export interface AnswerResult {
@@ -30,6 +37,8 @@ export interface AnswerResult {
   keyPointsHit: string[]
   keyPointsMissed: string[]
   comment: string
+  /** True when a non-blank answer could not be marked because the model's reply could not be parsed. */
+  notAssessed?: boolean
 }
 
 export interface DomainScore {
@@ -43,7 +52,14 @@ export interface Feedback {
   items: ItemResult[]
   answers: AnswerResult[]
   domainScores: DomainScore[]
+  /** Final score: checklist plus examiner questions (checklist only in feedback saved before results existed). */
   overallPercent: number
+  checklistPercent?: number
+  /** Share of expected key points covered in the examiner answers; null when the station has no questions. */
+  answersPercent?: number | null
+  result?: SessionResult
+  /** Plain-language reasons for the result, shown to the student. */
+  resultReasons?: string[]
   globalRating: GlobalRating
   summary: string
   missedPoints: string[]
@@ -71,6 +87,7 @@ export interface SessionListItem {
   stationTitle: string
   startedAt: number
   overallPercent: number | null
+  result: SessionResult | null
   globalRating: GlobalRating | null
   domainScores: DomainScore[] | null
 }

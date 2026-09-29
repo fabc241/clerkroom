@@ -309,6 +309,7 @@
         "domain": "dataGathering",
         "text": "Assesses intent at the time and current suicidal thoughts, including feelings about surviving",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "wanted to die, how do you feel now"
       },
       {

@@ -270,6 +270,7 @@
         "domain": "dataGathering",
         "text": "Asks directly and sensitively about suicidal thoughts, plans and protective factors",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "harm yourself, end your life, what keeps you going"
       },
       {

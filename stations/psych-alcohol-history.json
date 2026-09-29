@@ -273,6 +273,7 @@
         "domain": "dataGathering",
         "text": "Asks about previous withdrawal seizures or DTs",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "fits, seeing things"
       },
       {

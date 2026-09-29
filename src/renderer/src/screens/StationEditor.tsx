@@ -323,9 +323,10 @@ export function StationEditor({
                 { key: 'domain', label: 'Domain', options: DOMAINS, optionLabels: DOMAIN_LABELS },
                 { key: 'text', label: 'What the candidate should do' },
                 { key: 'weight', label: 'Weight (1–3)', number: true },
+                { key: 'critical', label: 'Must-pass (failing it fails the station)', checkbox: true },
                 { key: 'evidenceHint', label: 'Evidence hint for the examiner' }
               ]}
-              empty={{ id: '', domain: 'dataGathering', text: '', weight: 1, evidenceHint: '' }}
+              empty={{ id: '', domain: 'dataGathering', text: '', weight: 1, critical: false, evidenceHint: '' }}
             />
             <ObjectList
               label="Post-station examiner questions"
@@ -396,6 +397,7 @@ interface FieldDef {
   multiline?: boolean
   list?: boolean
   number?: boolean
+  checkbox?: boolean
   options?: readonly string[]
   optionLabels?: Record<string, string>
 }
@@ -424,7 +426,14 @@ function ObjectList({
               {fields.map((f) => (
                 <div key={f.key} className={f.multiline ? 'col-span-2' : ''}>
                   <div className="mb-0.5 text-xs text-stone-500">{f.label}</div>
-                  {f.options ? (
+                  {f.checkbox ? (
+                    <input
+                      type="checkbox"
+                      className="mt-1.5 h-4 w-4"
+                      checked={item[f.key] === true}
+                      onChange={(e) => update(i, f.key, e.target.checked)}
+                    />
+                  ) : f.options ? (
                     <select className="input" value={item[f.key] ?? ''} onChange={(e) => update(i, f.key, e.target.value)}>
                       {f.options.map((o) => (
                         <option key={o} value={o}>

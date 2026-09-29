@@ -260,6 +260,7 @@
         "domain": "dataGathering",
         "text": "Screens for cardiac red flags (exertional symptoms, syncope, family history)",
         "weight": 2,
+        "critical": true,
         "evidenceHint": "faint, exercise, family"
       },
       {

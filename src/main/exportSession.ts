@@ -1,5 +1,6 @@
 import { DOMAIN_LABELS } from '@shared/stationSchema'
 import type { SessionRecord } from '@shared/sessionTypes'
+import { feedbackResult } from '@shared/rubric'
 
 const DISCLAIMER =
   '_DigiPat — educational simulation only. Not a medical device; not for diagnosis or real patient care. All cases are fictional. Feedback is AI-generated and may be inaccurate._'
@@ -21,12 +22,17 @@ export function sessionToMarkdown(r: SessionRecord): string {
   const fb = r.feedback
   if (fb) {
     out.push('## Feedback (AI-generated, formative)', '')
-    out.push(`Global rating: **${fb.globalRating}** · Checklist: **${fb.overallPercent}%**`, '')
+    out.push(`Result: **${feedbackResult(fb).toUpperCase()}** · Rating: **${fb.globalRating}** · Score: **${fb.overallPercent}%**`, '')
+    if (fb.checklistPercent !== undefined) {
+      out.push(`Checklist ${fb.checklistPercent}%${fb.answersPercent == null ? '' : ` · Examiner questions ${fb.answersPercent}%`}`, '')
+    }
+    for (const reason of fb.resultReasons ?? []) out.push(`- ${reason}`)
+    if (fb.resultReasons?.length) out.push('')
     for (const d of fb.domainScores) out.push(`- ${DOMAIN_LABELS[d.domain]}: ${d.percent}%`)
     out.push('', fb.summary, '', '### Checklist', '')
     const mark = { yes: '✅', partial: '🟡', no: '❌' } as const
     for (const i of fb.items) {
-      out.push(`- ${mark[i.met]} ${i.text}${i.comment ? ` — ${i.comment}` : ''}`)
+      out.push(`- ${mark[i.met]} ${i.critical ? '**[must-pass]** ' : ''}${i.text}${i.comment ? ` — ${i.comment}` : ''}`)
       if (i.evidenceQuote && i.evidenceTurn !== null) out.push(`  - "${i.evidenceQuote}"`)
     }
     if (fb.practiseNext.length) {

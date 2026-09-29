@@ -299,6 +299,7 @@
         "domain": "clinicalManagement",
         "text": "Requests an ECG promptly",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "requested 12-lead ECG"
       },
       {

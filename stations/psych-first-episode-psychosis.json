@@ -304,6 +304,7 @@
         "domain": "dataGathering",
         "text": "Assesses risk to self and to others",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "harm yourself, harm others"
       },
       {

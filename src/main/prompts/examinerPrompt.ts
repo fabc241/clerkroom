@@ -69,12 +69,13 @@ export function buildAnswersPrompt(
   })
   return [
     `Station: ${station.title}`,
-    'The student answered these post-station questions. For each question, list which expected key points the student covered (copy the key point text exactly) and which they missed, plus one sentence of feedback.',
+    'The student answered these post-station questions. For each question, list the expected key points the student covered, plus one sentence of feedback.',
+    'For each key point covered, copy the key point text exactly and give a quote copied word-for-word from the student\'s answer that shows it. Only list a key point if the student\'s answer really covers it; a missing or blank answer covers nothing.',
     '',
     blocks.join('\n\n'),
     '',
     'After thinking, reply with ONLY a JSON object of this exact shape and nothing else:',
-    '{"answers":[{"index":1,"keyPointsHit":["..."],"keyPointsMissed":["..."],"comment":"..."}]}'
+    '{"answers":[{"index":1,"keyPointsHit":[{"keyPoint":"...","quote":"..."}],"comment":"..."}]}'
   ].join('\n')
 }
 
@@ -83,7 +84,7 @@ export function buildSummaryPrompt(
   scoreLines: string,
   achieved: string[],
   missed: string[],
-  anchorRating: string
+  outcome: { result: string; rating: string; reasons: string[] }
 ): string {
   return [
     `Station: ${station.title}`,
@@ -94,17 +95,16 @@ export function buildSummaryPrompt(
     '',
     `Items the student DID achieve: ${achieved.length ? achieved.join('; ') : 'none'}`,
     `Items not achieved or only partly achieved: ${missed.length ? missed.join('; ') : 'none'}`,
-    'Base your feedback strictly on these lists. Never describe an achieved item as missing.',
-    `Score-based rating: ${anchorRating}. You may move it by at most one band if the overall consultation quality justifies it.`,
+    `Station result (already decided, do not change it): ${outcome.result.toUpperCase()}, rated ${outcome.rating}. ${outcome.reasons.join(' ')}`,
+    'Base your feedback strictly on these lists and this result. Never describe an achieved item as missing, and never contradict the result.',
     '',
     'Write formative feedback for the student:',
     '- summary: 2-3 sentences on overall performance, addressed to the student.',
     '- missedPoints: up to 3 most important things to improve, chosen from the items not achieved.',
     '- practiseNext: up to 3 concrete suggestions for what to practise next.',
-    '- globalRating: one of Fail, Borderline, Pass, Good, Excellent.',
     '',
     'After thinking, reply with ONLY a JSON object of this exact shape and nothing else:',
-    '{"summary":"...","missedPoints":["..."],"practiseNext":["..."],"globalRating":"..."}'
+    '{"summary":"...","missedPoints":["..."],"practiseNext":["..."]}'
   ].join('\n')
 }
 
@@ -123,8 +123,15 @@ export const answersResponseSchema = z.object({
   answers: z.array(
     z.object({
       index: z.number().int(),
-      keyPointsHit: z.array(z.string()).default([]),
-      keyPointsMissed: z.array(z.string()).default([]),
+      // A bare string has no quote, so it can never be verified and earns no credit.
+      keyPointsHit: z
+        .array(
+          z.union([
+            z.string().transform((keyPoint) => ({ keyPoint, quote: '' })),
+            z.object({ keyPoint: z.string(), quote: z.string().default('') })
+          ])
+        )
+        .default([]),
       comment: z.string().default('')
     })
   )
@@ -133,8 +140,7 @@ export const answersResponseSchema = z.object({
 export const summaryResponseSchema = z.object({
   summary: z.string(),
   missedPoints: z.array(z.string()).default([]),
-  practiseNext: z.array(z.string()).default([]),
-  globalRating: z.string()
+  practiseNext: z.array(z.string()).default([])
 })
 
 /**

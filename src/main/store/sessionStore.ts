@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readdirSync, unlinkSync } from 'fs'
 import { join } from 'path'
 import type { SessionListItem, SessionRecord } from '@shared/sessionTypes'
+import { feedbackResult } from '@shared/rubric'
 import { readJson, safeFileId, writeJson } from './jsonFiles'
 
 export class SessionStore {
@@ -37,6 +38,7 @@ export class SessionStore {
           stationTitle: r.stationTitle,
           startedAt: r.startedAt,
           overallPercent: r.feedback?.overallPercent ?? null,
+          result: r.feedback ? feedbackResult(r.feedback) : null,
           globalRating: r.feedback?.globalRating ?? null,
           domainScores: r.feedback?.domainScores ?? null
         })

@@ -263,6 +263,7 @@
         "domain": "dataGathering",
         "text": "Asks about VTE risk factors: travel, immobility, surgery, contraception, previous or family history",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "flight, pill, clots"
       },
       {

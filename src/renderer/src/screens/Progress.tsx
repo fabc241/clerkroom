@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import type { SessionListItem } from '@shared/sessionTypes'
 import { DOMAINS, DOMAIN_LABELS } from '@shared/constants'
 import type { Navigate } from '../App'
-import { RATING_STYLE, formatDate } from '../lib/format'
+import { RATING_STYLE, RESULT_LABEL, RESULT_STYLE, formatDate } from '../lib/format'
 
 export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Element {
   const [sessions, setSessions] = useState<SessionListItem[]>([])
@@ -74,9 +74,12 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
                   <td className="px-5 py-2.5 whitespace-nowrap text-stone-500">{formatDate(s.startedAt)}</td>
                   <td className="py-2.5">{s.stationTitle}</td>
                   <td className="py-2.5">
-                    {s.globalRating ? (
-                      <span className={`chip ${RATING_STYLE[s.globalRating]}`}>
-                        {s.globalRating} · {s.overallPercent}%
+                    {s.globalRating && s.result ? (
+                      <span className="flex flex-wrap gap-1.5">
+                        <span className={`chip ${RESULT_STYLE[s.result]}`}>{RESULT_LABEL[s.result]}</span>
+                        <span className={`chip ${RATING_STYLE[s.globalRating]}`}>
+                          {s.globalRating} · {s.overallPercent}%
+                        </span>
                       </span>
                     ) : (
                       <span className="text-xs text-stone-400">Not marked</span>

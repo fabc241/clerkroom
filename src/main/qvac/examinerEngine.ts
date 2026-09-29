@@ -4,13 +4,16 @@ import { DOMAIN_LABELS } from '@shared/stationSchema'
 import type { AnswerResult, Feedback, ItemResult, SessionRecord } from '@shared/sessionTypes'
 import type { FeedbackProgress } from '@shared/ipcTypes'
 import {
-  bandRating,
-  clampRating,
+  answersPercent,
   computeDomainScores,
+  decideResult,
+  finalPercent,
   hasStudentActivity,
   NO_ACTIVITY_COMMENT,
   overallPercent,
+  ratingFor,
   unmetItem,
+  verifyAnswer,
   verifyVerdict
 } from '@shared/rubric'
 import {
@@ -74,22 +77,13 @@ export async function gradeAnswers(ask: Ask, station: Station, record: SessionRe
   if (answers.length === 0) return []
   const anyAnswered = answers.some((a) => a.answer.trim())
   const parsed = anyAnswered ? await askJson(ask, buildAnswersPrompt(station, answers), answersResponseSchema) : null
-  return answers.map((a, idx) => {
-    const q = station.postEncounterQuestions.find((p) => p.q === a.question)
-    const blank = !a.answer.trim()
-    const r = blank ? undefined : parsed?.answers.find((x) => x.index === idx + 1)
-    const keyPoints = q?.keyPoints ?? []
-    // Only accept key points that really exist in the station, to avoid invented ones.
-    const hit = keyPoints.filter((k) => r?.keyPointsHit.some((h) => h.trim().toLowerCase() === k.trim().toLowerCase()))
-    return {
-      question: a.question,
-      answer: a.answer,
-      modelAnswer: q?.modelAnswer ?? '',
-      keyPointsHit: hit,
-      keyPointsMissed: keyPoints.filter((k) => !hit.includes(k)),
-      comment: blank ? 'No answer given.' : (r?.comment ?? 'Could not be assessed automatically — compare with the model answer.')
-    }
-  })
+  return answers.map((a, idx) =>
+    verifyAnswer(
+      station.postEncounterQuestions.find((p) => p.q === a.question),
+      a,
+      parsed?.answers.find((x) => x.index === idx + 1)
+    )
+  )
 }
 
 export async function generateFeedback(opts: {
@@ -123,21 +117,33 @@ export async function generateFeedback(opts: {
   onProgress({ step: 'Marking post-station answers', done: checklistSteps, total: totalSteps })
   const answers = await gradeAnswers(ask, station, record)
 
+  // Scores, pass/fail and rating are all decided here in code; the model only writes the prose.
   const domainScores = computeDomainScores(items)
-  const percent = overallPercent(items)
-  const anchor = bandRating(percent)
+  const checklistPercent = overallPercent(items)
+  const questionsPercent = answersPercent(answers)
+  const percent = finalPercent(items, answers)
+  const studentActed = hasStudentActivity(record.transcript)
+  const { result, reasons } = decideResult(items, answers, studentActed)
+  const globalRating = ratingFor(percent, result)
+  const scores = {
+    domainScores,
+    overallPercent: percent,
+    checklistPercent,
+    answersPercent: questionsPercent,
+    result,
+    resultReasons: reasons,
+    globalRating
+  }
   const achieved = items.filter((i) => i.met === 'yes').map((i) => i.text)
   const missed = items.filter((i) => i.met !== 'yes').map((i) => i.text)
 
   onProgress({ step: 'Writing summary', done: checklistSteps + 1, total: totalSteps })
-  if (!hasStudentActivity(record.transcript)) {
+  if (!studentActed) {
     onProgress({ step: 'Done', done: totalSteps, total: totalSteps })
     return {
       items,
       answers,
-      domainScores,
-      overallPercent: percent,
-      globalRating: 'Fail',
+      ...scores,
       summary: 'You ended the station without speaking to the patient or taking any action, so no checklist items could be credited.',
       missedPoints: missed.slice(0, 3),
       practiseNext: ['Start with an introduction and an open question, then work through the task in the brief.'],
@@ -147,19 +153,22 @@ export async function generateFeedback(opts: {
   }
   const scoreLines = domainScores
     .map((d) => `- ${DOMAIN_LABELS[d.domain]}: ${d.percent}%`)
-    .concat(`- Overall: ${percent}%`)
+    .concat(`- Checklist: ${checklistPercent}%`)
+    .concat(questionsPercent === null ? [] : [`- Examiner questions: ${questionsPercent}%`])
+    .concat(`- Final score: ${percent}%`)
     .join('\n')
-  const summary = await askJson(ask, buildSummaryPrompt(station, scoreLines, achieved, missed, anchor), summaryResponseSchema)
+  const summary = await askJson(
+    ask,
+    buildSummaryPrompt(station, scoreLines, achieved, missed, { result, rating: globalRating, reasons }),
+    summaryResponseSchema
+  )
 
   onProgress({ step: 'Done', done: totalSteps, total: totalSteps })
   return {
     items,
     answers,
-    domainScores,
-    overallPercent: percent,
-    // The model may nudge the rating by one band, but never lift a zero score out of Fail.
-    globalRating: percent === 0 ? 'Fail' : clampRating(summary?.globalRating, anchor),
-    summary: summary?.summary ?? `You scored ${percent}% on the checklist. Review the items below.`,
+    ...scores,
+    summary: summary?.summary ?? `${reasons.join(' ')} Review the items below.`,
     missedPoints: (summary?.missedPoints ?? missed).slice(0, 3),
     practiseNext: (summary?.practiseNext ?? []).slice(0, 3),
     generatedAt: Date.now(),

@@ -184,6 +184,7 @@
         "domain": "clinicalManagement",
         "text": "Explains the diagnosis clearly and simply, without jargon",
         "weight": 3,
+        "critical": true,
         "evidenceHint": "multiple sclerosis, nerves"
       },
       {

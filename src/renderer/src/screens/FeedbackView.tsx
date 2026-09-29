@@ -5,7 +5,8 @@ import { DOMAIN_LABELS } from '@shared/constants'
 import type { Navigate } from '../App'
 import { AiFeedbackNotice, ErrorBox } from '../components/Notices'
 import { TranscriptView } from '../components/TranscriptView'
-import { RATING_STYLE, formatDate } from '../lib/format'
+import { feedbackResult } from '@shared/rubric'
+import { RATING_STYLE, RESULT_LABEL, RESULT_STYLE, formatDate } from '../lib/format'
 
 const VERDICT: Record<ItemVerdict, { icon: string; label: string; cls: string }> = {
   yes: { icon: '✓', label: 'Done', cls: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' },
@@ -62,6 +63,7 @@ export function FeedbackView({
 
   if (!record) return <div className="p-8 text-sm text-stone-500">Loading…</div>
   const fb = record.feedback
+  const result = fb ? feedbackResult(fb) : null
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-8">
@@ -114,13 +116,35 @@ export function FeedbackView({
         </div>
       )}
 
-      {fb && (
+      {fb && result && (
         <>
+          <div className="card space-y-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className={`chip px-3 py-1 text-base font-semibold ${RESULT_STYLE[result]}`}>{RESULT_LABEL[result]}</span>
+              {result === 'incomplete' && (
+                <button className="btn-secondary px-2.5 py-1 text-xs" disabled={!modelReady || !!progress} onClick={generate}>
+                  Mark again
+                </button>
+              )}
+            </div>
+            {fb.resultReasons && fb.resultReasons.length > 0 && (
+              <ul className="list-disc space-y-0.5 pl-5 text-sm text-stone-700 dark:text-stone-300">
+                {fb.resultReasons.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <div className="card grid grid-cols-[auto_1fr] items-center gap-6">
             <div className="text-center">
               <div className={`chip px-3 py-1 text-base ${RATING_STYLE[fb.globalRating]}`}>{fb.globalRating}</div>
               <div className="mt-2 text-3xl font-semibold tabular-nums">{fb.overallPercent}%</div>
-              <div className="text-xs text-stone-500">checklist score</div>
+              <div className="text-xs text-stone-500">
+                {fb.checklistPercent === undefined
+                  ? 'checklist score'
+                  : `checklist ${fb.checklistPercent}%${fb.answersPercent == null ? '' : ` · questions ${fb.answersPercent}%`}`}
+              </div>
             </div>
             <div className="space-y-2">
               {fb.domainScores.map((d) => (
@@ -173,6 +197,11 @@ export function FeedbackView({
                   </span>
                   <div className="min-w-0 flex-1 text-sm">
                     <div className="font-medium">
+                      {i.critical && (
+                        <span className="chip mr-1.5 bg-red-100 text-xs text-red-800 dark:bg-red-950 dark:text-red-300">
+                          Must-pass
+                        </span>
+                      )}
                       {i.text}{' '}
                       <span className="text-xs font-normal text-stone-400">
                         {DOMAIN_LABELS[i.domain]} · weight {i.weight}
@@ -231,7 +260,8 @@ export function FeedbackView({
             </div>
           )}
           <p className="text-xs text-stone-400">
-            Marked by {fb.modelName} on this Mac. Domain scores are calculated from the checklist, not by the AI.
+            Marked by {fb.modelName} on this Mac. The AI marks each item; the scores, pass mark and result are calculated
+            in code, not by the AI.
           </p>
         </>
       )}

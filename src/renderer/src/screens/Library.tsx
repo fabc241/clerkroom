@@ -133,7 +133,7 @@ export function Library({ navigate, modelReady }: { navigate: Navigate; modelRea
                 </div>
                 {b && b.globalRating && (
                   <span className={`chip shrink-0 ${RATING_STYLE[b.globalRating]}`} title="Best previous attempt">
-                    Best: {b.overallPercent}%
+                    Best: {b.overallPercent}%{b.result === 'pass' ? ' · Passed' : ''}
                   </span>
                 )}
               </div>

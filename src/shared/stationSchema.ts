@@ -36,6 +36,8 @@ export const rubricItemSchema = z.object({
   domain: z.enum(DOMAINS),
   text: nonEmpty,
   weight: z.number().int().min(1).max(3).default(1),
+  /** Must-pass item: not doing it fails the station whatever the score. */
+  critical: z.boolean().default(false),
   evidenceHint: z.string().default('')
 })
 export type RubricItem = z.infer<typeof rubricItemSchema>

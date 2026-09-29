@@ -1,3 +1,5 @@
+import type { SessionResult } from '@shared/sessionTypes'
+
 export function formatClock(totalSeconds: number): string {
   const s = Math.max(0, Math.ceil(totalSeconds))
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
@@ -25,6 +27,18 @@ export const TYPE_LABEL: Record<string, string> = {
   mse: 'Mental state exam',
   explanation: 'Explanation',
   counselling: 'Counselling'
+}
+
+export const RESULT_STYLE: Record<SessionResult, string> = {
+  pass: 'bg-emerald-600 text-white dark:bg-emerald-500 dark:text-emerald-950',
+  fail: 'bg-red-600 text-white dark:bg-red-500 dark:text-red-950',
+  incomplete: 'bg-amber-500 text-white dark:bg-amber-400 dark:text-amber-950'
+}
+
+export const RESULT_LABEL: Record<SessionResult, string> = {
+  pass: 'Passed',
+  fail: 'Failed',
+  incomplete: 'Incomplete'
 }
 
 export const RATING_STYLE: Record<string, string> = {

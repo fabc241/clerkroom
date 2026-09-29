@@ -11,35 +11,38 @@ const { generateFeedback } = await import('../../src/main/qvac/examinerEngine')
 
 const station = loadBundledStations().find((s) => s.id === 'comm-breaking-bad-news-ms')!
 
-function hallucinatingModel(met: 'yes' | 'partial'): void {
+const QUOTE = "Hello, I'm Dr Smith, the junior doctor looking after you today"
+
+/** Stub examiner: gives `met` to every item except `skip`, and claims every key point with `answerQuote`. */
+function hallucinatingModel(met: 'yes' | 'partial', opts: { skip?: string[]; answerQuote?: string } = {}): void {
   runCompletion.mockImplementation(async ({ history }: { history: { content: string }[] }) => {
     const prompt = history[1].content
     let json: unknown
     if (prompt.includes('Mark each checklist item')) {
       const ids = [...prompt.matchAll(/- id "([^"]+)"/g)].map((m) => m[1])
       json = {
-        results: ids.map((id) => ({
-          itemId: id,
-          met,
-          evidenceQuote: "Hello, I'm Dr Smith, the junior doctor looking after you today",
-          comment: 'You did this well.'
-        }))
+        results: ids.map((id) =>
+          opts.skip?.includes(id)
+            ? { itemId: id, met: 'no', evidenceQuote: '', comment: 'Not done.' }
+            : { itemId: id, met, evidenceQuote: QUOTE, comment: 'You did this well.' }
+        )
       }
     } else if (prompt.includes('post-station questions')) {
       json = {
         answers: station.postEncounterQuestions.map((q, i) => ({
           index: i + 1,
-          keyPointsHit: q.keyPoints,
-          keyPointsMissed: [],
+          keyPointsHit: q.keyPoints.map((keyPoint) => ({ keyPoint, quote: opts.answerQuote ?? keyPoint })),
           comment: 'Good answer.'
         }))
       }
     } else {
-      json = { summary: 'Great job.', missedPoints: [], practiseNext: [], globalRating: 'Excellent' }
+      json = { summary: 'Great job.', missedPoints: [], practiseNext: [] }
     }
     return { content: JSON.stringify(json), cancelled: false, thinkingChars: 0 }
   })
 }
+
+const spoke: TranscriptEntry[] = [{ kind: 'candidate', text: `${QUOTE}.`, at: 1 }]
 
 function record(transcript: TranscriptEntry[], answer = ''): SessionRecord {
   return {
@@ -69,6 +72,7 @@ describe('examiner feedback', () => {
     const fb = await feedbackFor(record([{ kind: 'system', text: 'Candidate ended the station.', at: 1 }]))
     expect(fb.overallPercent).toBe(0)
     expect(fb.globalRating).toBe('Fail')
+    expect(fb.result).toBe('fail')
     expect(fb.domainScores.every((d) => d.percent === 0)).toBe(true)
     expect(fb.items.every((i) => i.met === 'no')).toBe(true)
     expect(fb.answers.every((a) => a.keyPointsHit.length === 0)).toBe(true)
@@ -85,17 +89,44 @@ describe('examiner feedback', () => {
     )
     expect(fb.overallPercent).toBe(0)
     expect(fb.globalRating).toBe('Fail')
+    expect(fb.result).toBe('fail')
     expect(fb.items.every((i) => i.met === 'no' && i.downgraded)).toBe(true)
     expect(fb.answers.every((a) => a.keyPointsHit.length === 0 && a.comment === 'No answer given.')).toBe(true)
   })
 
-  it('keeps credit when the quote is really in the transcript', async () => {
-    hallucinatingModel('yes')
-    const fb = await feedbackFor(
-      record([{ kind: 'candidate', text: "Hello, I'm Dr Smith, the junior doctor looking after you today.", at: 1 }], 'MS')
-    )
+  it('passes with credit when the quotes are really in the transcript and the answers', async () => {
+    hallucinatingModel('yes', { answerQuote: 'multiple sclerosis' })
+    const fb = await feedbackFor(record(spoke, 'Multiple sclerosis, and I would use SPIKES.'))
+    expect(fb.checklistPercent).toBe(100)
+    expect(fb.answersPercent).toBe(100)
     expect(fb.overallPercent).toBe(100)
+    expect(fb.result).toBe('pass')
+    expect(fb.globalRating).toBe('Excellent')
     expect(fb.items.every((i) => i.met === 'yes' && i.evidenceTurn === 0)).toBe(true)
-    expect(fb.answers.every((a) => a.keyPointsMissed.length === 0)).toBe(true)
+  })
+
+  it('does not credit key points the answer does not contain', async () => {
+    hallucinatingModel('yes', { answerQuote: 'SPIKES framework with six steps' })
+    const fb = await feedbackFor(record(spoke, 'I am not sure.'))
+    expect(fb.answersPercent).toBe(0)
+    expect(fb.overallPercent).toBe(80)
+    expect(fb.result).toBe('pass')
+  })
+
+  it('fails a high score when a must-pass item is missed', async () => {
+    hallucinatingModel('yes', { skip: ['clear-news'] })
+    const fb = await feedbackFor(record(spoke))
+    expect(fb.overallPercent).toBeGreaterThanOrEqual(55)
+    expect(fb.result).toBe('fail')
+    expect(fb.globalRating).toBe('Borderline')
+    expect(fb.resultReasons).toEqual([expect.stringContaining('Must-pass item not done')])
+    expect(fb.items.find((i) => i.itemId === 'clear-news')?.critical).toBe(true)
+  })
+
+  it('reports an incomplete result, not a fail, when the model output cannot be read', async () => {
+    runCompletion.mockResolvedValue({ content: 'I cannot mark this.', cancelled: false, thinkingChars: 0 })
+    const fb = await feedbackFor(record(spoke, 'SPIKES'))
+    expect(fb.result).toBe('incomplete')
+    expect(fb.items.every((i) => i.notAssessed)).toBe(true)
   })
 })

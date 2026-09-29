@@ -22,8 +22,9 @@ formative feedback. Everything runs locally and offline on the Mac, powered by t
 - **Scripted examination & investigations**: findings come from the station file, never from the
   model.
 - **Formative feedback**: checklist marking with evidence quotes verified against the transcript,
-  domain scores computed in code (data gathering / clinical management / interpersonal), global
-  rating, key-point marking of post-station answers, and suggestions for what to practise next.
+  domain scores computed in code (data gathering / clinical management / interpersonal), key-point
+  marking of post-station answers, a pass/fail result, and suggestions for what to practise next.
+  See [How attempts are marked](#how-attempts-are-marked).
 - **Progress** history with export to Markdown/JSON.
 - **Station editor**: form and JSON editing, import/export, live validation.
 - **Optional voice input**: dictate to the patient and answer the examiner questions by voice.
@@ -113,6 +114,27 @@ Renderer (React, sandboxed)  ──IPC (contextBridge)──►  Main process (N
   assistant" persona, so the patient prompt explicitly overrides that identity.
 - `stations/` — bundled station JSON files. User stations live in the app's data folder.
 
+## How attempts are marked
+
+The examiner model only judges each checklist item and examiner answer. Everything that decides the
+result is calculated in code (`src/shared/rubric.ts`), so the same marks always give the same result.
+
+- **Evidence is required.** A checklist item earns credit ("done" = full, "partly" = half) only if
+  the model quotes something the student actually said or did, and the quote is found in the
+  transcript. Examiner-answer key points need a quote from the student's written answer. Invented or
+  unverifiable credit scores 0.
+- **Score** = checklist (weighted by item weight) × 80% + examiner questions × 20%. Each question
+  counts equally, by the share of its key points covered. Stations without questions use the
+  checklist alone.
+- **Result**:
+  - **Failed** if the student said and did nothing, if the score is below the **55% pass mark**, or
+    if any **must-pass** item (`"critical": true`) is not done.
+  - **Passed** otherwise.
+  - **Incomplete** if the model's reply could not be read for some items *and* the result depends on
+    them. The student can mark the attempt again.
+- **Rating** comes from the score: Fail < 40 ≤ Borderline < 55 ≤ Pass < 70 ≤ Good < 85 ≤ Excellent.
+  A failed station is never rated above Borderline.
+
 ## Writing stations
 
 Stations are JSON files validated by `src/shared/stationSchema.ts`. Tips:
@@ -126,6 +148,9 @@ Stations are JSON files validated by `src/shared/stationSchema.ts`. Tips:
   was disclosed.
 - Run `npm test`: it checks that generic openers unlock nothing and that asking about each trigger
   unlocks its fact.
+- Mark safety-critical checklist items `"critical": true` (for example asking about suicidal intent
+  in a risk assessment). Missing one fails the station whatever the score, so keep it to one or two
+  items per station.
 - List the diagnosis and related jargon in `forbiddenTerms`. The patient won't say them until the
   candidate does.
 - Keep cases fictional. Never base a station on a real, identifiable person.
