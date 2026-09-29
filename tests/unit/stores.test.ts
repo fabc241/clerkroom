@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from 'fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'fs'
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -93,5 +93,13 @@ describe('SettingsStore', () => {
     const reloaded = new SettingsStore(path).get()
     expect(reloaded.acceptedDisclaimerVersion).toBe(1)
     expect('bogus' in reloaded).toBe(false)
+  })
+
+  it('keeps voice input off until the user turns it on, including for older settings files', () => {
+    const path = join(dir, 'settings.json')
+    writeFileSync(path, JSON.stringify({ acceptedDisclaimerVersion: 1, model: 'medpsy-4b-q4' }))
+    expect(new SettingsStore(path).get().voiceInput).toBe(false)
+    new SettingsStore(path).update({ voiceInput: true })
+    expect(new SettingsStore(path).get().voiceInput).toBe(true)
   })
 })

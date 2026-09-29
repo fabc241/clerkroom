@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import type { ModelStatus, Settings } from '@shared/ipcTypes'
+import type { ModelStatus, Settings, VoiceStatus } from '@shared/ipcTypes'
 import type { SessionRecord } from '@shared/sessionTypes'
 import { DISCLAIMER_VERSION } from '@shared/constants'
 import { EducationalBadge } from './components/Notices'
@@ -38,23 +38,33 @@ const NAV: { route: Route; label: string }[] = [
 export default function App(): React.JSX.Element {
   const [settings, setSettings] = useState<Settings | null>(null)
   const [model, setModel] = useState<ModelStatus | null>(null)
+  const [voice, setVoice] = useState<VoiceStatus | null>(null)
   const [route, setRoute] = useState<Route>({ name: 'library' })
 
   useEffect(() => {
-    window.digipat.getSettings().then(setSettings)
+    Promise.all([window.digipat.getSettings(), window.digipat.getVoiceStatus()]).then(([st, v]) => {
+      setSettings(st)
+      setVoice(v)
+      if (st.voiceInput && v.cached && v.phase === 'idle') window.digipat.prepareVoice()
+    })
     window.digipat.getModelStatus().then((s) => {
       setModel(s)
       // Load automatically only if already downloaded; a download always needs a click.
       if (s.cached && s.phase === 'idle') window.digipat.prepareModel()
     })
-    return window.digipat.onModelStatus(setModel)
+    const offModel = window.digipat.onModelStatus(setModel)
+    const offVoice = window.digipat.onVoiceStatus(setVoice)
+    return () => {
+      offModel()
+      offVoice()
+    }
   }, [])
 
   const updateSettings = useCallback(async (patch: Partial<Settings>) => {
     setSettings(await window.digipat.updateSettings(patch))
   }, [])
 
-  if (!settings || !model) return <div className="p-8 text-sm text-stone-500">Starting…</div>
+  if (!settings || !model || !voice) return <div className="p-8 text-sm text-stone-500">Starting…</div>
 
   if (settings.acceptedDisclaimerVersion < DISCLAIMER_VERSION) {
     return <Onboarding onAccept={() => updateSettings({ acceptedDisclaimerVersion: DISCLAIMER_VERSION })} />
@@ -63,6 +73,7 @@ export default function App(): React.JSX.Element {
   // During a station the whole window is dedicated to the encounter.
   const fullscreen = route.name === 'encounter' || route.name === 'brief'
   const navigate: Navigate = setRoute
+  const voiceReady = settings.voiceInput && voice.phase === 'ready'
 
   return (
     <div className="flex h-full flex-col">
@@ -110,7 +121,9 @@ export default function App(): React.JSX.Element {
         )}
         <main className="min-w-0 flex-1 overflow-y-auto">
           {route.name === 'library' && <Library navigate={navigate} modelReady={model.phase === 'ready'} />}
-          {route.name === 'model' && <ModelSetup status={model} settings={settings} updateSettings={updateSettings} />}
+          {route.name === 'model' && (
+            <ModelSetup status={model} voice={voice} settings={settings} updateSettings={updateSettings} />
+          )}
           {route.name === 'brief' && (
             <Brief
               stationId={route.stationId}
@@ -120,10 +133,22 @@ export default function App(): React.JSX.Element {
             />
           )}
           {route.name === 'encounter' && (
-            <Encounter stationId={route.stationId} session={route.session} settings={settings} navigate={navigate} />
+            <Encounter
+              stationId={route.stationId}
+              session={route.session}
+              settings={settings}
+              voiceReady={voiceReady}
+              navigate={navigate}
+            />
           )}
           {route.name === 'post' && (
-            <PostEncounter stationId={route.stationId} sessionId={route.sessionId} navigate={navigate} />
+            <PostEncounter
+              stationId={route.stationId}
+              sessionId={route.sessionId}
+              voiceInput={settings.voiceInput}
+              voiceReady={voiceReady}
+              navigate={navigate}
+            />
           )}
           {route.name === 'feedback' && (
             <FeedbackView sessionId={route.sessionId} navigate={navigate} modelReady={model.phase === 'ready'} />

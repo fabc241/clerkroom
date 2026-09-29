@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import type { ModelOption, ModelStatus, Settings } from '@shared/ipcTypes'
+import type { ModelOption, ModelStatus, Settings, VoiceStatus } from '@shared/ipcTypes'
 import { ErrorBox } from '../components/Notices'
 import { formatBytes } from '../lib/format'
 
 export function ModelSetup({
   status,
+  voice,
   settings,
   updateSettings
 }: {
   status: ModelStatus
+  voice: VoiceStatus
   settings: Settings
   updateSettings: (p: Partial<Settings>) => Promise<void>
 }): React.JSX.Element {
@@ -148,10 +150,119 @@ export function ModelSetup({
           )}
         </div>
       </div>
+      <VoiceSetup
+        voice={voice}
+        enabled={settings.voiceInput}
+        lowMemory={lowMemory}
+        setEnabled={async (on) => {
+          await updateSettings({ voiceInput: on })
+          // Loading a downloaded model is automatic; a download always needs a click.
+          if (on && voice.cached) void window.digipat.prepareVoice()
+        }}
+      />
+
       <p className="text-xs text-stone-500">
         MedPsy is released by Tether AI Research under Apache-2.0 for research and educational purposes; its
         training data is licensed for non-commercial use. See About for details.
       </p>
+    </div>
+  )
+}
+
+function VoiceSetup({
+  voice,
+  enabled,
+  lowMemory,
+  setEnabled
+}: {
+  voice: VoiceStatus
+  enabled: boolean
+  lowMemory: boolean
+  setEnabled: (on: boolean) => Promise<void>
+}): React.JSX.Element {
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const busy = voice.phase === 'downloading' || voice.phase === 'loading'
+
+  return (
+    <div className="card space-y-4">
+      <label className="flex items-start justify-between gap-4">
+        <div>
+          <div className="font-medium">Voice input (optional)</div>
+          <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
+            Dictate what you say to the patient and your answers to the examiner questions. Speech is transcribed on
+            this Mac by {voice.modelName}; the audio is never stored, and you can edit the text before sending it.
+            English only. Uses about {formatBytes(voice.sizeBytes)} of extra memory while turned on.
+          </p>
+        </div>
+        <input
+          type="checkbox"
+          className="mt-1 h-4 w-4 shrink-0 accent-brand-600"
+          checked={enabled}
+          onChange={(e) => void setEnabled(e.target.checked)}
+        />
+      </label>
+
+      {enabled && lowMemory && (
+        <p className="text-xs text-amber-700 dark:text-amber-400">
+          This Mac has less than 12 GB of memory — voice input may make replies slower.
+        </p>
+      )}
+      {enabled && voice.phase === 'error' && voice.error && <ErrorBox message={voice.error} />}
+      {enabled && voice.phase === 'downloading' && (
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>Downloading voice model</span>
+            <span className="tabular-nums">
+              {formatBytes(voice.downloadedBytes)} / {formatBytes(voice.totalBytes)} ({voice.downloadPercent.toFixed(1)}
+              %)
+            </span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-stone-200 dark:bg-stone-800">
+            <div className="h-full bg-brand-500 transition-all" style={{ width: `${voice.downloadPercent}%` }} />
+          </div>
+        </div>
+      )}
+      {enabled && voice.phase === 'loading' && <p className="text-sm">Loading the voice model…</p>}
+      {enabled && voice.phase === 'ready' && (
+        <p className="text-sm text-emerald-700 dark:text-emerald-400">
+          Voice input ready. Press the microphone button next to a text box to dictate.
+        </p>
+      )}
+
+      <div className="flex flex-wrap gap-2">
+        {enabled && (voice.phase === 'idle' || voice.phase === 'error') && (
+          <button className="btn-primary" onClick={() => window.digipat.prepareVoice()}>
+            {voice.cached ? 'Load voice model' : `Download (${formatBytes(voice.sizeBytes)}) and load`}
+          </button>
+        )}
+        {voice.phase === 'downloading' && (
+          <button className="btn-secondary" onClick={() => window.digipat.cancelVoiceDownload()}>
+            Pause download
+          </button>
+        )}
+        {voice.cached && !busy && !confirmDelete && (
+          <button className="btn-danger" onClick={() => setConfirmDelete(true)}>
+            Delete voice model…
+          </button>
+        )}
+        {confirmDelete && (
+          <>
+            <span className="self-center text-sm">Remove {formatBytes(voice.sizeBytes)} from disk?</span>
+            <button
+              className="btn-danger"
+              onClick={async () => {
+                await window.digipat.deleteVoiceModel()
+                setConfirmDelete(false)
+              }}
+            >
+              Delete
+            </button>
+            <button className="btn-secondary" onClick={() => setConfirmDelete(false)}>
+              Cancel
+            </button>
+          </>
+        )}
+      </div>
     </div>
   )
 }

@@ -18,6 +18,14 @@ const api: DigiPatApi = {
   deleteModel: (choice) => ipcRenderer.invoke('model:delete', choice),
   onModelStatus: (cb) => subscribe('model:status', cb),
 
+  getVoiceStatus: () => ipcRenderer.invoke('voice:status'),
+  prepareVoice: () => ipcRenderer.invoke('voice:prepare'),
+  cancelVoiceDownload: () => ipcRenderer.invoke('voice:cancelDownload'),
+  deleteVoiceModel: () => ipcRenderer.invoke('voice:delete'),
+  onVoiceStatus: (cb) => subscribe('voice:status', cb),
+  requestMicrophone: () => ipcRenderer.invoke('voice:requestMicrophone'),
+  transcribe: (pcm) => ipcRenderer.invoke('voice:transcribe', pcm),
+
   listStations: () => ipcRenderer.invoke('station:list'),
   getStation: (id) => ipcRenderer.invoke('station:get', id),
   saveStation: (s) => ipcRenderer.invoke('station:save', s),

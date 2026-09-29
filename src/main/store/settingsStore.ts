@@ -6,7 +6,8 @@ const DEFAULTS: Settings = {
   acceptedDisclaimerVersion: 0,
   model: 'medpsy-4b-q4',
   stationSecondsOverride: null,
-  skipReadingTime: false
+  skipReadingTime: false,
+  voiceInput: false
 }
 
 export class SettingsStore {

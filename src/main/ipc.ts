@@ -1,7 +1,8 @@
-import { app, dialog, ipcMain, shell, type BrowserWindow } from 'electron'
+import { app, dialog, ipcMain, shell, systemPreferences, type BrowserWindow } from 'electron'
 import { readFileSync, writeFileSync } from 'fs'
 import type { ModelChoice, Settings } from '@shared/ipcTypes'
 import { MODEL_OPTIONS, modelManager, modelsDir } from './qvac/modelManager'
+import { voiceManager } from './qvac/transcriber'
 import type { EncounterService } from './encounter'
 import type { SessionStore } from './store/sessionStore'
 import type { SettingsStore } from './store/settingsStore'
@@ -28,10 +29,16 @@ export function registerIpc(deps: {
   }
 
   modelManager.on('status', (s) => send('model:status', s))
+  voiceManager.on('status', (s) => send('voice:status', s))
 
   // Settings
   ipcMain.handle('settings:get', () => settings.get())
-  ipcMain.handle('settings:update', (_e, patch: Partial<Settings>) => settings.update(patch))
+  ipcMain.handle('settings:update', (_e, patch: Partial<Settings>) => {
+    const next = settings.update(patch)
+    // Turning voice input off releases the speech model's memory straight away.
+    if (patch.voiceInput === false) void voiceManager.unload()
+    return next
+  })
 
   // Model
   ipcMain.handle('model:options', () => MODEL_OPTIONS)
@@ -39,6 +46,28 @@ export function registerIpc(deps: {
   ipcMain.handle('model:prepare', () => modelManager.prepare(settings.get().model))
   ipcMain.handle('model:cancelDownload', () => modelManager.cancelDownload())
   ipcMain.handle('model:delete', (_e, choice: ModelChoice) => modelManager.deleteModel(choice))
+
+  // Voice input
+  const assertVoiceEnabled = (): void => {
+    if (!settings.get().voiceInput) throw new Error('Voice input is turned off.')
+  }
+  ipcMain.handle('voice:status', () => voiceManager.getStatus())
+  ipcMain.handle('voice:prepare', () => {
+    assertVoiceEnabled()
+    return voiceManager.prepare()
+  })
+  ipcMain.handle('voice:cancelDownload', () => voiceManager.cancelDownload())
+  ipcMain.handle('voice:delete', () => voiceManager.deleteModel())
+  ipcMain.handle('voice:requestMicrophone', async () => {
+    assertVoiceEnabled()
+    if (process.platform !== 'darwin') return true
+    // Shows the macOS prompt the first time; resolves false if access was denied in System Settings.
+    return systemPreferences.askForMediaAccess('microphone')
+  })
+  ipcMain.handle('voice:transcribe', (_e, pcm: unknown) => {
+    assertVoiceEnabled()
+    return voiceManager.transcribe(pcm)
+  })
 
   // Stations
   ipcMain.handle('station:list', () => stations.list())

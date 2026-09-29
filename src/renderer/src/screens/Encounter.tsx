@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Settings } from '@shared/ipcTypes'
 import type { SessionRecord, TranscriptEntry } from '@shared/sessionTypes'
 import type { Station } from '@shared/stationSchema'
+import { appendDictation } from '@shared/voice'
 import type { Navigate } from '../App'
+import { DictateButton } from '../components/DictateButton'
 import { ErrorBox, SensitiveTopicFooter, ThinkingDots } from '../components/Notices'
 import { useCountdown } from '../components/useCountdown'
 import { TranscriptView } from '../components/TranscriptView'
@@ -14,6 +16,7 @@ export function Encounter(props: {
   stationId: string
   session: SessionRecord
   settings: Settings
+  voiceReady: boolean
   navigate: Navigate
 }): React.JSX.Element {
   const [station, setStation] = useState<Station | null>(null)
@@ -28,11 +31,13 @@ function EncounterInner({
   station,
   session,
   settings,
+  voiceReady,
   navigate
 }: {
   station: Station
   session: SessionRecord
   settings: Settings
+  voiceReady: boolean
   navigate: Navigate
 }): React.JSX.Element {
   const stationSec = settings.stationSecondsOverride ?? station.timing.stationSec
@@ -191,7 +196,13 @@ function EncounterInner({
                 autoFocus
                 rows={2}
                 className="input flex-1 resize-none"
-                placeholder={ended ? 'The station has ended.' : 'What do you say to the patient? (Enter to send, Shift+Enter for a new line)'}
+                placeholder={
+                  ended
+                    ? 'The station has ended.'
+                    : settings.voiceInput
+                      ? 'Type or dictate what you say to the patient. (Enter to send, Shift+Enter for a new line)'
+                      : 'What do you say to the patient? (Enter to send, Shift+Enter for a new line)'
+                }
                 value={input}
                 disabled={ended}
                 onChange={(e) => setInput(e.target.value)}
@@ -202,6 +213,18 @@ function EncounterInner({
                   }
                 }}
               />
+              {settings.voiceInput && (
+                <DictateButton
+                  className="self-end"
+                  ready={voiceReady}
+                  disabled={ended}
+                  onError={setError}
+                  onText={(t) => {
+                    setInput((v) => appendDictation(v, t))
+                    inputRef.current?.focus()
+                  }}
+                />
+              )}
               {busy ? (
                 <button className="btn-secondary self-end" onClick={() => window.digipat.interruptPatient(session.id)}>
                   Stop

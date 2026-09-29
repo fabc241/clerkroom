@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import { is } from '@electron-toolkit/utils'
 import { registerIpc } from './ipc'
 import { modelManager } from './qvac/modelManager'
+import { voiceManager } from './qvac/transcriber'
 import { EncounterService, cleanupStaleSessionCaches } from './encounter'
 import { SessionStore } from './store/sessionStore'
 import { SettingsStore } from './store/settingsStore'
@@ -59,11 +60,20 @@ app.on('second-instance', () => {
 })
 
 app.whenReady().then(() => {
-  // Deny every permission request (camera, mic, geolocation, notifications...).
-  session.defaultSession.setPermissionRequestHandler((_wc, _perm, cb) => cb(false))
-
   const userData = app.getPath('userData')
   const settings = new SettingsStore(join(userData, 'settings.json'))
+
+  // Deny every permission request (camera, geolocation, notifications...). The one exception is
+  // the microphone, for the app's own window and only while the user has voice input turned on.
+  const micAllowed = (wc: Electron.WebContents | null): boolean =>
+    settings.get().voiceInput && !!win && !win.isDestroyed() && wc === win.webContents
+  session.defaultSession.setPermissionRequestHandler((wc, perm, cb, details) => {
+    const media = perm === 'media' ? (details as Electron.MediaAccessPermissionRequest).mediaTypes ?? [] : []
+    cb(micAllowed(wc) && media.length > 0 && media.every((t) => t === 'audio'))
+  })
+  session.defaultSession.setPermissionCheckHandler(
+    (wc, perm, _origin, details) => perm === 'media' && details.mediaType === 'audio' && micAllowed(wc)
+  )
   const stations = new StationStore(join(app.getAppPath(), 'stations'), join(userData, 'stations'))
   const sessions = new SessionStore(join(userData, 'sessions'))
   const encounter = new EncounterService(stations, sessions, () => settings.get().stationSecondsOverride)
@@ -84,8 +94,11 @@ app.on('before-quit', (e) => {
   if (shuttingDown) return
   shuttingDown = true
   e.preventDefault()
-  modelManager
-    .shutdown()
+  // Unload the voice model first: modelManager.shutdown() closes the QVAC worker.
+  voiceManager
+    .unload()
+    .catch(() => {})
+    .then(() => modelManager.shutdown())
     .catch(() => {})
     .finally(() => app.quit())
 })

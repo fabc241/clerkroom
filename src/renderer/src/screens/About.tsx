@@ -61,7 +61,9 @@ export function About({
         <h2 className="font-medium">Privacy</h2>
         <p>
           The app has no accounts, analytics or telemetry. The only network activity is the one-time model download
-          from the QVAC registry. Your stations and attempts are stored as files on this Mac:
+          from the QVAC registry. If you turn on voice input, speech is transcribed on this Mac and the audio is
+          discarded straight away; only the text you send is kept. Your stations and attempts are stored as files on
+          this Mac:
         </p>
         <ul className="selectable space-y-1 font-mono text-xs text-stone-600 dark:text-stone-400">
           <li>Data: {info?.dataDir}</li>
@@ -87,6 +89,7 @@ export function About({
           training data is licensed CC-BY-NC 4.0, so this app is distributed free of charge and for non-commercial
           use only. MedPsy is not a substitute for clinical judgement.
         </p>
+        <p>Optional voice input: Parakeet Unified 0.6B speech recognition, from the QVAC registry.</p>
         <p>
           The bundled stations are fictional teaching cases written for this app, structured around common clinical skills assessment
           frameworks (e.g. Calgary–Cambridge, data gathering / clinical management / interpersonal skills).

@@ -36,6 +36,21 @@ export interface Settings {
   model: ModelChoice
   stationSecondsOverride: number | null
   skipReadingTime: boolean
+  /** Optional dictation with the local Parakeet speech-to-text model. Off until the user enables it. */
+  voiceInput: boolean
+}
+
+export type VoicePhase = 'idle' | 'downloading' | 'loading' | 'ready' | 'error'
+
+export interface VoiceStatus {
+  phase: VoicePhase
+  modelName: string
+  sizeBytes: number
+  downloadPercent: number
+  downloadedBytes: number
+  totalBytes: number
+  cached: boolean
+  error?: string
 }
 
 export type PatientStreamEvent =
@@ -63,6 +78,17 @@ export interface DigiPatApi {
   cancelDownload(): Promise<void>
   deleteModel(choice: ModelChoice): Promise<void>
   onModelStatus(cb: (s: ModelStatus) => void): () => void
+
+  // Voice input (speech-to-text)
+  getVoiceStatus(): Promise<VoiceStatus>
+  prepareVoice(): Promise<VoiceStatus>
+  cancelVoiceDownload(): Promise<void>
+  deleteVoiceModel(): Promise<void>
+  onVoiceStatus(cb: (s: VoiceStatus) => void): () => void
+  /** Asks macOS for microphone access if needed; resolves false if the user has denied it. */
+  requestMicrophone(): Promise<boolean>
+  /** Transcribes 16 kHz mono s16le PCM. Resolves '' when no speech was detected. */
+  transcribe(pcm: Uint8Array): Promise<string>
 
   // Stations
   listStations(): Promise<StationSummary[]>
