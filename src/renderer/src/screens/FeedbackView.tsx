@@ -189,7 +189,7 @@ export function FeedbackView({
                     )}
                     {i.downgraded && (
                       <div className="mt-1 text-xs text-amber-700 dark:text-amber-400">
-                        Marked partly: the quoted evidence could not be found in your transcript.
+                        Not credited: the examiner’s quoted evidence could not be found in your transcript.
                       </div>
                     )}
                   </div>

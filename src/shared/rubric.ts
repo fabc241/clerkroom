@@ -1,4 +1,5 @@
 import { DOMAINS, GLOBAL_RATINGS, type GlobalRating } from './constants'
+import type { RubricItem } from './stationSchema'
 import type { DomainScore, ItemResult, ItemVerdict, TranscriptEntry } from './sessionTypes'
 
 const VERDICT_CREDIT: Record<ItemVerdict, number> = { yes: 1, partial: 0.5, no: 0 }
@@ -80,6 +81,59 @@ export function findEvidenceTurn(quote: string, transcript: TranscriptEntry[]): 
     if (hits >= 3 && ratio >= 0.8 && (!best || ratio > best.ratio)) best = { idx, ratio }
   })
   return best === null ? null : (best as { idx: number }).idx
+}
+
+/** True if the student said or did anything in the station that could earn checklist credit. */
+export function hasStudentActivity(transcript: TranscriptEntry[]): boolean {
+  return transcript.some((e) => e.kind === 'candidate' || e.kind === 'exam' || e.kind === 'investigation')
+}
+
+export const NO_ACTIVITY_COMMENT = 'Not done: you did not ask the patient anything or take any action in this station.'
+
+function itemResult(item: RubricItem, fields: Pick<ItemResult, 'met' | 'comment'> & Partial<ItemResult>): ItemResult {
+  return {
+    itemId: item.id,
+    domain: item.domain,
+    text: item.text,
+    weight: item.weight,
+    evidenceQuote: '',
+    evidenceTurn: null,
+    downgraded: false,
+    ...fields
+  }
+}
+
+/** Result for an item the student cannot have met, e.g. because they never spoke. */
+export function unmetItem(item: RubricItem, comment: string): ItemResult {
+  return itemResult(item, { met: 'no', comment })
+}
+
+/**
+ * Turns the examiner model's verdict into a scored item. Any credit ("yes" or "partial") must be
+ * backed by a quote found in a student turn; otherwise the model invented it and the item scores 0.
+ */
+export function verifyVerdict(
+  item: RubricItem,
+  verdict: { met: ItemVerdict; evidenceQuote: string; comment: string } | undefined,
+  transcript: TranscriptEntry[]
+): ItemResult {
+  if (!verdict) return unmetItem(item, 'Could not be assessed automatically — review the transcript yourself.')
+  if (verdict.met === 'no') return itemResult(item, { met: 'no', comment: verdict.comment })
+  const evidenceTurn = findEvidenceTurn(verdict.evidenceQuote, transcript)
+  if (evidenceTurn === null) {
+    return itemResult(item, {
+      met: 'no',
+      evidenceQuote: verdict.evidenceQuote,
+      comment: 'Not credited: the examiner could not point to anything you said or did for this item.',
+      downgraded: true
+    })
+  }
+  return itemResult(item, {
+    met: verdict.met,
+    evidenceQuote: verdict.evidenceQuote,
+    evidenceTurn,
+    comment: verdict.comment
+  })
 }
 
 /** Detects which hidden facts the patient has disclosed, by keyword match on patient replies. */
