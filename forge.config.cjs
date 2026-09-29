@@ -5,7 +5,7 @@ const QvacForgePlugin = require('@qvac/sdk/electron-forge')
 module.exports = {
   packagerConfig: {
     name: 'DigiPat',
-    executableName: 'digipat',
+    executableName: 'DigiPat',
     appBundleId: 'org.digipat.app',
     appCategoryType: 'public.app-category.education',
     // Only ship the build output, bundled stations and runtime deps.
