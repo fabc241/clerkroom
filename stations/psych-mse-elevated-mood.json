@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "id": "psych-mse-elevated-mood",
+  "version": 1,
+  "title": "Mental State Examination — elevated mood",
+  "specialty": "psychiatry",
+  "stationType": "mse",
+  "difficulty": "intermediate",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor on a psychiatric assessment unit. Chris Walker, 42, was brought in by his wife who is concerned about his behaviour over the past week. Interview him to perform a Mental State Examination. Use 'Examine' → 'General appearance' to see what an observer would notice. You will present your MSE afterwards.",
+  "patient": {
+    "name": "Chris Walker",
+    "age": 42,
+    "sex": "male",
+    "occupation": "Estate agent",
+    "setting": "Assessment room on a psychiatric admissions unit.",
+    "openingStatement": "Doctor! Great, finally someone important. Let's make this quick — I've got deals to close, big ones, the biggest this town has seen.",
+    "demeanour": "Over-familiar, cheerful, restless, keeps standing up, laughs loudly, easily distracted by noises. Becomes irritable if interrupted or contradicted, then quickly cheerful again.",
+    "speechStyle": "Fast, loud, hard to interrupt. Jumps from topic to topic with loose links and puns or rhymes ('deal, feel, real'). Uses everyday language, no medical terms.",
+    "ice": {
+      "ideas": "Thinks he has never felt better and has finally 'unlocked his potential'.",
+      "concerns": "Only concern is that his wife is 'holding him back' and the hospital is wasting his time.",
+      "expectations": "Expects to leave within the hour."
+    },
+    "freelyShared": [
+      "Has barely slept for a week because he doesn't need it — 'sleep is for people without vision'.",
+      "Is planning to buy three houses this month and start a property empire."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Feeling special or chosen",
+        "trigger": "special abilities, importance or powers",
+        "answer": "I can read people's minds when they're negotiating. It's a gift. I think I've been chosen for something big.",
+        "keywords": [
+          "read people's minds",
+          "been chosen"
+        ],
+        "askKeywords": [
+          "special",
+          "power",
+          "abilit",
+          "gift",
+          "chosen",
+          "important",
+          "mission",
+          "talent"
+        ]
+      },
+      {
+        "topic": "Spending",
+        "trigger": "money or spending",
+        "answer": "I put forty grand on the credit cards this week. It's an investment, it'll come back tenfold.",
+        "keywords": [
+          "forty grand",
+          "credit cards"
+        ],
+        "askKeywords": [
+          "money",
+          "spend",
+          "spent",
+          "credit",
+          "buy",
+          "bought",
+          "afford",
+          "financ",
+          "debt"
+        ]
+      },
+      {
+        "topic": "Hearing things",
+        "trigger": "hearing voices or seeing things",
+        "answer": "Voices? No. Well, sometimes a voice tells me I'm destined for greatness, but that's just true.",
+        "keywords": [
+          "destined for greatness",
+          "a voice tells me"
+        ],
+        "askKeywords": [
+          "voice",
+          "see things",
+          "seeing things",
+          "vision",
+          "hearing",
+          "hear voice",
+          "hear things",
+          "hear any",
+          "hear people",
+          "hear someone",
+          "hear sound",
+          "hear noise",
+          "voice",
+          "noise",
+          "sounds that"
+        ]
+      },
+      {
+        "topic": "Risk",
+        "trigger": "risk to self, others, driving, or harming anyone",
+        "answer": "I drove to the coast at 3am doing a hundred on the motorway. Felt amazing. I'd never hurt myself — why would I?",
+        "keywords": [
+          "hundred on the motorway",
+          "drove to the coast"
+        ],
+        "askKeywords": [
+          "risk",
+          "driv",
+          "car",
+          "harm",
+          "hurt",
+          "danger",
+          "safe",
+          "reckless",
+          "fight"
+        ]
+      },
+      {
+        "topic": "Past history",
+        "trigger": "previous episodes of low or high mood",
+        "answer": "I had a rough time a few years back, couldn't get out of bed for months. The GP gave me some pills. Stopped them ages ago.",
+        "keywords": [
+          "couldn't get out of bed",
+          "gave me some pills"
+        ],
+        "askKeywords": [
+          "before",
+          "previous",
+          "past",
+          "history",
+          "low",
+          "depress",
+          "medication",
+          "pills",
+          "treatment"
+        ]
+      },
+      {
+        "topic": "Cognition",
+        "trigger": "orientation, date, place or memory",
+        "answer": "It's Tuesday, we're in the hospital, and I'm the smartest person in it.",
+        "keywords": [
+          "it's tuesday",
+          "smartest person"
+        ],
+        "askKeywords": [
+          "day",
+          "date",
+          "where are we",
+          "where you are",
+          "time",
+          "year",
+          "memory",
+          "remember",
+          "orient"
+        ]
+      },
+      {
+        "topic": "Insight",
+        "trigger": "whether he thinks anything is wrong or would accept treatment",
+        "answer": "Wrong? Nothing is wrong. Everyone else is just slow. I don't need any treatment.",
+        "keywords": [
+          "nothing is wrong",
+          "don't need any treatment"
+        ],
+        "askKeywords": [
+          "wrong",
+          "ill",
+          "unwell",
+          "treatment",
+          "medication",
+          "hospital",
+          "why are you here",
+          "think is happening",
+          "insight",
+          "need help",
+          "accept help",
+          "need any help"
+        ]
+      }
+    ],
+    "cue": "Ask me anything, doctor, I've got all the answers today!",
+    "mseObservations": [
+      "Brightly coloured mismatched clothes, sunglasses on his head, strong aftershave",
+      "Psychomotor agitation, restless, stands and paces, over-familiar",
+      "Pressured speech, loud, difficult to interrupt",
+      "Mood: 'fantastic'; affect elated and labile, briefly irritable",
+      "Flight of ideas with clang associations",
+      "Grandiose ideas, possibly delusional in intensity",
+      "Oriented; attention easily distracted",
+      "Insight absent"
+    ]
+  },
+  "examFindings": [
+    {
+      "system": "General appearance",
+      "finding": "Brightly coloured mismatched clothes, sunglasses on his head, strong smell of aftershave. Restless, paces the room, over-familiar (puts hand on your shoulder). Easily distracted by noises from the corridor."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "Urine drug screen",
+      "result": "Negative."
+    },
+    {
+      "test": "Thyroid function tests",
+      "result": "Normal."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "Present your Mental State Examination.",
+      "modelAnswer": "Appearance/behaviour: flamboyant, restless, over-familiar, distractible. Speech: pressured, loud. Mood 'fantastic', affect elated and labile. Thought form: flight of ideas with clang associations. Thought content: grandiose ideas, possibly delusional; no suicidal ideation. Perception: a voice with mood-congruent content. Cognition: oriented, distractible. Insight: absent.",
+      "keyPoints": [
+        "Appearance and behaviour",
+        "Pressured speech",
+        "Elated/labile affect",
+        "Flight of ideas",
+        "Grandiose content",
+        "Perception",
+        "Cognition",
+        "Insight absent"
+      ]
+    },
+    {
+      "q": "What is the most likely diagnosis and why?",
+      "modelAnswer": "A manic episode with psychotic features, likely bipolar affective disorder given the past depressive episode treated with antidepressants.",
+      "keyPoints": [
+        "Mania",
+        "Psychotic features",
+        "Bipolar affective disorder",
+        "Past depressive episode"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and explains the purpose of the interview",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "control",
+        "domain": "interpersonal",
+        "text": "Manages pressured speech calmly and keeps the interview on track without being confrontational",
+        "weight": 2,
+        "evidenceHint": "can I stop you there, bring you back"
+      },
+      {
+        "id": "appearance",
+        "domain": "dataGathering",
+        "text": "Observes appearance and behaviour (uses the Examine panel)",
+        "weight": 1,
+        "evidenceHint": "examined General appearance"
+      },
+      {
+        "id": "mood",
+        "domain": "dataGathering",
+        "text": "Asks the patient to describe his mood in his own words",
+        "weight": 2,
+        "evidenceHint": "how is your mood"
+      },
+      {
+        "id": "biological",
+        "domain": "dataGathering",
+        "text": "Asks about sleep, energy and appetite",
+        "weight": 1,
+        "evidenceHint": "sleep, energy"
+      },
+      {
+        "id": "grandiosity",
+        "domain": "dataGathering",
+        "text": "Explores grandiose ideas and special abilities",
+        "weight": 2,
+        "evidenceHint": "special powers, abilities"
+      },
+      {
+        "id": "perception",
+        "domain": "dataGathering",
+        "text": "Asks about hallucinations",
+        "weight": 2,
+        "evidenceHint": "hear voices, see things"
+      },
+      {
+        "id": "risk",
+        "domain": "dataGathering",
+        "text": "Assesses risk: spending, driving, disinhibition, harm to self or others",
+        "weight": 3,
+        "evidenceHint": "money, driving, harm"
+      },
+      {
+        "id": "cognition",
+        "domain": "dataGathering",
+        "text": "Checks orientation / cognition",
+        "weight": 1,
+        "evidenceHint": "what day, where are we"
+      },
+      {
+        "id": "insight",
+        "domain": "clinicalManagement",
+        "text": "Assesses insight and attitude to treatment",
+        "weight": 2,
+        "evidenceHint": "anything wrong, treatment"
+      },
+      {
+        "id": "past",
+        "domain": "dataGathering",
+        "text": "Asks about previous mood episodes and treatment",
+        "weight": 1,
+        "evidenceHint": "before, pills"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "mania",
+    "manic",
+    "hypomania",
+    "bipolar",
+    "grandiose",
+    "pressured speech",
+    "flight of ideas"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

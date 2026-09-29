@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "id": "med-breathlessness",
+  "version": 1,
+  "title": "Sudden breathlessness",
+  "specialty": "medicine",
+  "stationType": "history",
+  "difficulty": "intermediate",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in an urgent care centre. Emma Wilson, 32, presents with breathlessness that started this morning. Take a focused history. You may use the Examine and Investigations panels. You will be asked questions afterwards.",
+  "patient": {
+    "name": "Emma Wilson",
+    "age": 32,
+    "sex": "female",
+    "occupation": "Marketing manager",
+    "setting": "Urgent care assessment room.",
+    "openingStatement": "I just can't seem to get my breath since this morning, and there's a sharp pain on the right side when I breathe in.",
+    "demeanour": "Anxious, slightly breathless, pauses mid-sentence to breathe. Cooperative.",
+    "speechStyle": "Short sentences because of breathlessness. Everyday language.",
+    "ice": {
+      "ideas": "Wonders if she has a chest infection.",
+      "concerns": "Worried because it came on so suddenly.",
+      "expectations": "Hopes for antibiotics or an inhaler."
+    },
+    "freelyShared": [
+      "Breathlessness came on suddenly about four hours ago while getting dressed.",
+      "Sharp right-sided chest pain, worse on breathing in."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Recent travel",
+        "trigger": "recent travel, long journeys or immobility",
+        "answer": "I got back from a work trip to Singapore three days ago. Thirteen-hour flight.",
+        "keywords": [
+          "singapore",
+          "thirteen-hour flight",
+          "13-hour flight"
+        ],
+        "askKeywords": [
+          "travel",
+          "trip",
+          "flight",
+          "fly",
+          "flew",
+          "journey",
+          "abroad",
+          "holiday",
+          "immobil",
+          "sitting",
+          "long drive"
+        ]
+      },
+      {
+        "topic": "Leg symptoms",
+        "trigger": "leg pain or swelling",
+        "answer": "Now you mention it, my left calf has been aching and it looks a bit puffy.",
+        "keywords": [
+          "left calf",
+          "a bit puffy"
+        ],
+        "askKeywords": [
+          "leg",
+          "calf",
+          "calves",
+          "swell",
+          "ankle"
+        ]
+      },
+      {
+        "topic": "Contraception",
+        "trigger": "medications, contraception or hormones",
+        "answer": "I'm on the combined pill. Nothing else.",
+        "keywords": [
+          "combined pill"
+        ],
+        "askKeywords": [
+          "medic",
+          "tablet",
+          "pill",
+          "contracept",
+          "hormone",
+          "hrt",
+          "coil"
+        ]
+      },
+      {
+        "topic": "Haemoptysis",
+        "trigger": "coughing up blood or cough",
+        "answer": "I coughed up a little streak of blood this morning, which scared me.",
+        "keywords": [
+          "streak of blood",
+          "coughed up"
+        ],
+        "askKeywords": [
+          "cough",
+          "blood",
+          "sputum",
+          "phlegm"
+        ]
+      },
+      {
+        "topic": "Infective symptoms",
+        "trigger": "fever, cough with phlegm, or feeling unwell before",
+        "answer": "No fever, no colds. I felt completely fine until this morning.",
+        "keywords": [
+          "no fever",
+          "completely fine until this morning"
+        ],
+        "askKeywords": [
+          "fever",
+          "temperature",
+          "infection",
+          "cold",
+          "flu",
+          "unwell before",
+          "shiver",
+          "phlegm"
+        ]
+      },
+      {
+        "topic": "Past and family history",
+        "trigger": "previous clots, past medical history, family history of clots",
+        "answer": "Never had anything like it. My mum had a clot in her leg after an operation.",
+        "keywords": [
+          "mum had a clot"
+        ],
+        "askKeywords": [
+          "before",
+          "previous",
+          "past",
+          "medical history",
+          "clot",
+          "family",
+          "relative",
+          "run in"
+        ]
+      },
+      {
+        "topic": "Pregnancy",
+        "trigger": "possibility of pregnancy or last period",
+        "answer": "My last period was two weeks ago. I don't think I'm pregnant.",
+        "keywords": [
+          "two weeks ago",
+          "don't think i'm pregnant"
+        ],
+        "askKeywords": [
+          "pregnan",
+          "period",
+          "menstru",
+          "last period"
+        ]
+      },
+      {
+        "topic": "Smoking",
+        "trigger": "smoking",
+        "answer": "I don't smoke.",
+        "keywords": [
+          "i don't smoke"
+        ],
+        "askKeywords": [
+          "smok",
+          "cigarette",
+          "vape"
+        ]
+      }
+    ],
+    "cue": "I did have that really long flight, but that wouldn't matter, would it?"
+  },
+  "examFindings": [
+    {
+      "system": "Observations",
+      "finding": "HR 112 regular, BP 118/76, RR 24, SpO2 93% on air, temperature 37.1°C."
+    },
+    {
+      "system": "Respiratory",
+      "finding": "Chest clear, equal air entry, no wheeze. Pleural rub not heard."
+    },
+    {
+      "system": "Legs",
+      "finding": "Left calf 3 cm larger than right, tender along deep veins, mild pitting oedema."
+    },
+    {
+      "system": "Cardiovascular",
+      "finding": "Tachycardic, heart sounds normal, JVP not raised."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "ECG",
+      "result": "Sinus tachycardia 112 bpm, no other changes."
+    },
+    {
+      "test": "Chest X-ray",
+      "result": "Normal."
+    },
+    {
+      "test": "Pregnancy test",
+      "result": "Negative."
+    },
+    {
+      "test": "Arterial blood gas (on air)",
+      "result": "pH 7.47, pO2 9.1 kPa, pCO2 4.0 kPa."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "What is the most likely diagnosis and which risk factors support it?",
+      "modelAnswer": "Pulmonary embolism, probably from a left-leg DVT. Risk factors: recent long-haul flight, combined oral contraceptive pill, family history of VTE.",
+      "keyPoints": [
+        "Pulmonary embolism",
+        "Long-haul flight",
+        "Combined oral contraceptive",
+        "Signs of DVT"
+      ]
+    },
+    {
+      "q": "How would you investigate and manage her?",
+      "modelAnswer": "Calculate Wells score (PE likely), give interim anticoagulation if no contraindication while arranging CTPA, oxygen to target saturations, analgesia, stop the combined pill, and plan ongoing anticoagulation for at least three months.",
+      "keyPoints": [
+        "Wells score",
+        "CTPA",
+        "Interim anticoagulation",
+        "Oxygen",
+        "Stop combined pill"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and gains consent",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "onset",
+        "domain": "dataGathering",
+        "text": "Characterises onset and severity of breathlessness",
+        "weight": 2,
+        "evidenceHint": "when, sudden"
+      },
+      {
+        "id": "pain",
+        "domain": "dataGathering",
+        "text": "Characterises the chest pain (pleuritic)",
+        "weight": 1,
+        "evidenceHint": "breathe in"
+      },
+      {
+        "id": "haemoptysis",
+        "domain": "dataGathering",
+        "text": "Asks about cough and haemoptysis",
+        "weight": 2,
+        "evidenceHint": "blood"
+      },
+      {
+        "id": "vte-risk",
+        "domain": "dataGathering",
+        "text": "Asks about VTE risk factors: travel, immobility, surgery, contraception, previous or family history",
+        "weight": 3,
+        "evidenceHint": "flight, pill, clots"
+      },
+      {
+        "id": "legs",
+        "domain": "dataGathering",
+        "text": "Asks about leg pain or swelling",
+        "weight": 2,
+        "evidenceHint": "legs, calf"
+      },
+      {
+        "id": "infection",
+        "domain": "dataGathering",
+        "text": "Screens for infective symptoms",
+        "weight": 1,
+        "evidenceHint": "fever, phlegm"
+      },
+      {
+        "id": "pregnancy",
+        "domain": "dataGathering",
+        "text": "Asks about possible pregnancy",
+        "weight": 1,
+        "evidenceHint": "pregnant, period"
+      },
+      {
+        "id": "obs",
+        "domain": "clinicalManagement",
+        "text": "Checks observations and examines legs",
+        "weight": 2,
+        "evidenceHint": "examined Observations, Legs"
+      },
+      {
+        "id": "explain",
+        "domain": "interpersonal",
+        "text": "Explains the concern and next steps clearly",
+        "weight": 2,
+        "evidenceHint": "clot, scan"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "pulmonary embolism",
+    "embolus",
+    "deep vein thrombosis",
+    "DVT",
+    "thromboembolism"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

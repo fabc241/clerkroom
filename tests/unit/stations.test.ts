@@ -1,0 +1,63 @@
+import { describe, expect, it } from 'vitest'
+import { stationSchema, SPECIALTIES } from '../../src/shared/stationSchema'
+import { normalizeForMatch } from '../../src/shared/rubric'
+import { buildPatientSystemPrompt } from '../../src/main/prompts/patientPrompt'
+import { loadBundledStations, rawStation } from './helpers'
+
+const stations = loadBundledStations()
+
+describe('bundled stations', () => {
+  it('ships 12 stations with unique ids', () => {
+    expect(stations).toHaveLength(12)
+    expect(new Set(stations.map((s) => s.id)).size).toBe(12)
+  })
+
+  it('covers psychiatry, medicine and communication', () => {
+    for (const sp of SPECIALTIES) expect(stations.some((s) => s.specialty === sp)).toBe(true)
+    expect(stations.filter((s) => s.specialty === 'psychiatry')).toHaveLength(6)
+  })
+
+  it.each(stations.map((s) => [s.id, s] as const))('%s: patient prompt does not leak the diagnosis', (_id, s) => {
+    const prompt = ` ${normalizeForMatch(buildPatientSystemPrompt(s))} `
+    for (const term of s.forbiddenTerms) {
+      expect(prompt, `prompt for ${s.id} contains "${term}"`).not.toContain(` ${normalizeForMatch(term)} `)
+    }
+  })
+
+  it.each(stations.map((s) => [s.id, s] as const))('%s: every hidden fact answer contains one of its keywords', (_id, s) => {
+    for (const f of s.patient.revealOnlyIfAsked) {
+      const answer = normalizeForMatch(f.answer)
+      expect(
+        f.keywords.some((k) => answer.includes(normalizeForMatch(k))),
+        `${s.id} / ${f.topic}`
+      ).toBe(true)
+    }
+  })
+
+  it('all stations are marked fictional', () => {
+    for (const s of stations) expect(s.authoring.source).toBe('fictional')
+  })
+})
+
+describe('station schema', () => {
+  it('rejects duplicate rubric ids', () => {
+    const s = rawStation('psych-low-mood') as { rubric: { items: { id: string }[] } }
+    s.rubric.items[1].id = s.rubric.items[0].id
+    expect(stationSchema.safeParse(s).success).toBe(false)
+  })
+
+  it('rejects invalid ids and missing brief', () => {
+    const s = rawStation('med-chest-pain')
+    expect(stationSchema.safeParse({ ...s, id: 'Bad Id!' }).success).toBe(false)
+    expect(stationSchema.safeParse({ ...s, candidateBrief: '  ' }).success).toBe(false)
+  })
+
+  it('applies defaults for optional fields', () => {
+    const s = rawStation('med-chest-pain')
+    delete s.timing
+    delete s.examFindings
+    const parsed = stationSchema.parse(s)
+    expect(parsed.timing).toEqual({ readingSec: 120, stationSec: 480 })
+    expect(parsed.examFindings).toEqual([])
+  })
+})

@@ -1,0 +1,48 @@
+{
+  "name": "digipat",
+  "productName": "DigiPat",
+  "version": "0.1.0",
+  "description": "Free, offline OSCE practice simulator for medical education. Not a medical device.",
+  "license": "Apache-2.0",
+  "private": true,
+  "main": "./dist/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "test": "vitest run",
+    "eval": "tsx tests/llm/runScripted.ts",
+    "validate-stations": "tsx scripts/validateStations.ts",
+    "package": "electron-vite build && electron-forge package --arch=arm64",
+    "make": "electron-vite build && electron-forge make --arch=arm64"
+  },
+  "dependencies": {
+    "@electron-toolkit/utils": "^4.0.0",
+    "@qvac/sdk": "^0.20.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.2",
+    "@electron-forge/maker-dmg": "^7.11.2",
+    "@electron-forge/maker-zip": "^7.11.2",
+    "@electron-forge/plugin-base": "^7.11.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "electron": "^44.4.5",
+    "electron-vite": "^5.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^7.3.6",
+    "vitest": "^4.1.11"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.17"
+  }
+}

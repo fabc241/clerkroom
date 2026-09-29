@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "id": "psych-low-mood",
+  "version": 1,
+  "title": "Low mood — history",
+  "specialty": "psychiatry",
+  "stationType": "history",
+  "difficulty": "foundation",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a foundation doctor in a general practice. Jamie Clarke, 34, has booked an appointment saying they have been 'feeling flat'. Take a focused history to assess their mood, including a brief risk assessment. You do not need to examine the patient. At the end you will be asked some questions.",
+  "patient": {
+    "name": "Jamie Clarke",
+    "age": 34,
+    "sex": "other",
+    "occupation": "Secondary-school teacher",
+    "setting": "GP consultation room, booked 10-minute appointment.",
+    "openingStatement": "I've just been feeling really flat lately, and my partner said I should come and talk to someone.",
+    "demeanour": "Quiet, slowed, little eye contact, sighs often, gives short answers but opens up if the doctor is warm and patient.",
+    "speechStyle": "Soft and slow, short sentences, plain everyday words, sometimes trails off. Apologises for 'wasting your time'.",
+    "ice": {
+      "ideas": "Thinks they are probably just burnt out from work and should be able to 'snap out of it'.",
+      "concerns": "Worried about losing their job and that they are letting their partner down.",
+      "expectations": "Hoping for a sick note and maybe some advice, unsure about tablets."
+    },
+    "freelyShared": [
+      "Has felt low most days for about two months, since a restructuring at school added a lot of extra work.",
+      "Has stopped enjoying things they used to love, like playing football on Sundays and reading.",
+      "Feels tired all the time even after doing very little."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Sleep",
+        "trigger": "sleep",
+        "answer": "I wake up at about 4 every morning and just lie there thinking. I can't get back to sleep.",
+        "keywords": [
+          "4 every morning",
+          "four in the morning",
+          "wake up at about 4",
+          "can't get back to sleep"
+        ],
+        "askKeywords": [
+          "sleep",
+          "insomnia",
+          "waking",
+          "wake up",
+          "night"
+        ]
+      },
+      {
+        "topic": "Appetite and weight",
+        "trigger": "appetite, eating or weight",
+        "answer": "I don't really feel like eating. My jeans are loose, so I've probably lost about half a stone.",
+        "keywords": [
+          "half a stone",
+          "jeans are loose",
+          "don't really feel like eating"
+        ],
+        "askKeywords": [
+          "appetite",
+          "eat",
+          "food",
+          "weight",
+          "hungry"
+        ]
+      },
+      {
+        "topic": "Concentration",
+        "trigger": "concentration, memory or coping at work",
+        "answer": "I read the same page of marking over and over. I've made mistakes at work I'd never normally make.",
+        "keywords": [
+          "same page",
+          "mistakes at work"
+        ],
+        "askKeywords": [
+          "concentrat",
+          "focus",
+          "memory",
+          "forget",
+          "work",
+          "coping",
+          "cope"
+        ]
+      },
+      {
+        "topic": "Thoughts of death",
+        "trigger": "thoughts of death, suicide, self-harm, or feeling life isn't worth living",
+        "answer": "Sometimes I think everyone would be better off without me. I've never made any plans and I wouldn't do anything, because of my partner and my mum.",
+        "keywords": [
+          "better off without me",
+          "never made any plans",
+          "wouldn't do anything"
+        ],
+        "askKeywords": [
+          "suicid",
+          "self-harm",
+          "harm yourself",
+          "hurt yourself",
+          "end your life",
+          "ending your life",
+          "ending it",
+          "end it all",
+          "kill",
+          "not worth living",
+          "life worth",
+          "better off",
+          "death",
+          "dead",
+          "die"
+        ]
+      },
+      {
+        "topic": "Alcohol",
+        "trigger": "alcohol or drugs",
+        "answer": "I've been having a couple of glasses of wine most nights to help me switch off. No drugs.",
+        "keywords": [
+          "glasses of wine",
+          "switch off"
+        ],
+        "askKeywords": [
+          "alcohol",
+          "drink",
+          "wine",
+          "beer",
+          "drug",
+          "substance",
+          "cannabis",
+          "smok"
+        ]
+      },
+      {
+        "topic": "Past history",
+        "trigger": "previous mental health problems or family history",
+        "answer": "I had a bad patch at university but never saw anyone for it. My mum has been on antidepressants for years.",
+        "keywords": [
+          "bad patch at university",
+          "mum has been on antidepressants"
+        ],
+        "askKeywords": [
+          "before",
+          "previous",
+          "past",
+          "history",
+          "family",
+          "ever had",
+          "mum",
+          "parents"
+        ]
+      },
+      {
+        "topic": "Feeling unusually high",
+        "trigger": "periods of feeling unusually high, energetic or needing little sleep",
+        "answer": "No, nothing like that. I wish I had some energy.",
+        "keywords": [
+          "nothing like that",
+          "wish i had some energy"
+        ],
+        "askKeywords": [
+          "high",
+          "elat",
+          "euphori",
+          "energetic",
+          "lots of energy",
+          "racing",
+          "manic",
+          "mania",
+          "invincible",
+          "less sleep"
+        ]
+      }
+    ],
+    "cue": "I suppose it's not just work, though. It's everything really.",
+    "mseObservations": [
+      "Casually dressed, a little unkempt",
+      "Psychomotor slowing, reduced eye contact",
+      "Speech quiet and slow",
+      "Mood subjectively 'flat', objectively low; affect restricted",
+      "No psychotic features"
+    ]
+  },
+  "examFindings": [],
+  "investigations": [
+    {
+      "test": "PHQ-9 questionnaire",
+      "result": "Score 17 (moderately severe range)."
+    },
+    {
+      "test": "Thyroid function tests",
+      "result": "TSH 2.1 mU/L, free T4 14 pmol/L (normal)."
+    },
+    {
+      "test": "Full blood count",
+      "result": "Hb 138 g/L, MCV 90 fL, WCC and platelets normal."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "What is your most likely working diagnosis and how would you describe its severity?",
+      "modelAnswer": "A depressive episode of moderate severity: low mood and anhedonia for over two weeks with fatigue, early-morning waking, reduced appetite with weight loss, poor concentration and passive death wishes, with functional impact at work.",
+      "keyPoints": [
+        "Depressive episode",
+        "Moderate severity",
+        "Core symptoms present for more than two weeks",
+        "Functional impairment"
+      ]
+    },
+    {
+      "q": "Summarise your assessment of risk.",
+      "modelAnswer": "Passive thoughts that others would be better off without them, no plans, intent or preparations, protective factors of partner and mother. Risk factors include alcohol use to cope. Overall low immediate risk, but needs safety-netting and follow-up.",
+      "keyPoints": [
+        "Passive suicidal ideation without plan or intent",
+        "Protective factors identified",
+        "Alcohol as a risk factor",
+        "Safety-netting and follow-up"
+      ]
+    },
+    {
+      "q": "Outline an initial management plan.",
+      "modelAnswer": "Explain the diagnosis, offer psychological therapy (e.g. CBT via talking therapies) and discuss an SSRI, advise reducing alcohol, sleep hygiene and activity, consider fit note, safety-net with crisis contacts, and review within 1–2 weeks.",
+      "keyPoints": [
+        "Psychological therapy",
+        "Discuss antidepressant",
+        "Alcohol advice",
+        "Crisis plan / safety-netting",
+        "Early review"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self, confirms patient identity and gains consent",
+        "weight": 1,
+        "evidenceHint": "name, role, confirm name"
+      },
+      {
+        "id": "open-q",
+        "domain": "interpersonal",
+        "text": "Starts with open questions and lets the patient talk",
+        "weight": 1,
+        "evidenceHint": "what brings you in, tell me more"
+      },
+      {
+        "id": "empathy",
+        "domain": "interpersonal",
+        "text": "Shows empathy and acknowledges distress",
+        "weight": 2,
+        "evidenceHint": "that sounds hard, I'm sorry"
+      },
+      {
+        "id": "core-sx",
+        "domain": "dataGathering",
+        "text": "Explores core symptoms: low mood, anhedonia, energy, and their duration",
+        "weight": 2,
+        "evidenceHint": "enjoyment, how long"
+      },
+      {
+        "id": "biological",
+        "domain": "dataGathering",
+        "text": "Asks about biological symptoms: sleep, appetite/weight, concentration",
+        "weight": 2,
+        "evidenceHint": "sleep, appetite, concentration"
+      },
+      {
+        "id": "risk",
+        "domain": "dataGathering",
+        "text": "Asks directly and sensitively about suicidal thoughts, plans and protective factors",
+        "weight": 3,
+        "evidenceHint": "harm yourself, end your life, what keeps you going"
+      },
+      {
+        "id": "mania",
+        "domain": "dataGathering",
+        "text": "Screens for elevated mood / bipolar features",
+        "weight": 1,
+        "evidenceHint": "high, lots of energy"
+      },
+      {
+        "id": "substances",
+        "domain": "dataGathering",
+        "text": "Asks about alcohol and drug use",
+        "weight": 1,
+        "evidenceHint": "alcohol, drink"
+      },
+      {
+        "id": "background",
+        "domain": "dataGathering",
+        "text": "Asks about past psychiatric history, family history and social support",
+        "weight": 1,
+        "evidenceHint": "before, family, support"
+      },
+      {
+        "id": "ice",
+        "domain": "interpersonal",
+        "text": "Explores the patient's ideas, concerns and expectations",
+        "weight": 2,
+        "evidenceHint": "what do you think, worried, hoping"
+      },
+      {
+        "id": "summary",
+        "domain": "clinicalManagement",
+        "text": "Summarises back to the patient and checks accuracy",
+        "weight": 1,
+        "evidenceHint": "so to summarise"
+      },
+      {
+        "id": "safety-net",
+        "domain": "clinicalManagement",
+        "text": "Safety-nets: what to do if thoughts worsen, and follow-up",
+        "weight": 2,
+        "evidenceHint": "if you feel worse, crisis, come back"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "depression",
+    "depressive episode",
+    "major depressive disorder",
+    "clinical depression"
+  ],
+  "safety": {
+    "sensitiveTopic": "suicide"
+  },
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

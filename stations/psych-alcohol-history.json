@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "id": "psych-alcohol-history",
+  "version": 1,
+  "title": "Alcohol history",
+  "specialty": "psychiatry",
+  "stationType": "history",
+  "difficulty": "foundation",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor on a surgical ward. Morgan Hughes, 51, was admitted yesterday for an elective hernia repair scheduled for tomorrow. The nurses noticed he seems shaky. Take an alcohol history and assess for dependence. You will be asked questions afterwards.",
+  "patient": {
+    "name": "Morgan Hughes",
+    "age": 51,
+    "sex": "male",
+    "occupation": "Self-employed builder",
+    "setting": "Bedside on a surgical ward, curtains drawn.",
+    "openingStatement": "Morning, doc. The nurse said you wanted a word. I'm fine, just a bit on edge about the operation.",
+    "demeanour": "Friendly and jokey but becomes defensive and minimises when asked directly about drinking. Hands tremble slightly, a little sweaty and restless.",
+    "speechStyle": "Casual, jokey, working-class everyday language. Deflects with humour. Honest if the doctor is non-judgemental.",
+    "ice": {
+      "ideas": "Thinks the shakes are nerves about surgery.",
+      "concerns": "Worried the operation will be cancelled and he'll lose more work.",
+      "expectations": "Wants to get the op done and get home."
+    },
+    "freelyShared": [
+      "Likes 'a few pints after work, like everyone'.",
+      "Last drink was the night before admission."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Quantity",
+        "trigger": "how much he drinks, type of drink, units per day or week",
+        "answer": "Honestly? Probably six or seven pints of lager a night, more at the weekend. Sometimes a few whiskies too.",
+        "keywords": [
+          "six or seven pints",
+          "few whiskies"
+        ],
+        "askKeywords": [
+          "how much",
+          "amount",
+          "units",
+          "pints",
+          "drink",
+          "drinks",
+          "a day",
+          "a week",
+          "typical",
+          "bottle"
+        ]
+      },
+      {
+        "topic": "Morning drinking",
+        "trigger": "drinking in the morning or an eye-opener",
+        "answer": "Lately I've had a can in the van in the morning to steady my hands.",
+        "keywords": [
+          "can in the van",
+          "steady my hands"
+        ],
+        "askKeywords": [
+          "morning",
+          "eye-opener",
+          "eye opener",
+          "first thing",
+          "wake up",
+          "start the day"
+        ]
+      },
+      {
+        "topic": "When he stops drinking",
+        "trigger": "what happens when he stops, shakes, sweats, seeing things, fits",
+        "answer": "If I don't have a drink I get the shakes and sweats. Once, a couple of years ago, I had a fit when I tried to stop on my own.",
+        "keywords": [
+          "had a fit",
+          "shakes and sweats"
+        ],
+        "askKeywords": [
+          "stop",
+          "without",
+          "withdraw",
+          "shak",
+          "tremor",
+          "sweat",
+          "fit",
+          "seizure",
+          "seeing things",
+          "cut back",
+          "go without"
+        ]
+      },
+      {
+        "topic": "CAGE — cut down / annoyed / guilty",
+        "trigger": "cutting down, people annoying him about drinking, or guilt",
+        "answer": "The wife's always on at me about it and it does wind me up. I've tried to cut down a few times. I feel bad about it, yeah.",
+        "keywords": [
+          "always on at me",
+          "tried to cut down",
+          "feel bad about it"
+        ],
+        "askKeywords": [
+          "cut down",
+          "cut back",
+          "annoy",
+          "criticis",
+          "guilty",
+          "guilt",
+          "bad about",
+          "wife",
+          "complain"
+        ]
+      },
+      {
+        "topic": "Needing more and letting things slide",
+        "trigger": "needing more to get the same effect, or drinking taking priority",
+        "answer": "I need a lot more than I used to to feel anything. And I've let jobs slide because of it.",
+        "keywords": [
+          "a lot more than i used to",
+          "let jobs slide"
+        ],
+        "askKeywords": [
+          "more than",
+          "tolerance",
+          "same effect",
+          "more to",
+          "priorit",
+          "neglect",
+          "work",
+          "jobs",
+          "important"
+        ]
+      },
+      {
+        "topic": "Consequences",
+        "trigger": "impact on work, family, health, driving or the law",
+        "answer": "I got done for drink-driving five years back. Lost my licence for a year.",
+        "keywords": [
+          "drink-driving",
+          "lost my licence"
+        ],
+        "askKeywords": [
+          "work",
+          "job",
+          "family",
+          "relationship",
+          "police",
+          "law",
+          "driv",
+          "licence",
+          "trouble",
+          "health",
+          "problems"
+        ]
+      },
+      {
+        "topic": "Mood",
+        "trigger": "mood or mental health",
+        "answer": "I get a bit low sometimes, but the drink helps with that.",
+        "keywords": [
+          "a bit low sometimes",
+          "drink helps"
+        ],
+        "askKeywords": [
+          "mood",
+          "low",
+          "down",
+          "depress",
+          "feel",
+          "mental",
+          "stress",
+          "anxious"
+        ]
+      }
+    ],
+    "cue": "Look, I know I probably drink more than I should. Is that what this is about?"
+  },
+  "examFindings": [
+    {
+      "system": "Hands",
+      "finding": "Fine tremor of the outstretched hands. Palmar erythema. No asterixis."
+    },
+    {
+      "system": "Observations",
+      "finding": "HR 104, BP 152/94, temperature 37.4°C, sweaty."
+    },
+    {
+      "system": "Abdomen",
+      "finding": "Liver edge palpable 2 cm below the costal margin, smooth, non-tender. Reducible right inguinal hernia."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "Liver function tests",
+      "result": "GGT 210 U/L (high), ALT 64 U/L (high), bilirubin 18 µmol/L, albumin 36 g/L."
+    },
+    {
+      "test": "Full blood count",
+      "result": "Hb 139 g/L, MCV 104 fL (macrocytosis), platelets 132 ×10⁹/L."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "Does he meet criteria for alcohol dependence? Justify.",
+      "modelAnswer": "Yes: compulsion/cutting down unsuccessfully, tolerance, withdrawal symptoms relieved by drinking (morning drinking), salience over work, continued drinking despite harm.",
+      "keyPoints": [
+        "Tolerance",
+        "Withdrawal / relief drinking",
+        "Loss of control / failed attempts to cut down",
+        "Salience",
+        "Persistence despite harm"
+      ]
+    },
+    {
+      "q": "What are the immediate risks during this admission and how would you manage them?",
+      "modelAnswer": "Risk of alcohol withdrawal including seizures (previous withdrawal fit) and delirium tremens. Start a symptom-triggered or fixed-dose benzodiazepine regimen with a withdrawal scale (e.g. CIWA-Ar), give parenteral thiamine before glucose, monitor observations, inform the surgical and anaesthetic teams, and refer to the alcohol liaison team.",
+      "keyPoints": [
+        "Withdrawal seizures / delirium tremens",
+        "Benzodiazepine regimen",
+        "Thiamine",
+        "Withdrawal monitoring scale",
+        "Inform surgical/anaesthetic team",
+        "Alcohol liaison referral"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and explains the reason for the conversation",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "non-judgemental",
+        "domain": "interpersonal",
+        "text": "Uses a non-judgemental approach and normalising questions",
+        "weight": 2,
+        "evidenceHint": "many people, no judgement"
+      },
+      {
+        "id": "quantity",
+        "domain": "dataGathering",
+        "text": "Quantifies intake (type, amount, pattern) and estimates units",
+        "weight": 2,
+        "evidenceHint": "how much, how many pints"
+      },
+      {
+        "id": "last-drink",
+        "domain": "dataGathering",
+        "text": "Establishes the time of the last drink",
+        "weight": 1,
+        "evidenceHint": "last drink"
+      },
+      {
+        "id": "cage",
+        "domain": "dataGathering",
+        "text": "Uses a screening tool (CAGE/AUDIT) or equivalent questions",
+        "weight": 2,
+        "evidenceHint": "cut down, annoyed, guilty, eye-opener"
+      },
+      {
+        "id": "dependence",
+        "domain": "dataGathering",
+        "text": "Asks about dependence features: tolerance, withdrawal, compulsion, salience",
+        "weight": 3,
+        "evidenceHint": "more to get the same, shakes when you stop"
+      },
+      {
+        "id": "withdrawal-hx",
+        "domain": "dataGathering",
+        "text": "Asks about previous withdrawal seizures or DTs",
+        "weight": 3,
+        "evidenceHint": "fits, seeing things"
+      },
+      {
+        "id": "consequences",
+        "domain": "dataGathering",
+        "text": "Explores consequences: health, work, relationships, legal, driving",
+        "weight": 1,
+        "evidenceHint": "work, family, police, driving"
+      },
+      {
+        "id": "mood",
+        "domain": "dataGathering",
+        "text": "Screens mood and other substance use",
+        "weight": 1,
+        "evidenceHint": "mood, other drugs"
+      },
+      {
+        "id": "motivation",
+        "domain": "clinicalManagement",
+        "text": "Assesses readiness to change",
+        "weight": 1,
+        "evidenceHint": "thought about stopping"
+      },
+      {
+        "id": "explain",
+        "domain": "clinicalManagement",
+        "text": "Explains withdrawal risk in hospital and offers support/treatment",
+        "weight": 2,
+        "evidenceHint": "medication to help, withdrawal"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "alcohol dependence",
+    "alcoholic",
+    "alcoholism",
+    "withdrawal syndrome",
+    "delirium tremens"
+  ],
+  "safety": {
+    "sensitiveTopic": "substance"
+  },
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

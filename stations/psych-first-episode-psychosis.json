@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 1,
+  "id": "psych-first-episode-psychosis",
+  "version": 1,
+  "title": "Unusual experiences — first presentation",
+  "specialty": "psychiatry",
+  "stationType": "history",
+  "difficulty": "advanced",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in a community mental health clinic. Robin Patel, 20, a university student, has been referred by their GP because their parents are worried about recent changes in behaviour. Take a history focusing on the presenting symptoms and relevant risk. You will be asked questions afterwards.",
+  "patient": {
+    "name": "Robin Patel",
+    "age": 20,
+    "sex": "female",
+    "occupation": "Second-year computer science student",
+    "setting": "Outpatient clinic room. Her mother is waiting outside.",
+    "openingStatement": "My parents made me come. There's nothing wrong with me — it's what's happening around me that's the problem.",
+    "demeanour": "Suspicious and watchful, glances at the door and ceiling, guarded. Warms up slightly if the doctor is calm, curious and does not argue with her beliefs.",
+    "speechStyle": "Speaks quietly and a bit quickly, occasionally loses track mid-sentence. Plain everyday language. Asks 'Why do you want to know?' if questions feel intrusive.",
+    "ice": {
+      "ideas": "Believes her neighbours and some people on her course are monitoring her through her laptop camera.",
+      "concerns": "Worried the doctor is 'part of it' and that she'll be locked up.",
+      "expectations": "Wants her parents to stop worrying and to be left alone to catch up with her coursework."
+    },
+    "freelyShared": [
+      "Stopped going to lectures about two months ago because people there 'know things about me'.",
+      "Has covered her laptop camera and phone with tape."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Hearing voices",
+        "trigger": "hearing voices or noises others can't hear",
+        "answer": "I hear two men talking about me through the wall at night. They comment on what I'm doing, like 'she's getting into bed now'.",
+        "keywords": [
+          "two men",
+          "through the wall",
+          "comment on what i'm doing"
+        ],
+        "askKeywords": [
+          "talking about you",
+          "people talking",
+          "hearing",
+          "hear voice",
+          "hear things",
+          "hear any",
+          "hear people",
+          "hear someone",
+          "hear sound",
+          "hear noise",
+          "voice",
+          "noise",
+          "sounds that"
+        ]
+      },
+      {
+        "topic": "Thought interference",
+        "trigger": "thoughts being put into or taken out of her head, or thoughts being broadcast",
+        "answer": "Sometimes I think they can hear what I'm thinking. It feels like my thoughts leak out.",
+        "keywords": [
+          "hear what i'm thinking",
+          "thoughts leak out"
+        ],
+        "askKeywords": [
+          "thought",
+          "mind",
+          "head",
+          "broadcast",
+          "insert",
+          "read your",
+          "control"
+        ]
+      },
+      {
+        "topic": "Cannabis use",
+        "trigger": "drugs or cannabis",
+        "answer": "I smoked weed most days in first year. Less now, maybe at weekends.",
+        "keywords": [
+          "weed",
+          "most days in first year"
+        ],
+        "askKeywords": [
+          "drug",
+          "cannabis",
+          "weed",
+          "smok",
+          "substance",
+          "alcohol",
+          "drink"
+        ]
+      },
+      {
+        "topic": "Risk to others",
+        "trigger": "thoughts of harming others, or what she would do to protect herself",
+        "answer": "I'd never hurt anyone. I just keep my door locked and don't go out.",
+        "keywords": [
+          "never hurt anyone",
+          "door locked"
+        ],
+        "askKeywords": [
+          "harm others",
+          "hurt others",
+          "hurt anyone",
+          "harm anyone",
+          "protect yourself",
+          "defend",
+          "weapon",
+          "violent",
+          "angry",
+          "neighbours",
+          "harming others",
+          "harm other",
+          "harming other",
+          "protect",
+          "anyone else"
+        ]
+      },
+      {
+        "topic": "Risk to self",
+        "trigger": "thoughts of self-harm or suicide",
+        "answer": "No. I just want it to stop. I'm not going to do anything to myself.",
+        "keywords": [
+          "just want it to stop",
+          "not going to do anything to myself"
+        ],
+        "askKeywords": [
+          "harm yourself",
+          "hurt yourself",
+          "suicid",
+          "end your life",
+          "kill yourself",
+          "self-harm",
+          "safe"
+        ]
+      },
+      {
+        "topic": "Self-care and function",
+        "trigger": "eating, sleeping, self-care, or daily routine",
+        "answer": "I don't sleep much — I stay up to listen. I mostly eat cereal in my room.",
+        "keywords": [
+          "stay up to listen",
+          "cereal in my room"
+        ],
+        "askKeywords": [
+          "eat",
+          "sleep",
+          "wash",
+          "look after",
+          "routine",
+          "day to day",
+          "manag",
+          "cook",
+          "shower"
+        ]
+      },
+      {
+        "topic": "Family history",
+        "trigger": "family history of mental illness",
+        "answer": "My uncle in India was in hospital for his nerves for a long time. Nobody talks about it.",
+        "keywords": [
+          "my uncle",
+          "hospital for his nerves"
+        ],
+        "askKeywords": [
+          "family",
+          "relative",
+          "parents",
+          "run in",
+          "anyone else"
+        ]
+      },
+      {
+        "topic": "Mood",
+        "trigger": "mood, feeling low or high",
+        "answer": "I'm not sad, I'm scared. And tired.",
+        "keywords": [
+          "not sad, i'm scared",
+          "i'm scared"
+        ],
+        "askKeywords": [
+          "mood",
+          "low",
+          "down",
+          "sad",
+          "depress",
+          "happy",
+          "high"
+        ]
+      }
+    ],
+    "cue": "You wouldn't believe me anyway. Nobody does when I tell them about the voices."
+  },
+  "examFindings": [
+    {
+      "system": "General appearance",
+      "finding": "Thin, clothes unwashed, hair unkempt. Hypervigilant, scanning the room."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "Urine drug screen",
+      "result": "Positive for cannabinoids."
+    },
+    {
+      "test": "Blood tests (FBC, U&E, LFT, TFT, glucose, calcium)",
+      "result": "All within normal limits."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "Describe the key psychopathology you elicited.",
+      "modelAnswer": "Persecutory delusions of being monitored, third-person auditory hallucinations giving running commentary, possible thought broadcasting, with social withdrawal and functional decline over two months.",
+      "keyPoints": [
+        "Persecutory delusions",
+        "Third-person auditory hallucinations / running commentary",
+        "Thought broadcasting",
+        "Functional decline"
+      ]
+    },
+    {
+      "q": "What is your differential diagnosis?",
+      "modelAnswer": "First-episode psychosis — schizophrenia likely given duration and first-rank symptoms; also consider drug-induced psychosis (cannabis), schizophreniform disorder, psychotic depression or bipolar disorder, and organic causes.",
+      "keyPoints": [
+        "Schizophrenia / first-episode psychosis",
+        "Substance-induced psychosis",
+        "Mood disorder with psychotic features",
+        "Organic cause"
+      ]
+    },
+    {
+      "q": "What are your immediate next steps?",
+      "modelAnswer": "Refer to the early intervention in psychosis service, assess and document risk, organic work-up, engage the patient and family with consent, psychoeducation about cannabis, consider antipsychotic after specialist review.",
+      "keyPoints": [
+        "Early intervention in psychosis referral",
+        "Organic work-up",
+        "Risk plan",
+        "Involve family with consent",
+        "Cannabis advice"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and explains why they are meeting",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "rapport",
+        "domain": "interpersonal",
+        "text": "Builds rapport, does not collude with or argue against beliefs",
+        "weight": 2,
+        "evidenceHint": "that must be frightening"
+      },
+      {
+        "id": "delusions",
+        "domain": "dataGathering",
+        "text": "Explores the persecutory belief: content, conviction and evidence",
+        "weight": 2,
+        "evidenceHint": "who, why, how sure"
+      },
+      {
+        "id": "hallucinations",
+        "domain": "dataGathering",
+        "text": "Asks about hallucinations and characterises them (person, content, commentary)",
+        "weight": 3,
+        "evidenceHint": "hear voices, what do they say"
+      },
+      {
+        "id": "thought-interference",
+        "domain": "dataGathering",
+        "text": "Asks about thought insertion, withdrawal or broadcast",
+        "weight": 2,
+        "evidenceHint": "thoughts put in, taken out, others hear"
+      },
+      {
+        "id": "timeline",
+        "domain": "dataGathering",
+        "text": "Establishes onset, duration and functional impact",
+        "weight": 1,
+        "evidenceHint": "when did this start, lectures"
+      },
+      {
+        "id": "substances",
+        "domain": "dataGathering",
+        "text": "Asks about drugs, especially cannabis, and alcohol",
+        "weight": 2,
+        "evidenceHint": "drugs, cannabis"
+      },
+      {
+        "id": "mood",
+        "domain": "dataGathering",
+        "text": "Screens mood (depression/mania)",
+        "weight": 1,
+        "evidenceHint": "mood, low, high"
+      },
+      {
+        "id": "risk",
+        "domain": "dataGathering",
+        "text": "Assesses risk to self and to others",
+        "weight": 3,
+        "evidenceHint": "harm yourself, harm others"
+      },
+      {
+        "id": "background",
+        "domain": "dataGathering",
+        "text": "Asks about family psychiatric history and self-care",
+        "weight": 1,
+        "evidenceHint": "family, eating, sleep"
+      },
+      {
+        "id": "insight",
+        "domain": "clinicalManagement",
+        "text": "Explores insight and her willingness to accept help",
+        "weight": 2,
+        "evidenceHint": "could this be, help"
+      },
+      {
+        "id": "close",
+        "domain": "clinicalManagement",
+        "text": "Closes appropriately, explains next steps without confrontation",
+        "weight": 1,
+        "evidenceHint": "next steps, team"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "schizophrenia",
+    "psychosis",
+    "psychotic",
+    "delusion",
+    "delusions",
+    "hallucination",
+    "hallucinations",
+    "paranoid"
+  ],
+  "safety": {
+    "sensitiveTopic": "psychosis"
+  },
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

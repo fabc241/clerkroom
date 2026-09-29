@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "id": "comm-breaking-bad-news-ms",
+  "version": 1,
+  "title": "Breaking bad news — MRI result",
+  "specialty": "communication",
+  "stationType": "explanation",
+  "difficulty": "advanced",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in a neurology clinic. Tom Baker, 29, had an episode of blurred vision in one eye three months ago and tingling in his legs last month. His MRI brain shows multiple white matter lesions consistent with multiple sclerosis, and the consultant has confirmed the diagnosis. Your consultant has asked you to explain the result to him. He has come alone.",
+  "patient": {
+    "name": "Tom Baker",
+    "age": 29,
+    "sex": "male",
+    "occupation": "Personal trainer",
+    "setting": "Quiet room in the neurology outpatient clinic.",
+    "openingStatement": "Hi. I'm here for my scan results. My eyes and legs are fine now, so hopefully it's nothing?",
+    "demeanour": "Upbeat at first, then shocked and quiet when he hears the news. May become tearful or ask the same question twice. Needs silence and time.",
+    "speechStyle": "Casual everyday language. Short questions once shocked. Does not know medical terms.",
+    "ice": {
+      "ideas": "Thought it was a trapped nerve and eye strain.",
+      "concerns": "Once told: terrified he'll end up in a wheelchair, lose his job as a personal trainer, and not be able to have a family.",
+      "expectations": "Hoping to be told it's nothing."
+    },
+    "freelyShared": [
+      "Both the eye problem and the tingling went away on their own after a few weeks."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "What he already knows or suspects",
+        "trigger": "what he understands about why he had the scan, or what he thinks is going on",
+        "answer": "I googled it and a few things came up, some of them scary. I'm trying not to think about it.",
+        "keywords": [
+          "i googled it",
+          "trying not to think about it"
+        ],
+        "askKeywords": [
+          "understand",
+          "know",
+          "told",
+          "think is going on",
+          "why you had",
+          "why we did",
+          "scan for",
+          "expect",
+          "any idea",
+          "what do you think"
+        ]
+      },
+      {
+        "topic": "Wheelchair fear",
+        "trigger": "his worries or concerns after being told",
+        "answer": "Am I going to end up in a wheelchair? My mate's uncle had this and he couldn't walk.",
+        "keywords": [
+          "end up in a wheelchair",
+          "couldn't walk"
+        ],
+        "askKeywords": [
+          "worr",
+          "concern",
+          "scared",
+          "frighten",
+          "fear",
+          "afraid",
+          "thoughts",
+          "feel",
+          "on your mind"
+        ]
+      },
+      {
+        "topic": "Work and family",
+        "trigger": "his work, relationships or future plans",
+        "answer": "My whole job is my body. And my girlfriend and I were planning to start a family next year.",
+        "keywords": [
+          "my whole job is my body",
+          "start a family"
+        ],
+        "askKeywords": [
+          "work",
+          "job",
+          "career",
+          "family",
+          "children",
+          "kids",
+          "girlfriend",
+          "relationship",
+          "future",
+          "plans"
+        ]
+      },
+      {
+        "topic": "Support",
+        "trigger": "who he has for support, or whether he wants someone with him",
+        "answer": "My girlfriend's at work. I should have brought her. I don't know how I'm going to tell her.",
+        "keywords": [
+          "should have brought her",
+          "how i'm going to tell her"
+        ],
+        "askKeywords": [
+          "support",
+          "someone with",
+          "anyone with",
+          "brought",
+          "girlfriend",
+          "family",
+          "friends",
+          "who",
+          "tell her",
+          "tell your",
+          "how will you tell",
+          "how are you going to tell"
+        ]
+      }
+    ],
+    "cue": "Sorry... can you say that again? I didn't really take it in."
+  },
+  "examFindings": [],
+  "investigations": [
+    {
+      "test": "MRI brain report",
+      "result": "Multiple periventricular and juxtacortical T2 hyperintense lesions, one enhancing with gadolinium. Appearances consistent with demyelination."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "Which framework can structure breaking bad news, and what are its steps?",
+      "modelAnswer": "SPIKES: Setting, Perception, Invitation, Knowledge (warning shot, then clear information in small chunks), Emotions (respond with empathy), Strategy and Summary.",
+      "keyPoints": [
+        "Setting",
+        "Perception",
+        "Invitation",
+        "Knowledge with warning shot",
+        "Emotions / empathy",
+        "Strategy and summary"
+      ]
+    },
+    {
+      "q": "What would the ongoing plan for this patient include?",
+      "modelAnswer": "MS specialist nurse contact, written information and patient charity resources, follow-up with the consultant to discuss disease-modifying therapy, advice on relapses, support for work and family planning discussion, psychological support.",
+      "keyPoints": [
+        "MS specialist nurse",
+        "Written information / support resources",
+        "Disease-modifying therapy discussion",
+        "Follow-up appointment",
+        "Psychological support"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "setting",
+        "domain": "interpersonal",
+        "text": "Introduces self, ensures privacy and asks if he'd like someone with him",
+        "weight": 1,
+        "evidenceHint": "my name, anyone with you"
+      },
+      {
+        "id": "perception",
+        "domain": "dataGathering",
+        "text": "Establishes what he knows and understands so far",
+        "weight": 2,
+        "evidenceHint": "what do you understand, why had the scan"
+      },
+      {
+        "id": "invitation",
+        "domain": "interpersonal",
+        "text": "Checks how much information he wants",
+        "weight": 1,
+        "evidenceHint": "how much would you like to know"
+      },
+      {
+        "id": "warning-shot",
+        "domain": "interpersonal",
+        "text": "Gives a warning shot before the news",
+        "weight": 2,
+        "evidenceHint": "I'm afraid, not the news"
+      },
+      {
+        "id": "clear-news",
+        "domain": "clinicalManagement",
+        "text": "Explains the diagnosis clearly and simply, without jargon",
+        "weight": 3,
+        "evidenceHint": "multiple sclerosis, nerves"
+      },
+      {
+        "id": "silence",
+        "domain": "interpersonal",
+        "text": "Allows silence and responds to emotion with empathy",
+        "weight": 3,
+        "evidenceHint": "take your time, I can see this is a shock"
+      },
+      {
+        "id": "concerns",
+        "domain": "dataGathering",
+        "text": "Explores his specific concerns (wheelchair, job, family)",
+        "weight": 2,
+        "evidenceHint": "worries, concerns"
+      },
+      {
+        "id": "accurate-hope",
+        "domain": "clinicalManagement",
+        "text": "Gives realistic hope: variable course, treatments available, many people live full lives",
+        "weight": 2,
+        "evidenceHint": "treatments, many people"
+      },
+      {
+        "id": "plan",
+        "domain": "clinicalManagement",
+        "text": "Outlines next steps and support (specialist nurse, information, follow-up)",
+        "weight": 2,
+        "evidenceHint": "nurse, follow-up, leaflets"
+      },
+      {
+        "id": "check",
+        "domain": "interpersonal",
+        "text": "Summarises, checks understanding and invites questions",
+        "weight": 1,
+        "evidenceHint": "summarise, questions"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "multiple sclerosis",
+    "demyelination",
+    "demyelinating",
+    "MS"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

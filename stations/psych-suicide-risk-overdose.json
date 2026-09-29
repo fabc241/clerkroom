@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "id": "psych-suicide-risk-overdose",
+  "version": 1,
+  "title": "Risk assessment after an overdose",
+  "specialty": "psychiatry",
+  "stationType": "risk-assessment",
+  "difficulty": "intermediate",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in the Emergency Department. Alex Morgan, 27, was brought in last night after taking 16 paracetamol tablets. They are now medically fit following treatment. Perform a suicide risk assessment. You will be asked about your formulation afterwards.",
+  "patient": {
+    "name": "Alex Morgan",
+    "age": 27,
+    "sex": "male",
+    "occupation": "Warehouse worker, recently lost his job",
+    "setting": "A side room in the Emergency Department the morning after admission.",
+    "openingStatement": "I know why you're here. I just want to go home, to be honest.",
+    "demeanour": "Guarded and a bit embarrassed at first, avoids eye contact, becomes more open if the doctor is non-judgemental. Flat and tired.",
+    "speechStyle": "Short, clipped answers at first. Everyday language, a bit defensive. Softens if treated with respect.",
+    "ice": {
+      "ideas": "Thinks he was 'stupid' and that the doctors think he is attention-seeking.",
+      "concerns": "Worried his mum will find out and that he'll be 'sectioned'.",
+      "expectations": "Wants to go home today."
+    },
+    "freelyShared": [
+      "Took the tablets at home last night after an argument with his girlfriend, who then ended the relationship.",
+      "Lost his job at the warehouse a month ago."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Planning",
+        "trigger": "whether it was planned, how he got the tablets, or timing",
+        "answer": "I'd bought them a couple of days before, from two different shops so they wouldn't ask questions.",
+        "keywords": [
+          "two different shops",
+          "couple of days before",
+          "bought them"
+        ],
+        "askKeywords": [
+          "plan",
+          "planned",
+          "bought",
+          "buy",
+          "get the tablets",
+          "got the tablets",
+          "where did you get",
+          "how did you get",
+          "spur of the moment",
+          "impulsive",
+          "in advance",
+          "beforehand"
+        ]
+      },
+      {
+        "topic": "Precautions against discovery",
+        "trigger": "whether anyone was around, how he was found, or whether he expected to be found",
+        "answer": "I waited until my flatmate went away for the weekend. He came back early and found me. I didn't expect him back.",
+        "keywords": [
+          "flatmate",
+          "came back early",
+          "didn't expect him back"
+        ],
+        "askKeywords": [
+          "alone",
+          "found you",
+          "find you",
+          "anyone around",
+          "anyone there",
+          "anyone home",
+          "discover",
+          "flatmate",
+          "expect",
+          "who found",
+          "how did you end up"
+        ]
+      },
+      {
+        "topic": "Final acts / note",
+        "trigger": "a note, messages or putting affairs in order",
+        "answer": "I wrote a note to my mum. It's still in my room.",
+        "keywords": [
+          "wrote a note",
+          "note to my mum"
+        ],
+        "askKeywords": [
+          "note",
+          "letter",
+          "message",
+          "goodbye",
+          "affairs",
+          "will",
+          "sort things out"
+        ]
+      },
+      {
+        "topic": "Intent and current feelings",
+        "trigger": "whether he wanted to die, how he feels about surviving, or current thoughts of suicide",
+        "answer": "Yeah, I wanted it to be over. Now... I don't know. Part of me is annoyed it didn't work.",
+        "keywords": [
+          "wanted it to be over",
+          "annoyed it didn't work"
+        ],
+        "askKeywords": [
+          "want to die",
+          "wanted to die",
+          "intend",
+          "intent",
+          "wanted to end",
+          "expect to die",
+          "how do you feel now",
+          "feel now",
+          "surviv",
+          "still alive",
+          "thoughts now",
+          "still feel",
+          "again",
+          "right now",
+          "woke up"
+        ]
+      },
+      {
+        "topic": "Previous self-harm",
+        "trigger": "previous overdoses or self-harm",
+        "answer": "I used to cut my arms when I was a teenager. Nothing for years until this.",
+        "keywords": [
+          "cut my arms",
+          "when i was a teenager"
+        ],
+        "askKeywords": [
+          "before",
+          "previous",
+          "past",
+          "ever",
+          "self-harm",
+          "harmed yourself",
+          "hurt yourself",
+          "cut",
+          "overdose before"
+        ]
+      },
+      {
+        "topic": "Alcohol and drugs",
+        "trigger": "alcohol or drug use",
+        "answer": "I'd had about six cans before I took them. I've been drinking more since losing my job.",
+        "keywords": [
+          "six cans",
+          "drinking more"
+        ],
+        "askKeywords": [
+          "alcohol",
+          "drink",
+          "drunk",
+          "drug",
+          "substance",
+          "cannabis"
+        ]
+      },
+      {
+        "topic": "Protective factors",
+        "trigger": "what keeps him going, support, reasons for living, family",
+        "answer": "My mum, I suppose. And my little sister. I wouldn't want her to go through that.",
+        "keywords": [
+          "my little sister",
+          "my mum, i suppose"
+        ],
+        "askKeywords": [
+          "keep you going",
+          "keeps you going",
+          "reason",
+          "support",
+          "family",
+          "friends",
+          "mum",
+          "sister",
+          "look forward",
+          "future",
+          "stop you",
+          "protect"
+        ]
+      },
+      {
+        "topic": "Access to means",
+        "trigger": "medications or other means at home",
+        "answer": "There's more paracetamol and some of my flatmate's sleeping tablets at the flat.",
+        "keywords": [
+          "sleeping tablets",
+          "more paracetamol"
+        ],
+        "askKeywords": [
+          "home",
+          "tablets at",
+          "medication at",
+          "pills at",
+          "access",
+          "means",
+          "anything else at",
+          "sleeping tablets",
+          "weapons",
+          "rope"
+        ]
+      }
+    ],
+    "cue": "Look, I'm not going to pretend it was an accident, if that's what you're asking."
+  },
+  "examFindings": [
+    {
+      "system": "Forearms",
+      "finding": "Multiple old, well-healed linear scars on both forearms. No new wounds."
+    },
+    {
+      "system": "Observations",
+      "finding": "HR 78, BP 122/76, RR 14, SpO2 99% on air, temperature 36.7°C."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "Paracetamol level (4 h)",
+      "result": "Above the treatment line; acetylcysteine infusion completed overnight."
+    },
+    {
+      "test": "Liver function tests (repeat)",
+      "result": "ALT 38 U/L, INR 1.1 — within normal limits."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "Summarise the features of this overdose that indicate high suicidal intent.",
+      "modelAnswer": "Planning over days, tablets bought from separate shops, timed when alone with precautions against discovery, a suicide note, stated wish to die and regret at survival.",
+      "keyPoints": [
+        "Planning in advance",
+        "Precautions against discovery",
+        "Suicide note",
+        "Regret at survival / ongoing intent"
+      ]
+    },
+    {
+      "q": "List his risk factors and protective factors.",
+      "modelAnswer": "Risk: young male, recent job loss and relationship breakdown, alcohol use, previous self-harm, access to means, ongoing intent. Protective: mother and sister, some ambivalence.",
+      "keyPoints": [
+        "Male sex and young age",
+        "Recent losses",
+        "Alcohol",
+        "Previous self-harm",
+        "Access to means",
+        "Family as protective factor"
+      ]
+    },
+    {
+      "q": "What would you do next?",
+      "modelAnswer": "Do not discharge; treat as high risk. Refer to the liaison psychiatry team for specialist assessment, ensure a safe environment and observation level, consider capacity and the legal framework if he tries to leave, and involve family with consent. Address means restriction before any discharge.",
+      "keyPoints": [
+        "Not safe for discharge",
+        "Liaison psychiatry referral",
+        "Observation and safe environment",
+        "Means restriction",
+        "Consider capacity/legal framework if he tries to leave"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self, explains purpose and confidentiality",
+        "weight": 1,
+        "evidenceHint": "my name, I'd like to talk about"
+      },
+      {
+        "id": "non-judgemental",
+        "domain": "interpersonal",
+        "text": "Is non-judgemental and empathic; normalises talking about suicide",
+        "weight": 2,
+        "evidenceHint": "no judgement, it's okay to talk"
+      },
+      {
+        "id": "events",
+        "domain": "dataGathering",
+        "text": "Explores events leading up to the overdose and triggers",
+        "weight": 1,
+        "evidenceHint": "what happened, leading up"
+      },
+      {
+        "id": "planning",
+        "domain": "dataGathering",
+        "text": "Asks about planning and how the tablets were obtained",
+        "weight": 2,
+        "evidenceHint": "planned, where did you get"
+      },
+      {
+        "id": "precautions",
+        "domain": "dataGathering",
+        "text": "Asks about precautions against discovery and how he was found",
+        "weight": 2,
+        "evidenceHint": "alone, found you"
+      },
+      {
+        "id": "note",
+        "domain": "dataGathering",
+        "text": "Asks about a suicide note or final acts",
+        "weight": 2,
+        "evidenceHint": "note, message"
+      },
+      {
+        "id": "intent-now",
+        "domain": "dataGathering",
+        "text": "Assesses intent at the time and current suicidal thoughts, including feelings about surviving",
+        "weight": 3,
+        "evidenceHint": "wanted to die, how do you feel now"
+      },
+      {
+        "id": "history-sh",
+        "domain": "dataGathering",
+        "text": "Asks about previous self-harm or suicide attempts",
+        "weight": 2,
+        "evidenceHint": "before, previously"
+      },
+      {
+        "id": "mood-substances",
+        "domain": "dataGathering",
+        "text": "Screens mood and alcohol/drug use",
+        "weight": 1,
+        "evidenceHint": "mood, drinking"
+      },
+      {
+        "id": "protective",
+        "domain": "dataGathering",
+        "text": "Explores protective factors and support",
+        "weight": 2,
+        "evidenceHint": "keeps you going, support"
+      },
+      {
+        "id": "means",
+        "domain": "clinicalManagement",
+        "text": "Asks about access to means at home",
+        "weight": 2,
+        "evidenceHint": "tablets at home"
+      },
+      {
+        "id": "plan-explained",
+        "domain": "clinicalManagement",
+        "text": "Explains next steps honestly (psychiatry review) and addresses his concerns",
+        "weight": 2,
+        "evidenceHint": "mental health team, psychiatrist"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "suicidal ideation",
+    "high risk",
+    "risk assessment",
+    "depression"
+  ],
+  "safety": {
+    "sensitiveTopic": "suicide"
+  },
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

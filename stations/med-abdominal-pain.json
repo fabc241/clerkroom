@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "id": "med-abdominal-pain",
+  "version": 1,
+  "title": "Acute abdominal pain",
+  "specialty": "medicine",
+  "stationType": "history",
+  "difficulty": "foundation",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in the surgical assessment unit. Liam O'Brien, 19, has come in with abdominal pain since yesterday. Take a focused history. You may use the Examine and Investigations panels. You will be asked questions afterwards.",
+  "patient": {
+    "name": "Liam O'Brien",
+    "age": 19,
+    "sex": "male",
+    "occupation": "University student",
+    "setting": "Surgical assessment unit, lying still on the bed.",
+    "openingStatement": "I've got this really bad pain in my stomach, it's been getting worse since yesterday.",
+    "demeanour": "Lying very still, winces when he moves or coughs, a bit embarrassed to be making a fuss.",
+    "speechStyle": "Casual, young, uses words like 'tummy', 'properly bad', 'dunno'.",
+    "ice": {
+      "ideas": "Thinks it might be a dodgy kebab.",
+      "concerns": "Worried he'll miss his exams next week.",
+      "expectations": "Wants painkillers and to go home."
+    },
+    "freelyShared": [
+      "The pain started yesterday evening around his belly button.",
+      "Now it's mostly low down on the right side.",
+      "It's a constant sharp pain now; walking, coughing and bumps in the car make it much worse."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Nausea, vomiting, appetite",
+        "trigger": "nausea, vomiting or appetite",
+        "answer": "I've been sick twice and I don't want to eat anything, which isn't like me.",
+        "keywords": [
+          "sick twice",
+          "don't want to eat"
+        ],
+        "askKeywords": [
+          "sick",
+          "nause",
+          "vomit",
+          "appetite",
+          "eat",
+          "hungry",
+          "food"
+        ]
+      },
+      {
+        "topic": "Fever",
+        "trigger": "fever or feeling hot and cold",
+        "answer": "I felt a bit hot and shivery last night.",
+        "keywords": [
+          "hot and shivery"
+        ],
+        "askKeywords": [
+          "fever",
+          "temperature",
+          "hot",
+          "cold",
+          "shiver",
+          "sweat"
+        ]
+      },
+      {
+        "topic": "Bowels",
+        "trigger": "bowels, diarrhoea or constipation",
+        "answer": "Haven't been since yesterday morning. That was normal.",
+        "keywords": [
+          "haven't been since yesterday"
+        ],
+        "askKeywords": [
+          "bowel",
+          "poo",
+          "stool",
+          "diarrh",
+          "constipat",
+          "toilet"
+        ]
+      },
+      {
+        "topic": "Urinary symptoms",
+        "trigger": "urine, burning, blood in urine",
+        "answer": "No, weeing's fine.",
+        "keywords": [
+          "weeing's fine"
+        ],
+        "askKeywords": [
+          "urin",
+          "wee",
+          "pee",
+          "water",
+          "burn",
+          "sting"
+        ]
+      },
+      {
+        "topic": "Testicular symptoms",
+        "trigger": "testicular pain or swelling",
+        "answer": "No, nothing like that down there.",
+        "keywords": [
+          "nothing like that down there"
+        ],
+        "askKeywords": [
+          "testic",
+          "testes",
+          "scrotum",
+          "balls",
+          "groin",
+          "down there",
+          "privates"
+        ]
+      },
+      {
+        "topic": "Past history and medications",
+        "trigger": "past medical history, operations, medications or allergies",
+        "answer": "Never been in hospital. I took some paracetamol. I'm allergic to penicillin — I got a rash as a kid.",
+        "keywords": [
+          "allergic to penicillin"
+        ],
+        "askKeywords": [
+          "medic",
+          "tablet",
+          "pills",
+          "painkill",
+          "allerg",
+          "operation",
+          "surgery",
+          "history",
+          "before",
+          "hospital"
+        ]
+      },
+      {
+        "topic": "Last meal",
+        "trigger": "when he last ate or drank",
+        "answer": "Just some water this morning. Last proper food was lunch yesterday.",
+        "keywords": [
+          "water this morning",
+          "lunch yesterday"
+        ],
+        "askKeywords": [
+          "last eat",
+          "last ate",
+          "last meal",
+          "last drink",
+          "eaten",
+          "when did you eat",
+          "food",
+          "nil by mouth"
+        ]
+      }
+    ],
+    "cue": "It really hurts when I move. Is that normal for food poisoning?"
+  },
+  "examFindings": [
+    {
+      "system": "Observations",
+      "finding": "HR 104, BP 124/78, RR 18, SpO2 99%, temperature 38.1°C."
+    },
+    {
+      "system": "Abdomen",
+      "finding": "Tender with guarding in the right iliac fossa, maximal at McBurney's point. Rovsing's sign positive. Bowel sounds reduced. No masses."
+    },
+    {
+      "system": "Testes",
+      "finding": "Normal, non-tender, no swelling."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "Full blood count",
+      "result": "WCC 15.2 ×10⁹/L (neutrophilia)."
+    },
+    {
+      "test": "CRP",
+      "result": "86 mg/L."
+    },
+    {
+      "test": "Urinalysis",
+      "result": "No blood, leucocytes or nitrites."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "What is the most likely diagnosis and your differentials?",
+      "modelAnswer": "Acute appendicitis. Differentials include mesenteric adenitis, terminal ileitis (Crohn's), renal colic or UTI, testicular torsion, and gastroenteritis.",
+      "keyPoints": [
+        "Appendicitis",
+        "Mesenteric adenitis",
+        "Renal/urinary cause",
+        "Testicular torsion"
+      ]
+    },
+    {
+      "q": "What is your initial management?",
+      "modelAnswer": "Nil by mouth, IV access, bloods including group and save, IV fluids, analgesia and antiemetic, IV antibiotics avoiding penicillins given his allergy, surgical review for laparoscopic appendicectomy, consider imaging if diagnosis uncertain.",
+      "keyPoints": [
+        "Nil by mouth",
+        "IV fluids and analgesia",
+        "Antibiotics avoiding penicillin",
+        "Surgical review for appendicectomy"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and gains consent",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "pain-hx",
+        "domain": "dataGathering",
+        "text": "Takes a structured pain history including migration of the pain",
+        "weight": 3,
+        "evidenceHint": "where did it start, moved"
+      },
+      {
+        "id": "gi",
+        "domain": "dataGathering",
+        "text": "Asks about nausea, vomiting, appetite and bowels",
+        "weight": 2,
+        "evidenceHint": "sick, eat, bowels"
+      },
+      {
+        "id": "fever",
+        "domain": "dataGathering",
+        "text": "Asks about fever",
+        "weight": 1,
+        "evidenceHint": "hot, fever"
+      },
+      {
+        "id": "urinary",
+        "domain": "dataGathering",
+        "text": "Asks about urinary symptoms",
+        "weight": 1,
+        "evidenceHint": "wee, urine"
+      },
+      {
+        "id": "testes",
+        "domain": "dataGathering",
+        "text": "Asks about testicular pain (or examines testes)",
+        "weight": 2,
+        "evidenceHint": "testicles, examined Testes"
+      },
+      {
+        "id": "pmh-drugs",
+        "domain": "dataGathering",
+        "text": "Asks about past history, medications and allergies",
+        "weight": 2,
+        "evidenceHint": "allergies"
+      },
+      {
+        "id": "last-meal",
+        "domain": "clinicalManagement",
+        "text": "Establishes time of last food and drink",
+        "weight": 1,
+        "evidenceHint": "last eat"
+      },
+      {
+        "id": "examine",
+        "domain": "clinicalManagement",
+        "text": "Examines the abdomen and checks observations",
+        "weight": 2,
+        "evidenceHint": "examined Abdomen"
+      },
+      {
+        "id": "ice",
+        "domain": "interpersonal",
+        "text": "Addresses his concerns about exams and explains next steps",
+        "weight": 2,
+        "evidenceHint": "exams, surgeons"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "appendicitis",
+    "appendix",
+    "peritonitis",
+    "McBurney"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

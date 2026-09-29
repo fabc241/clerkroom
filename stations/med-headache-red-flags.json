@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "id": "med-headache-red-flags",
+  "version": 1,
+  "title": "Sudden severe headache",
+  "specialty": "medicine",
+  "stationType": "history",
+  "difficulty": "intermediate",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in the Emergency Department. Rachel Green, 45, presents with a headache. Take a focused history to identify the cause and any red flags. You may use the Examine and Investigations panels. You will be asked questions afterwards.",
+  "patient": {
+    "name": "Rachel Green",
+    "age": 45,
+    "sex": "female",
+    "occupation": "Primary school headteacher",
+    "setting": "Emergency Department cubicle, lights dimmed at her request.",
+    "openingStatement": "I've got the most horrendous headache. It came on out of nowhere a few hours ago.",
+    "demeanour": "In obvious pain, holding her head, eyes half-closed, prefers the lights low. Speaks slowly and quietly.",
+    "speechStyle": "Quiet, slow, short answers. Everyday language: 'like being hit with a bat'.",
+    "ice": {
+      "ideas": "Wonders if it's a bad migraine, though she doesn't usually get them.",
+      "concerns": "Scared it might be something serious like a bleed, as she's never had anything like it.",
+      "expectations": "Wants the pain to stop and to know what it is."
+    },
+    "freelyShared": [
+      "It started about four hours ago while she was at the gym lifting weights.",
+      "It's the worst headache she's ever had."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Onset speed",
+        "trigger": "how quickly it came on or how fast it reached maximum",
+        "answer": "It was instant — like being hit on the back of the head with a bat. Full strength within seconds.",
+        "keywords": [
+          "hit on the back of the head",
+          "within seconds"
+        ],
+        "askKeywords": [
+          "how quickly",
+          "how fast",
+          "sudden",
+          "gradual",
+          "come on",
+          "came on",
+          "start",
+          "onset",
+          "build up",
+          "instant",
+          "seconds"
+        ]
+      },
+      {
+        "topic": "Neck stiffness and photophobia",
+        "trigger": "neck stiffness, light sensitivity",
+        "answer": "My neck feels really stiff and the lights hurt my eyes.",
+        "keywords": [
+          "neck feels really stiff",
+          "lights hurt my eyes"
+        ],
+        "askKeywords": [
+          "neck",
+          "stiff",
+          "light",
+          "bright",
+          "eyes",
+          "photophob"
+        ]
+      },
+      {
+        "topic": "Vomiting",
+        "trigger": "nausea or vomiting",
+        "answer": "I was sick in the car on the way here.",
+        "keywords": [
+          "sick in the car"
+        ],
+        "askKeywords": [
+          "sick",
+          "vomit",
+          "nause"
+        ]
+      },
+      {
+        "topic": "Loss of consciousness",
+        "trigger": "blacking out, fainting or confusion",
+        "answer": "The lady at the gym said I went a bit vacant for a moment, but I didn't pass out completely.",
+        "keywords": [
+          "went a bit vacant"
+        ],
+        "askKeywords": [
+          "conscious",
+          "black out",
+          "blackout",
+          "faint",
+          "pass out",
+          "passed out",
+          "confus",
+          "collapse",
+          "remember"
+        ]
+      },
+      {
+        "topic": "Neurological symptoms",
+        "trigger": "weakness, numbness, vision or speech changes, seizures",
+        "answer": "No weakness or numbness. My vision's okay, just the light bothers me.",
+        "keywords": [
+          "no weakness or numbness"
+        ],
+        "askKeywords": [
+          "weak",
+          "numb",
+          "tingl",
+          "vision",
+          "speech",
+          "speak",
+          "words",
+          "fit",
+          "seizure",
+          "arms",
+          "legs",
+          "balance",
+          "eyesight",
+          "seeing",
+          "blurr",
+          "double"
+        ]
+      },
+      {
+        "topic": "Risk factors",
+        "trigger": "smoking, blood pressure, family history, medications",
+        "answer": "I smoke about ten a day. My blood pressure's a bit high, I'm on amlodipine. My aunt died suddenly of a brain bleed in her forties.",
+        "keywords": [
+          "aunt died suddenly",
+          "amlodipine",
+          "ten a day"
+        ],
+        "askKeywords": [
+          "smok",
+          "blood pressure",
+          "medic",
+          "tablet",
+          "pills",
+          "family",
+          "relative",
+          "blood thinner",
+          "anticoag",
+          "history"
+        ]
+      },
+      {
+        "topic": "Fever and infection",
+        "trigger": "fever, rash or recent illness",
+        "answer": "No fever, no rash, I was well this morning.",
+        "keywords": [
+          "no fever, no rash"
+        ],
+        "askKeywords": [
+          "fever",
+          "temperature",
+          "rash",
+          "infection",
+          "unwell",
+          "ill"
+        ]
+      },
+      {
+        "topic": "Previous headaches",
+        "trigger": "previous headaches or migraines",
+        "answer": "I get the odd tension headache but nothing remotely like this.",
+        "keywords": [
+          "odd tension headache",
+          "nothing remotely like this"
+        ],
+        "askKeywords": [
+          "before",
+          "previous",
+          "similar",
+          "usually",
+          "migraine",
+          "ever had"
+        ]
+      }
+    ],
+    "cue": "I've honestly never had anything like it. Should I be worried?"
+  },
+  "examFindings": [
+    {
+      "system": "Observations",
+      "finding": "HR 64, BP 178/98, RR 16, SpO2 98%, temperature 37.0°C, GCS 15."
+    },
+    {
+      "system": "Neurological",
+      "finding": "Neck stiffness present, Kernig's sign positive. Pupils equal and reactive. No focal neurological deficit. Fundi: no papilloedema."
+    },
+    {
+      "system": "Skin",
+      "finding": "No rash."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "Non-contrast CT head",
+      "result": "Hyperdensity in the basal cisterns and Sylvian fissures."
+    },
+    {
+      "test": "Blood tests (FBC, U&E, clotting)",
+      "result": "Within normal limits."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "What is the most likely diagnosis and which features support it?",
+      "modelAnswer": "Subarachnoid haemorrhage: thunderclap onset during exertion, worst-ever headache, neck stiffness, photophobia, vomiting, brief altered consciousness, smoking, hypertension and family history.",
+      "keyPoints": [
+        "Subarachnoid haemorrhage",
+        "Thunderclap onset",
+        "Meningism",
+        "Risk factors: smoking, hypertension, family history"
+      ]
+    },
+    {
+      "q": "What are the next steps in management?",
+      "modelAnswer": "Urgent senior and neurosurgical referral, CT angiography, nimodipine, analgesia and antiemetics, blood pressure control, neuro observations; lumbar puncture for xanthochromia if CT had been negative beyond 6 hours.",
+      "keyPoints": [
+        "Neurosurgical referral",
+        "CT angiography",
+        "Nimodipine",
+        "Neuro observations",
+        "Lumbar puncture if CT negative"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self, gains consent and adapts to her discomfort (e.g. lights)",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "onset",
+        "domain": "dataGathering",
+        "text": "Establishes speed of onset (thunderclap) and activity at onset",
+        "weight": 3,
+        "evidenceHint": "how quickly, what were you doing"
+      },
+      {
+        "id": "character",
+        "domain": "dataGathering",
+        "text": "Characterises site, severity and progression of the headache",
+        "weight": 1,
+        "evidenceHint": "where, how bad"
+      },
+      {
+        "id": "meningism",
+        "domain": "dataGathering",
+        "text": "Asks about neck stiffness, photophobia and vomiting",
+        "weight": 2,
+        "evidenceHint": "neck, light, sick"
+      },
+      {
+        "id": "loc-neuro",
+        "domain": "dataGathering",
+        "text": "Asks about loss of consciousness, seizures and focal neurological symptoms",
+        "weight": 2,
+        "evidenceHint": "black out, weakness"
+      },
+      {
+        "id": "infection",
+        "domain": "dataGathering",
+        "text": "Screens for infection (fever, rash)",
+        "weight": 1,
+        "evidenceHint": "fever, rash"
+      },
+      {
+        "id": "risk",
+        "domain": "dataGathering",
+        "text": "Asks about risk factors: hypertension, smoking, family history, anticoagulants",
+        "weight": 2,
+        "evidenceHint": "blood pressure, family, blood thinners"
+      },
+      {
+        "id": "previous",
+        "domain": "dataGathering",
+        "text": "Asks about previous headaches",
+        "weight": 1,
+        "evidenceHint": "before"
+      },
+      {
+        "id": "examine",
+        "domain": "clinicalManagement",
+        "text": "Performs neuro examination / observations",
+        "weight": 2,
+        "evidenceHint": "examined Neurological"
+      },
+      {
+        "id": "ct",
+        "domain": "clinicalManagement",
+        "text": "Requests urgent CT head",
+        "weight": 2,
+        "evidenceHint": "requested Non-contrast CT head"
+      },
+      {
+        "id": "ice",
+        "domain": "interpersonal",
+        "text": "Addresses her worry honestly and explains next steps",
+        "weight": 2,
+        "evidenceHint": "scan, worried"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "subarachnoid",
+    "haemorrhage",
+    "hemorrhage",
+    "aneurysm",
+    "meningitis"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

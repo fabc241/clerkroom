@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "id": "comm-starting-ssri",
+  "version": 1,
+  "title": "Explaining a new antidepressant",
+  "specialty": "communication",
+  "stationType": "explanation",
+  "difficulty": "intermediate",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in general practice. Priya Shah, 38, was diagnosed with a moderate depressive episode two weeks ago and has been on the waiting list for talking therapy. She has returned to discuss starting sertraline, which your senior has suggested. Explain the medication and address her concerns. You do not need to take a full history. There is no risk to self (already assessed).",
+  "patient": {
+    "name": "Priya Shah",
+    "age": 38,
+    "sex": "female",
+    "occupation": "Pharmacy dispenser (not a pharmacist)",
+    "setting": "GP consultation room, follow-up appointment.",
+    "openingStatement": "The other doctor mentioned tablets last time. I've been thinking about it, but I'm really not sure.",
+    "demeanour": "Thoughtful, a little tearful at times, cautious. Asks direct questions and appreciates honesty. Becomes more reassured if her worries are explored rather than dismissed.",
+    "speechStyle": "Clear everyday English. Asks follow-up questions. Knows some drug names from work but not how they work.",
+    "ice": {
+      "ideas": "Thinks antidepressants might 'change her personality' or make her feel numb.",
+      "concerns": "Worried about getting addicted, gaining weight, and what people at work would think.",
+      "expectations": "Wants honest information so she can decide herself; would prefer to avoid tablets if possible."
+    },
+    "freelyShared": [
+      "Has been feeling low for about three months and struggling to get through the day.",
+      "Is on the waiting list for talking therapy, which is about 8 weeks."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Addiction worry",
+        "trigger": "her worries or concerns about the medication",
+        "answer": "My biggest worry is getting hooked on them and never being able to come off.",
+        "keywords": [
+          "getting hooked",
+          "never being able to come off"
+        ],
+        "askKeywords": [
+          "worr",
+          "concern",
+          "anxious about",
+          "addict",
+          "hooked",
+          "dependen",
+          "come off",
+          "scared",
+          "nervous"
+        ]
+      },
+      {
+        "topic": "Personality worry",
+        "trigger": "what she has heard about antidepressants or what she thinks they do",
+        "answer": "My friend said they made her feel like a zombie. I don't want to stop feeling things.",
+        "keywords": [
+          "like a zombie",
+          "stop feeling things"
+        ],
+        "askKeywords": [
+          "heard",
+          "know about",
+          "understand",
+          "think they",
+          "zombie",
+          "personality",
+          "change you",
+          "numb",
+          "expect"
+        ]
+      },
+      {
+        "topic": "Other medicines and health",
+        "trigger": "other medications, health conditions, pregnancy plans, contraception",
+        "answer": "I take ibuprofen quite a lot for back pain. I have the coil, so no pregnancy plans.",
+        "keywords": [
+          "ibuprofen quite a lot",
+          "i have the coil"
+        ],
+        "askKeywords": [
+          "other medic",
+          "medicines",
+          "tablets",
+          "pills",
+          "painkill",
+          "ibuprofen",
+          "health",
+          "conditions",
+          "pregnan",
+          "contracept"
+        ]
+      },
+      {
+        "topic": "Alcohol",
+        "trigger": "alcohol",
+        "answer": "Just a glass of wine at the weekend. Would I have to stop that?",
+        "keywords": [
+          "glass of wine at the weekend",
+          "would i have to stop"
+        ],
+        "askKeywords": [
+          "alcohol",
+          "drink",
+          "wine"
+        ]
+      },
+      {
+        "topic": "Work stigma",
+        "trigger": "work or what others would think",
+        "answer": "I work in a pharmacy, so I'd be picking up my own prescription in front of colleagues. That's embarrassing.",
+        "keywords": [
+          "in front of colleagues",
+          "embarrassing"
+        ],
+        "askKeywords": [
+          "work",
+          "colleague",
+          "job",
+          "people think",
+          "stigma",
+          "embarrass",
+          "others"
+        ]
+      }
+    ],
+    "cue": "What would you do if you were me?"
+  },
+  "examFindings": [],
+  "investigations": [],
+  "postEncounterQuestions": [
+    {
+      "q": "List the key points you should cover when starting an SSRI.",
+      "modelAnswer": "How it works in simple terms; takes 2–4 weeks for benefit; common early side effects (nausea, GI upset, headache, anxiety, sleep change, sexual dysfunction) often settle; not addictive but should not be stopped abruptly (discontinuation symptoms); continue at least 6 months after feeling better; increased risk of GI bleeding with NSAIDs; early review within 1–2 weeks; safety-netting for worsening mood or suicidal thoughts, particularly early on.",
+      "keyPoints": [
+        "Delay in onset of benefit",
+        "Common side effects",
+        "Not addictive but don't stop abruptly",
+        "Duration of treatment",
+        "NSAID interaction / bleeding risk",
+        "Early review and safety-netting"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and establishes the purpose of the consultation",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "prior-knowledge",
+        "domain": "interpersonal",
+        "text": "Explores what she already knows and her concerns before giving information",
+        "weight": 2,
+        "evidenceHint": "what do you know, any worries"
+      },
+      {
+        "id": "how-it-works",
+        "domain": "clinicalManagement",
+        "text": "Explains what the medicine is and how it helps, in plain language",
+        "weight": 2,
+        "evidenceHint": "chemical, serotonin, help mood"
+      },
+      {
+        "id": "onset",
+        "domain": "clinicalManagement",
+        "text": "Explains it takes a few weeks to work",
+        "weight": 2,
+        "evidenceHint": "weeks"
+      },
+      {
+        "id": "side-effects",
+        "domain": "clinicalManagement",
+        "text": "Explains common side effects and that they often settle",
+        "weight": 2,
+        "evidenceHint": "sick, headache, side effects"
+      },
+      {
+        "id": "addiction",
+        "domain": "clinicalManagement",
+        "text": "Addresses addiction concern accurately (not addictive, but taper when stopping)",
+        "weight": 3,
+        "evidenceHint": "not addictive, gradually"
+      },
+      {
+        "id": "duration",
+        "domain": "clinicalManagement",
+        "text": "Explains expected treatment duration",
+        "weight": 1,
+        "evidenceHint": "six months"
+      },
+      {
+        "id": "nsaid",
+        "domain": "dataGathering",
+        "text": "Checks other medications and identifies the ibuprofen interaction",
+        "weight": 2,
+        "evidenceHint": "other medicines, ibuprofen"
+      },
+      {
+        "id": "safety-net",
+        "domain": "clinicalManagement",
+        "text": "Safety-nets and arranges early review",
+        "weight": 2,
+        "evidenceHint": "if worse, review in two weeks"
+      },
+      {
+        "id": "shared-decision",
+        "domain": "interpersonal",
+        "text": "Respects her choice, offers alternatives (therapy, self-help) and supports shared decision-making",
+        "weight": 2,
+        "evidenceHint": "your choice, options"
+      },
+      {
+        "id": "check-understanding",
+        "domain": "interpersonal",
+        "text": "Checks understanding and invites questions (avoids jargon)",
+        "weight": 1,
+        "evidenceHint": "does that make sense, any questions"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "selective serotonin reuptake inhibitor",
+    "SSRI"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

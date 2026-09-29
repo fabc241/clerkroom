@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "id": "psych-panic-anxiety",
+  "version": 1,
+  "title": "Episodes of palpitations and fear",
+  "specialty": "psychiatry",
+  "stationType": "history",
+  "difficulty": "foundation",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in general practice. Sophie Martin, 26, has come in because of 'attacks' where her heart races. Her ECG last week was normal. Take a history to establish the nature of these episodes. You will be asked questions afterwards.",
+  "patient": {
+    "name": "Sophie Martin",
+    "age": 26,
+    "sex": "female",
+    "occupation": "Accountant",
+    "setting": "GP consultation room.",
+    "openingStatement": "I keep having these horrible attacks where my heart goes crazy and I think I'm going to die. I'm scared there's something wrong with my heart.",
+    "demeanour": "Anxious, fidgety, talks quickly, seeks reassurance repeatedly. Relieved if taken seriously.",
+    "speechStyle": "Fast, worried, lots of 'what if' questions. Everyday language.",
+    "ice": {
+      "ideas": "Believes she might have a heart problem that the ECG missed.",
+      "concerns": "Scared of having a heart attack or collapsing on the train.",
+      "expectations": "Wants a referral to a heart specialist."
+    },
+    "freelyShared": [
+      "The attacks started about four months ago; she has had about ten.",
+      "Each attack comes on suddenly and peaks within minutes, then settles within about 20 minutes."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Associated symptoms",
+        "trigger": "other symptoms during attacks (breathing, chest, tingling, dizziness)",
+        "answer": "I can't catch my breath, my chest goes tight, my fingers tingle and I feel dizzy and sweaty. I feel like I'm not really there.",
+        "keywords": [
+          "fingers tingle",
+          "not really there",
+          "can't catch my breath"
+        ],
+        "askKeywords": [
+          "symptom",
+          "during",
+          "breath",
+          "chest",
+          "tingl",
+          "dizz",
+          "faint",
+          "sweat",
+          "feel like",
+          "happens when",
+          "what happens",
+          "describe an attack",
+          "other"
+        ]
+      },
+      {
+        "topic": "Avoidance",
+        "trigger": "avoiding places or situations",
+        "answer": "I've stopped getting the train to work. I drive now even though it takes an hour, and I avoid the supermarket when it's busy.",
+        "keywords": [
+          "stopped getting the train",
+          "avoid the supermarket"
+        ],
+        "askKeywords": [
+          "avoid",
+          "stop doing",
+          "places",
+          "situation",
+          "train",
+          "travel",
+          "shop",
+          "go out",
+          "leave the house"
+        ]
+      },
+      {
+        "topic": "Anticipatory anxiety",
+        "trigger": "worrying about having another attack",
+        "answer": "I'm constantly worried the next one is coming. That's almost worse than the attacks.",
+        "keywords": [
+          "next one is coming",
+          "almost worse"
+        ],
+        "askKeywords": [
+          "worry",
+          "worried",
+          "next one",
+          "in between",
+          "between attacks",
+          "anticipat",
+          "fear of",
+          "afraid"
+        ]
+      },
+      {
+        "topic": "Caffeine and substances",
+        "trigger": "caffeine, energy drinks, alcohol or drugs",
+        "answer": "I drink about five coffees a day at work. A glass of wine at weekends. No drugs.",
+        "keywords": [
+          "five coffees",
+          "glass of wine"
+        ],
+        "askKeywords": [
+          "coffee",
+          "caffeine",
+          "energy drink",
+          "tea",
+          "alcohol",
+          "drink",
+          "drug",
+          "substance",
+          "smok"
+        ]
+      },
+      {
+        "topic": "Triggers and stressors",
+        "trigger": "stress or what was happening when it started",
+        "answer": "The first one was on the train the week I started my new job. Work has been really stressful.",
+        "keywords": [
+          "first one was on the train",
+          "new job"
+        ],
+        "askKeywords": [
+          "trigger",
+          "stress",
+          "start",
+          "first",
+          "happening in your life",
+          "work",
+          "life events",
+          "what was going on"
+        ]
+      },
+      {
+        "topic": "Physical red flags",
+        "trigger": "chest pain on exertion, fainting, weight loss, heat intolerance, family history of sudden death",
+        "answer": "No, I've never fainted, I'm fine when I go running, and no one in my family has heart problems.",
+        "keywords": [
+          "never fainted",
+          "fine when i go running"
+        ],
+        "askKeywords": [
+          "faint",
+          "blackout",
+          "black out",
+          "exercise",
+          "exert",
+          "running",
+          "family",
+          "sudden death",
+          "weight",
+          "heat",
+          "thyroid",
+          "heart problem"
+        ]
+      },
+      {
+        "topic": "Mood and sleep",
+        "trigger": "mood, sleep, general worry",
+        "answer": "My mood's okay, I just feel on edge. I sleep alright mostly.",
+        "keywords": [
+          "feel on edge",
+          "mood's okay"
+        ],
+        "askKeywords": [
+          "mood",
+          "low",
+          "down",
+          "depress",
+          "sleep",
+          "worry about other",
+          "general"
+        ]
+      }
+    ],
+    "cue": "It's affecting everything now. I don't even go into town anymore."
+  },
+  "examFindings": [
+    {
+      "system": "Cardiovascular",
+      "finding": "HR 88 regular, BP 118/72, heart sounds normal, no murmurs."
+    },
+    {
+      "system": "Thyroid",
+      "finding": "No goitre, no tremor, no eye signs."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "ECG (last week)",
+      "result": "Sinus rhythm 76 bpm, normal intervals, no pre-excitation."
+    },
+    {
+      "test": "Thyroid function tests",
+      "result": "Normal."
+    },
+    {
+      "test": "Full blood count",
+      "result": "Normal."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "What is the most likely diagnosis?",
+      "modelAnswer": "Panic disorder, likely with agoraphobic avoidance: recurrent unexpected panic attacks, persistent anticipatory anxiety and avoidance of trains and crowded places.",
+      "keyPoints": [
+        "Panic disorder",
+        "Agoraphobic avoidance",
+        "Anticipatory anxiety"
+      ]
+    },
+    {
+      "q": "Which organic causes should be excluded?",
+      "modelAnswer": "Arrhythmia (e.g. SVT), hyperthyroidism, caffeine or stimulant excess, phaeochromocytoma (rare), hypoglycaemia, asthma.",
+      "keyPoints": [
+        "Arrhythmia",
+        "Hyperthyroidism",
+        "Caffeine/stimulants"
+      ]
+    },
+    {
+      "q": "Outline management.",
+      "modelAnswer": "Explain and normalise the physical symptoms of panic, reduce caffeine, offer CBT (including exposure) via talking therapies or guided self-help, consider an SSRI if symptoms persist, avoid benzodiazepines, and review.",
+      "keyPoints": [
+        "Psychoeducation",
+        "Reduce caffeine",
+        "CBT",
+        "SSRI if needed",
+        "Avoid benzodiazepines"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and uses open questions",
+        "weight": 1,
+        "evidenceHint": "my name, tell me"
+      },
+      {
+        "id": "episode",
+        "domain": "dataGathering",
+        "text": "Characterises an attack: onset, peak, duration, frequency",
+        "weight": 2,
+        "evidenceHint": "how long, how often"
+      },
+      {
+        "id": "symptoms",
+        "domain": "dataGathering",
+        "text": "Asks about associated physical and cognitive symptoms",
+        "weight": 2,
+        "evidenceHint": "breath, tingling, going to die"
+      },
+      {
+        "id": "red-flags",
+        "domain": "dataGathering",
+        "text": "Screens for cardiac red flags (exertional symptoms, syncope, family history)",
+        "weight": 2,
+        "evidenceHint": "faint, exercise, family"
+      },
+      {
+        "id": "thyroid-caffeine",
+        "domain": "dataGathering",
+        "text": "Asks about thyroid symptoms, caffeine and substances",
+        "weight": 2,
+        "evidenceHint": "coffee, heat"
+      },
+      {
+        "id": "avoidance",
+        "domain": "dataGathering",
+        "text": "Explores avoidance and anticipatory anxiety",
+        "weight": 2,
+        "evidenceHint": "avoid, worry about next"
+      },
+      {
+        "id": "triggers",
+        "domain": "dataGathering",
+        "text": "Explores triggers and stressors",
+        "weight": 1,
+        "evidenceHint": "stress, when did it start"
+      },
+      {
+        "id": "mood",
+        "domain": "dataGathering",
+        "text": "Screens mood and generalised worry",
+        "weight": 1,
+        "evidenceHint": "mood, worry"
+      },
+      {
+        "id": "ice",
+        "domain": "interpersonal",
+        "text": "Explores and addresses her concern about her heart",
+        "weight": 2,
+        "evidenceHint": "worried about your heart"
+      },
+      {
+        "id": "explain",
+        "domain": "clinicalManagement",
+        "text": "Explains the likely nature of the attacks in lay terms without dismissing her",
+        "weight": 2,
+        "evidenceHint": "adrenaline, body's alarm"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "panic disorder",
+    "panic attack",
+    "panic attacks",
+    "agoraphobia",
+    "anxiety disorder"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}

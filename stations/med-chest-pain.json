@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "id": "med-chest-pain",
+  "version": 1,
+  "title": "Chest pain",
+  "specialty": "medicine",
+  "stationType": "history",
+  "difficulty": "foundation",
+  "timing": {
+    "readingSec": 120,
+    "stationSec": 480
+  },
+  "candidateBrief": "You are a junior doctor in the Emergency Department. David Evans, 58, has presented with chest pain that started 90 minutes ago. Take a focused history. You may use the Examine and Investigations panels. You will be asked questions afterwards.",
+  "patient": {
+    "name": "David Evans",
+    "age": 58,
+    "sex": "male",
+    "occupation": "Taxi driver",
+    "setting": "Emergency Department cubicle, on a trolley.",
+    "openingStatement": "I've got this awful pain in my chest, doctor. It came on while I was carrying the shopping in.",
+    "demeanour": "Clammy, uncomfortable, rubbing his chest, frightened but trying to stay calm. Speaks in slightly short bursts.",
+    "speechStyle": "Plain everyday language, describes the pain as 'like an elephant sitting on me'. No medical terms.",
+    "ice": {
+      "ideas": "Hopes it's indigestion from a big breakfast.",
+      "concerns": "His dad died of a heart attack at 60 and he is scared the same is happening.",
+      "expectations": "Wants something for the pain and to know what's going on."
+    },
+    "freelyShared": [
+      "The pain started 90 minutes ago while carrying heavy shopping and hasn't gone away.",
+      "It is in the centre of his chest and feels heavy and tight."
+    ],
+    "revealOnlyIfAsked": [
+      {
+        "topic": "Radiation",
+        "trigger": "whether the pain goes anywhere else",
+        "answer": "It goes into my left arm and up into my jaw.",
+        "keywords": [
+          "left arm",
+          "into my jaw"
+        ],
+        "askKeywords": [
+          "go anywhere",
+          "spread",
+          "radiat",
+          "arm",
+          "jaw",
+          "neck",
+          "back",
+          "move to",
+          "anywhere else"
+        ]
+      },
+      {
+        "topic": "Associated symptoms",
+        "trigger": "sweating, nausea, breathlessness, palpitations or dizziness",
+        "answer": "I've been sweating buckets and I feel a bit sick. Bit short of breath too.",
+        "keywords": [
+          "sweating buckets",
+          "feel a bit sick"
+        ],
+        "askKeywords": [
+          "sweat",
+          "sick",
+          "nause",
+          "vomit",
+          "breath",
+          "dizz",
+          "palpit",
+          "faint",
+          "associated",
+          "other symptom",
+          "any symptoms"
+        ]
+      },
+      {
+        "topic": "Severity",
+        "trigger": "how bad the pain is or a score out of ten",
+        "answer": "It's an eight out of ten. Worst pain I've ever had.",
+        "keywords": [
+          "eight out of ten",
+          "8 out of 10"
+        ],
+        "askKeywords": [
+          "severe",
+          "how bad",
+          "score",
+          "scale",
+          "out of ten",
+          "out of 10",
+          "rate"
+        ]
+      },
+      {
+        "topic": "Previous episodes",
+        "trigger": "similar pain before",
+        "answer": "For a few weeks I've had a tightness walking up hills, but it went off after a couple of minutes' rest.",
+        "keywords": [
+          "walking up hills",
+          "couple of minutes' rest"
+        ],
+        "askKeywords": [
+          "before",
+          "previous",
+          "similar",
+          "ever had",
+          "exercise",
+          "exertion",
+          "walking",
+          "hills"
+        ]
+      },
+      {
+        "topic": "Cardiovascular risk factors",
+        "trigger": "smoking, blood pressure, cholesterol or diabetes",
+        "answer": "I smoke about 20 a day. I was told my blood pressure was high a while back but never went back for tablets. Not diabetic as far as I know.",
+        "keywords": [
+          "20 a day",
+          "blood pressure was high"
+        ],
+        "askKeywords": [
+          "smok",
+          "cigarette",
+          "blood pressure",
+          "cholesterol",
+          "diabet",
+          "sugar",
+          "risk factor",
+          "weight"
+        ]
+      },
+      {
+        "topic": "Family history",
+        "trigger": "family history of heart problems",
+        "answer": "My dad died of a heart attack when he was 60.",
+        "keywords": [
+          "dad died",
+          "heart attack when he was 60"
+        ],
+        "askKeywords": [
+          "family",
+          "father",
+          "dad",
+          "mother",
+          "mum",
+          "relative",
+          "run in"
+        ]
+      },
+      {
+        "topic": "Medications and allergies",
+        "trigger": "medications or allergies",
+        "answer": "I don't take anything regularly. No allergies.",
+        "keywords": [
+          "don't take anything regularly",
+          "no allergies"
+        ],
+        "askKeywords": [
+          "medic",
+          "tablet",
+          "pills",
+          "drug",
+          "allerg"
+        ]
+      },
+      {
+        "topic": "Alternative causes",
+        "trigger": "pain on breathing or moving, tearing pain to the back, recent travel or leg swelling",
+        "answer": "It doesn't change when I breathe or move, it's not tearing, and it doesn't go to my back. No long trips, legs are fine.",
+        "keywords": [
+          "doesn't change when i breathe",
+          "not tearing"
+        ],
+        "askKeywords": [
+          "breath in",
+          "breathing",
+          "deep breath",
+          "move",
+          "position",
+          "tearing",
+          "ripping",
+          "back",
+          "travel",
+          "flight",
+          "legs",
+          "swelling",
+          "calf",
+          "lean forward"
+        ]
+      }
+    ],
+    "cue": "It's just not easing off, doctor. Is it my heart?"
+  },
+  "examFindings": [
+    {
+      "system": "General",
+      "finding": "Pale, clammy, in visible discomfort."
+    },
+    {
+      "system": "Observations",
+      "finding": "HR 96 regular, BP 158/94 in both arms, RR 20, SpO2 96% on air, temperature 36.8°C."
+    },
+    {
+      "system": "Cardiovascular",
+      "finding": "Heart sounds normal, no murmurs. JVP not raised. Peripheral pulses equal."
+    },
+    {
+      "system": "Respiratory",
+      "finding": "Chest clear, equal air entry."
+    }
+  ],
+  "investigations": [
+    {
+      "test": "12-lead ECG",
+      "result": "2 mm ST elevation in leads II, III and aVF with reciprocal ST depression in I and aVL."
+    },
+    {
+      "test": "High-sensitivity troponin",
+      "result": "Pending (sent)."
+    },
+    {
+      "test": "Chest X-ray",
+      "result": "Normal heart size, clear lung fields, normal mediastinum."
+    }
+  ],
+  "postEncounterQuestions": [
+    {
+      "q": "What is the most likely diagnosis?",
+      "modelAnswer": "Acute inferior ST-elevation myocardial infarction.",
+      "keyPoints": [
+        "STEMI",
+        "Inferior territory"
+      ]
+    },
+    {
+      "q": "What is your immediate management?",
+      "modelAnswer": "Call for senior help and activate the primary PCI pathway; aspirin loading dose, analgesia (e.g. IV morphine with antiemetic), oxygen only if hypoxic, GTN if not hypotensive, continuous monitoring, IV access and bloods, second antiplatelet as per local protocol.",
+      "keyPoints": [
+        "Primary PCI / cath lab activation",
+        "Aspirin",
+        "Analgesia",
+        "Oxygen only if hypoxic",
+        "Senior help"
+      ]
+    }
+  ],
+  "rubric": {
+    "items": [
+      {
+        "id": "intro",
+        "domain": "interpersonal",
+        "text": "Introduces self and gains consent",
+        "weight": 1,
+        "evidenceHint": "my name"
+      },
+      {
+        "id": "socrates",
+        "domain": "dataGathering",
+        "text": "Takes a structured pain history (site, onset, character, radiation, severity, timing, exacerbating/relieving)",
+        "weight": 3,
+        "evidenceHint": "where, when, what does it feel like, go anywhere, score"
+      },
+      {
+        "id": "associated",
+        "domain": "dataGathering",
+        "text": "Asks about associated symptoms (sweating, nausea, breathlessness)",
+        "weight": 2,
+        "evidenceHint": "sweaty, sick, breath"
+      },
+      {
+        "id": "differentials",
+        "domain": "dataGathering",
+        "text": "Asks questions to exclude important differentials (PE, dissection, pericarditis)",
+        "weight": 2,
+        "evidenceHint": "tearing, back, breathing, legs"
+      },
+      {
+        "id": "risk-factors",
+        "domain": "dataGathering",
+        "text": "Asks about cardiovascular risk factors",
+        "weight": 2,
+        "evidenceHint": "smoke, blood pressure, cholesterol, diabetes"
+      },
+      {
+        "id": "fhx",
+        "domain": "dataGathering",
+        "text": "Asks about family history",
+        "weight": 1,
+        "evidenceHint": "family"
+      },
+      {
+        "id": "drugs",
+        "domain": "dataGathering",
+        "text": "Asks about medications and allergies",
+        "weight": 1,
+        "evidenceHint": "medicines, allergies"
+      },
+      {
+        "id": "ecg",
+        "domain": "clinicalManagement",
+        "text": "Requests an ECG promptly",
+        "weight": 3,
+        "evidenceHint": "requested 12-lead ECG"
+      },
+      {
+        "id": "obs",
+        "domain": "clinicalManagement",
+        "text": "Checks observations / examines",
+        "weight": 1,
+        "evidenceHint": "examined Observations"
+      },
+      {
+        "id": "ice",
+        "domain": "interpersonal",
+        "text": "Acknowledges his fear and explains what happens next honestly",
+        "weight": 2,
+        "evidenceHint": "worried, next"
+      }
+    ]
+  },
+  "forbiddenTerms": [
+    "myocardial infarction",
+    "STEMI",
+    "angina",
+    "acute coronary syndrome",
+    "ST elevation"
+  ],
+  "safety": {},
+  "authoring": {
+    "author": "DigiPat",
+    "source": "fictional"
+  }
+}
