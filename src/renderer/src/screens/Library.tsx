@@ -63,7 +63,7 @@ export function Library({ navigate, modelReady }: { navigate: Navigate; modelRea
         <div>
           <h1 className="text-xl font-semibold">Stations</h1>
           <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
-            Choose a fictional OSCE station. You will get reading time, then a timed consultation with a simulated
+            Choose a fictional clinical station. You will get reading time, then a timed consultation with a simulated
             patient, followed by questions and formative feedback.
           </p>
         </div>

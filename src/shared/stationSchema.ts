@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-// A station is a fictional, educational OSCE scenario. Nothing here describes a real patient.
+// A station is a fictional, educational clinical scenario. Nothing here describes a real patient.
 
 import {
   DIFFICULTIES,

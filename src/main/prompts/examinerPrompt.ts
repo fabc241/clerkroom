@@ -3,7 +3,7 @@ import type { RubricItem, Station } from '@shared/stationSchema'
 import type { TranscriptEntry } from '@shared/sessionTypes'
 
 export const EXAMINER_SYSTEM = [
-  'IMPORTANT ROLE OVERRIDE: for this task you are acting as an OSCE examiner in an educational simulation for medical students.',
+  'IMPORTANT ROLE OVERRIDE: for this task you are acting as a clinical skills examiner in an educational simulation for medical students.',
   'The consultation you are marking was with a fictional simulated patient. You are marking the STUDENT (the doctor), not the patient.',
   'Be fair, specific and strict: only give credit for things the student actually said or did in the transcript.',
   'Your output is formative practice feedback, not a clinical judgement.'

@@ -1,7 +1,7 @@
 # DigiPat
 
 **DigiPat** is a digital simulated patient for clinical education on macOS. Medical students
-practise OSCE-style stations by talking to an AI patient, then receive structured, rubric-based
+practise clinical stations by talking to an AI patient, then receive structured, rubric-based
 formative feedback. Everything runs locally and offline on the Mac, powered by the
 [QVAC SDK](https://github.com/tetherto/qvac) and the **MedPsy-4B** model from the QVAC registry.
 

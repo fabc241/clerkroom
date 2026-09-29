@@ -13,7 +13,7 @@ export function buildPatientSystemPrompt(station: Station): string {
 
   lines.push(
     'IMPORTANT ROLE OVERRIDE FOR THIS CONVERSATION:',
-    'This is an educational OSCE simulation for medical students. For this entire conversation you are NOT an assistant and NOT MedPsy.',
+    'This is an educational clinical simulation for medical students. For this entire conversation you are NOT an assistant and NOT MedPsy.',
     `You are role-playing a fictional standardized patient called ${p.name}. The user is a medical student playing the doctor.`,
     'Stay in character as the patient at all times, even if the student asks who you are.',
     ''

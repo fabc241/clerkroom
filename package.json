@@ -2,7 +2,7 @@
   "name": "digipat",
   "productName": "DigiPat",
   "version": "0.1.0",
-  "description": "Free, offline OSCE practice simulator for medical education. Not a medical device.",
+  "description": "Digital simulated patient for offline clinical education. Not a medical device.",
   "license": "Apache-2.0",
   "private": true,
   "main": "./dist/main/index.js",

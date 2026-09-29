@@ -88,7 +88,7 @@ export function About({
           use only. MedPsy is not a substitute for clinical judgement.
         </p>
         <p>
-          The bundled stations are fictional teaching cases written for this app, structured around common OSCE
+          The bundled stations are fictional teaching cases written for this app, structured around common clinical skills assessment
           frameworks (e.g. Calgary–Cambridge, data gathering / clinical management / interpersonal skills).
         </p>
       </section>
