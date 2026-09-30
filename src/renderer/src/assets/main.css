@@ -107,8 +107,7 @@
   --tint-mint: #d6eee0;
   --ill-line: #2b3346;
   --shadow: 0 1px 2px rgb(20 28 45 / 0.08), 0 6px 16px -6px rgb(20 28 45 / 0.18);
-  --room-sky: #cfe5f0;
-  --room-floor: #b5cfdc;
+  --room-sky: #c4d6e2;
   --scene-h: clamp(150px, 42vh, 330px);
   background: var(--room-sky);
   color: var(--text);
@@ -120,9 +119,16 @@
 }
 @media (prefers-color-scheme: dark) {
   .room {
-    --room-sky: #b9d4e1;
-    --room-floor: #a1bccb;
+    --room-sky: #b0c1cb;
   }
+  .room-scene {
+    filter: brightness(0.9);
+  }
+}
+/* The scene artwork's plain wall fades into the room's sky, so there is no hard top edge. */
+.room-scene {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 30%);
 }
 /* Older lines fade toward the top instead of being cut off. */
 .room-scroll {

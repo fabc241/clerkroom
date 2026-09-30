@@ -30,8 +30,7 @@ colors:
   warn: "#9a6700"
   bad: "#c23b33"
   ill-line: "#2b3346"
-  room-sky: "#cfe5f0"
-  room-floor: "#b5cfdc"
+  room-sky: "#c4d6e2"
   canvas-dark: "#1f252c"
   surface-dark: "#272e37"
   surface-2-dark: "#2e363f"
@@ -60,8 +59,7 @@ colors:
   warn-dark: "#e3b341"
   bad-dark: "#ff8a80"
   ill-line-dark: "#e4e8ee"
-  room-sky-dark: "#b9d4e1"
-  room-floor-dark: "#a1bccb"
+  room-sky-dark: "#b0c1cb"
 typography:
   display:
     fontFamily: "Plus Jakarta Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif"
@@ -253,7 +251,7 @@ The system rejects the earlier mark-sheet world (red-ink rules, condensed verdic
 - Cool canvas, white panels, navy ink; pastel tints carry all colour.
 - One family, Plus Jakarta Sans, self-hosted; tabular numerals for every figure.
 - Soft, rounded, shadowed: 10-16px radii on controls and panels, pills fully round.
-- Hand-authored flat-outline SVG illustration with an outline token that flips for dark.
+- Hand-authored flat-outline SVG illustration with an outline token that flips for dark; the consulting room is soft editorial artwork with natural figures, generated locally.
 - Line icons at 1.5 stroke, round caps and joins.
 - Full light and dark appearances; the consulting room stays light in both.
 
@@ -276,7 +274,7 @@ A navy-ink-on-white system where colour arrives only as soft pastel tints and se
 - **Hairline** (line) and **Firm Line** (line-strong): panel borders and dividers; control outlines and scrollbar thumbs.
 - **Navy Ink** (text), **Slate Ink** (text-2), **Quiet Ink** (text-3): primary text; secondary text and labels; hints, captions and placeholders.
 - **Illustration Outline** (ill-line): every illustration stroke; it flips to near-white in dark so outlines stay legible on the deep tints.
-- **Room Sky** and **Room Floor** (room-sky, room-floor): the consulting-room backdrop, dimmed one step in dark.
+- **Room Sky** (room-sky): the consulting-room backdrop, matched to the scene artwork's wall and dimmed one step in dark (the artwork dims with it).
 
 ### Semantic
 - **Pass Green, Borderline Amber, Fail Red** (good, warn, bad): the gauge zones and score arc, result captions, finding and result icons, model status dot, low timer, danger button text. They mark state, never decorate.
@@ -381,7 +379,7 @@ A 240px semicircle on a zoned track: fail red to 40%, borderline amber to the pa
 Error notices fill rose, confirmations fill mint, both with a status icon and navy text at 12px corners. The educational-simulation badge is always in the header; the AI-feedback caveat is a soft-well notice; stations with sensitive topics carry a persistent lilac footer with a helpline link.
 
 ### Illustration
-Hand-authored flat-outline SVG, because no image generation was available: organs, capsules and mind motifs for station cards, and the ConsultingRoom scene (the doctor in a white coat, glasses and stethoscope gesturing across the desk; the patient matched to the station's sex on a coral chair; a window, a pinned chart and a framed lungs-and-heart poster; a laptop, cup and plant on the desk). Fills are a fixed friendly palette (coral, soft blue, sage, sun yellow); outlines use the illustration outline token. Real artwork may replace them later.
+Station cards use hand-authored flat-outline SVG: organs, capsules and mind motifs. Fills are a fixed friendly palette (coral, soft blue, sage, sun yellow); outlines use the illustration outline token. The ConsultingRoom scene is soft editorial artwork with natural adult proportions, generated locally with FLUX.2 [klein] through the QVAC SDK and bundled as three variants (male, female, other patient): the doctor in a white coat with a stethoscope at a light wooden desk with a laptop on the left, the patient seated facing them on the right, a plain pale-blue wall and a plant. Its top fades into the room sky under a mask, so the bubbles sit on one continuous wall.
 
 ## Do's and Don'ts
 
