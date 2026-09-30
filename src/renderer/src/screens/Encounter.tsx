@@ -5,7 +5,9 @@ import type { Station } from '@shared/stationSchema'
 import { appendDictation } from '@shared/voice'
 import type { Navigate } from '../App'
 import { DictateButton } from '../components/DictateButton'
-import { ErrorBox, SensitiveTopicFooter, ThinkingDots } from '../components/Notices'
+import { ErrorBox, SensitiveTopicFooter } from '../components/Notices'
+import { ConsultingRoom } from '../components/Illustrations'
+import { Choice, Icon, ProgressBar, TypingDots } from '../components/ui'
 import { useCountdown } from '../components/useCountdown'
 import { TranscriptView } from '../components/TranscriptView'
 import { formatClock } from '../lib/format'
@@ -23,7 +25,7 @@ export function Encounter(props: {
   useEffect(() => {
     window.digipat.getStation(props.stationId).then((r) => setStation(r?.station ?? null))
   }, [props.stationId])
-  if (!station) return <div className="p-8 text-sm text-stone-500">Loading…</div>
+  if (!station) return <div className="p-10 text-text-3">Loading…</div>
   return <EncounterInner {...props} station={station} />
 }
 
@@ -92,8 +94,11 @@ function EncounterInner({
     })
   }, [session.id])
 
+  // Jump to the latest line when the station opens; glide for each new line after that.
+  const scrolledOnce = useRef(false)
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    bottomRef.current?.scrollIntoView({ behavior: scrolledOnce.current ? 'smooth' : 'auto' })
+    scrolledOnce.current = true
   }, [transcript, pending, patientState])
 
   const busy = patientState !== 'idle'
@@ -126,82 +131,148 @@ function EncounterInner({
     transcript.some((e) => (kind === 'exam' ? e.kind === 'exam' && e.system === key : e.kind === 'investigation' && e.test === key))
 
   const lowTime = remaining <= 60
+  const usedPercent = ((stationSec - remaining) / stationSec) * 100
+  const patientFirst = station.patient.name.split(' ')[0]
+
+  const actionList = (
+    kind: 'exam' | 'investigation',
+    items: { key: string }[],
+    run: (key: string) => Promise<TranscriptEntry>
+  ): React.JSX.Element => (
+    <ul className="space-y-1.5">
+      {items.map(({ key }) => {
+        const made = done(kind, key)
+        return (
+          <li key={key}>
+            <Choice
+              type="checkbox"
+              checked={made}
+              disabled={ended || made}
+              onChange={() => void act(() => run(key))}
+              className="text-[14px]"
+            >
+              <span className={made ? 'text-text' : 'text-text-2'}>{key}</span>
+            </Choice>
+          </li>
+        )
+      })}
+    </ul>
+  )
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center gap-4 border-b border-stone-200 px-6 py-3 dark:border-stone-800">
-        <div className="min-w-0">
-          <div className="truncate font-medium">{station.title}</div>
-          <div className="text-xs text-stone-500">
-            Patient: {station.patient.name}, {station.patient.age}
+    <div className="flex h-full flex-col bg-canvas">
+      <div className="flex items-center gap-6 border-b border-line bg-surface px-6 py-3">
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-[18px] font-bold text-text">{station.title}</h1>
+          <div className="text-[13px] text-text-2">
+            {station.patient.name}, {station.patient.age} · {station.patient.setting}
           </div>
         </div>
         <div
-          className={`ml-auto rounded-lg px-3 py-1 font-mono text-xl tabular-nums ${
-            lowTime ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300' : 'bg-stone-100 dark:bg-stone-800'
+          className={`flex w-64 shrink-0 items-center gap-3 rounded-2xl px-3.5 py-2 ring-1 ring-inset ${
+            lowTime ? 'bg-rose ring-transparent' : 'bg-surface-2 ring-line'
           }`}
-          aria-live="polite"
         >
-          {formatClock(remaining)}
-        </div>
-        {confirmEnd ? (
-          <div className="flex items-center gap-2">
-            <span className="text-sm">End the station now?</span>
-            <button className="btn-danger" onClick={() => finish('candidate')}>
-              End
-            </button>
-            <button className="btn-secondary" onClick={() => setConfirmEnd(false)}>
-              Continue
-            </button>
+          <Icon name="clock" className={`h-5 w-5 shrink-0 ${lowTime ? 'text-bad' : 'text-text-2'}`} />
+          <div className="flex-1">
+            <div className="flex items-baseline justify-between">
+              <span className="field-label">Time left</span>
+              <span
+                className={`num text-[22px] leading-none font-bold ${lowTime ? 'text-bad' : 'text-text'}`}
+                aria-live="polite"
+                aria-label={`${formatClock(remaining)} remaining`}
+              >
+                {formatClock(remaining)}
+              </span>
+            </div>
+            <ProgressBar className="mt-1.5" value={usedPercent} tone={lowTime ? 'bad' : 'accent'} />
           </div>
-        ) : (
-          <button className="btn-secondary" disabled={ended} onClick={() => setConfirmEnd(true)}>
-            End station
-          </button>
-        )}
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {confirmEnd ? (
+            <>
+              <span className="text-[13.5px] text-text">End now? You can’t come back.</span>
+              <button className="btn-danger" onClick={() => finish('candidate')}>
+                End station
+              </button>
+              <button className="btn" onClick={() => setConfirmEnd(false)}>
+                Keep going
+              </button>
+            </>
+          ) : (
+            <button className="btn" disabled={ended} onClick={() => setConfirmEnd(true)}>
+              End station
+            </button>
+          )}
+        </div>
       </div>
       {lowTime && remaining > 0 && (
-        <div className="bg-red-50 px-6 py-1.5 text-center text-sm text-red-800 dark:bg-red-950 dark:text-red-300">
-          One minute remaining — start closing the consultation.
+        <div className="bg-rose px-6 py-1.5 text-center text-[13.5px] font-semibold text-text">
+          One minute left. Start closing the consultation.
         </div>
       )}
 
-      <div className="flex min-h-0 flex-1">
-        <section className="flex min-w-0 flex-1 flex-col">
-          <div className="selectable flex-1 overflow-y-auto px-6 py-4">
-            {transcript.length === 0 && (
-              <p className="mt-8 text-center text-sm text-stone-500">
-                The patient is waiting. Start by introducing yourself.
-              </p>
-            )}
-            <TranscriptView transcript={transcript} />
-            {busy && (
-              <div className="mt-3 flex justify-start">
-                <div className="max-w-[75%] rounded-2xl rounded-bl-md bg-white px-4 py-2.5 text-sm shadow-sm dark:bg-stone-800">
-                  {pending ? pending : <span className="text-stone-400"><ThinkingDots /></span>}
+      <div className="flex min-h-0 flex-1 gap-5 p-5">
+        <section className="flex min-w-0 flex-1 flex-col gap-3">
+          <div className="room relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl ring-1 ring-line">
+            <ConsultingRoom
+              patientSex={station.patient.sex}
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-[var(--scene-h)] w-full"
+            />
+            {/* The conversation fills the wall above the two of them; the newest lines sit just over their heads. */}
+            <div
+              className="room-scroll selectable relative min-h-0 flex-1 overflow-y-auto px-6 pt-10 pb-4"
+              style={{ marginBottom: 'calc(var(--scene-h) * 0.72)' }}
+            >
+              {transcript.length === 0 && (
+                <p className="mx-auto mt-8 w-fit rounded-2xl bg-surface px-4 py-2.5 text-[15px] text-text-2 shadow-card">
+                  {patientFirst} is waiting. Start by introducing yourself.
+                </p>
+              )}
+              <TranscriptView transcript={transcript} startedAt={session.startedAt} patientName={station.patient.name} />
+              {busy && (
+                <div className="mt-3 flex justify-end">
+                  <div className="max-w-[72%] text-right">
+                    <div className="mb-1 px-1 text-[11.5px] font-semibold text-text-2">{patientFirst}</div>
+                    <p className="bubble-them inline-block rounded-2xl bg-butter px-4 py-2.5 text-left text-[15px] leading-[1.5] text-text shadow-card">
+                      {pending ? pending : <TypingDots label={`${patientFirst} is thinking`} />}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-            <div ref={bottomRef} />
-          </div>
-          {error && (
-            <div className="px-6 pb-2">
-              <ErrorBox message={error} />
+              )}
+              <div ref={bottomRef} />
             </div>
-          )}
-          <div className="border-t border-stone-200 px-6 py-3 dark:border-stone-800">
-            <div className="flex gap-3">
+          </div>
+          {error && <ErrorBox message={error} />}
+          <div className="flex items-end gap-2">
+            {settings.voiceInput && (
+              <DictateButton
+                className="h-12 w-12 px-0"
+                ready={voiceReady}
+                disabled={ended}
+                onError={setError}
+                onText={(t) => {
+                  setInput((v) => appendDictation(v, t))
+                  inputRef.current?.focus()
+                }}
+              />
+            )}
+            <div className="relative flex-1">
+              <label htmlFor="say" className="sr-only">
+                Your words to {patientFirst}
+              </label>
               <textarea
+                id="say"
                 ref={inputRef}
                 autoFocus
-                rows={2}
-                className="input flex-1 resize-none"
+                rows={1}
+                className="field block min-h-12 resize-none py-3 pr-14 text-[15px]"
                 placeholder={
                   ended
                     ? 'The station has ended.'
                     : settings.voiceInput
-                      ? 'Type or dictate what you say to the patient. (Enter to send, Shift+Enter for a new line)'
-                      : 'What do you say to the patient? (Enter to send, Shift+Enter for a new line)'
+                      ? `Type your response to ${patientFirst} or dictate…`
+                      : `Type your response to ${patientFirst}…`
                 }
                 value={input}
                 disabled={ended}
@@ -213,76 +284,71 @@ function EncounterInner({
                   }
                 }}
               />
-              {settings.voiceInput && (
-                <DictateButton
-                  className="self-end"
-                  ready={voiceReady}
-                  disabled={ended}
-                  onError={setError}
-                  onText={(t) => {
-                    setInput((v) => appendDictation(v, t))
-                    inputRef.current?.focus()
-                  }}
-                />
-              )}
               {busy ? (
-                <button className="btn-secondary self-end" onClick={() => window.digipat.interruptPatient(session.id)}>
-                  Stop
+                <button
+                  className="btn-icon btn-sm absolute right-2 bottom-2 w-8"
+                  aria-label="Stop the patient's reply"
+                  title="Stop the reply"
+                  onClick={() => window.digipat.interruptPatient(session.id)}
+                >
+                  <Icon name="stop" className="h-3.5 w-3.5" />
                 </button>
               ) : (
-                <button className="btn-primary self-end" disabled={!input.trim() || ended} onClick={send}>
-                  Send
+                <button
+                  className="btn-primary btn-sm absolute right-2 bottom-2 w-8 px-0"
+                  aria-label="Send"
+                  title="Send (Enter)"
+                  disabled={!input.trim() || ended}
+                  onClick={send}
+                >
+                  <Icon name="send" className="h-3.5 w-3.5" />
                 </button>
               )}
             </div>
           </div>
         </section>
 
-        <aside className="w-80 shrink-0 space-y-5 overflow-y-auto border-l border-stone-200 p-4 dark:border-stone-800">
-          <div>
-            <button className="label flex w-full justify-between" onClick={() => setShowBrief((v) => !v)}>
-              <span>Candidate instructions</span>
-              <span>{showBrief ? '−' : '+'}</span>
+        <aside className="w-72 shrink-0 space-y-4 overflow-y-auto">
+          <section className="panel p-4">
+            <button
+              className="flex w-full items-center justify-between"
+              aria-expanded={showBrief}
+              onClick={() => setShowBrief((v) => !v)}
+            >
+              <span className="section-title text-[14.5px]">Your task</span>
+              <Icon name={showBrief ? 'chevron-up' : 'chevron-down'} className="h-4 w-4 text-text-2" />
             </button>
-            {showBrief && <p className="selectable text-sm leading-relaxed">{station.candidateBrief}</p>}
-          </div>
+            {showBrief && (
+              <p className="selectable mt-2.5 text-[13.5px] leading-relaxed text-text-2">{station.candidateBrief}</p>
+            )}
+          </section>
           {station.examFindings.length > 0 && (
-            <div>
-              <div className="label">Examine</div>
-              <div className="flex flex-wrap gap-1.5">
-                {station.examFindings.map((f) => (
-                  <button
-                    key={f.system}
-                    className="btn-secondary px-2.5 py-1 text-xs"
-                    disabled={ended || done('exam', f.system)}
-                    onClick={() => act(() => window.digipat.examine(session.id, f.system))}
-                  >
-                    {f.system}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <section className="panel space-y-3 p-4">
+              <h2 className="section-title flex items-center gap-2 text-[14.5px]">
+                <Icon name="stethoscope" className="h-4 w-4" /> Examine
+              </h2>
+              {actionList(
+                'exam',
+                station.examFindings.map((f) => ({ key: f.system })),
+                (k) => window.digipat.examine(session.id, k)
+              )}
+            </section>
           )}
           {station.investigations.length > 0 && (
-            <div>
-              <div className="label">Investigations</div>
-              <div className="flex flex-wrap gap-1.5">
-                {station.investigations.map((i) => (
-                  <button
-                    key={i.test}
-                    className="btn-secondary px-2.5 py-1 text-xs"
-                    disabled={ended || done('investigation', i.test)}
-                    onClick={() => act(() => window.digipat.investigate(session.id, i.test))}
-                  >
-                    {i.test}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <section className="panel space-y-3 p-4">
+              <h2 className="section-title flex items-center gap-2 text-[14.5px]">
+                <Icon name="flask" className="h-4 w-4" /> Investigations
+              </h2>
+              {actionList(
+                'investigation',
+                station.investigations.map((i) => ({ key: i.test })),
+                (k) => window.digipat.investigate(session.id, k)
+              )}
+            </section>
           )}
-          <p className="text-xs text-stone-500">
-            Findings and results are scripted by the station author, not generated by the AI. Your requests are
-            recorded and considered in the feedback.
+          <p className="px-1 text-[12.5px] leading-relaxed text-text-3">
+            Findings and results are written by the station author, not generated by the AI. Each request is recorded
+            and counts in the evaluation.
           </p>
         </aside>
       </div>

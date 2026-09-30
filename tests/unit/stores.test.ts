@@ -95,6 +95,15 @@ describe('SettingsStore', () => {
     expect('bogus' in reloaded).toBe(false)
   })
 
+  it('follows macOS appearance by default and rejects unknown appearance values', () => {
+    const path = join(dir, 'settings.json')
+    expect(new SettingsStore(path).get().appearance).toBe('system')
+    new SettingsStore(path).update({ appearance: 'dark' })
+    expect(new SettingsStore(path).get().appearance).toBe('dark')
+    new SettingsStore(path).update({ appearance: 'sepia' as never })
+    expect(new SettingsStore(path).get().appearance).toBe('dark')
+  })
+
   it('keeps voice input off until the user turns it on, including for older settings files', () => {
     const path = join(dir, 'settings.json')
     writeFileSync(path, JSON.stringify({ acceptedDisclaimerVersion: 1, model: 'medpsy-4b-q4' }))

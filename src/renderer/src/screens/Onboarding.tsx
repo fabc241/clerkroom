@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { StationIllustration } from '../components/Illustrations'
+import { Choice, Icon } from '../components/ui'
 
 export const DISCLAIMER_POINTS = [
   'DigiPat is an educational tool for practising clinical communication and history-taking with simulated patients. It is intended for training and simulation only.',
@@ -12,34 +14,47 @@ export const DISCLAIMER_POINTS = [
 export function Onboarding({ onAccept }: { onAccept: () => void }): React.JSX.Element {
   const [checked, setChecked] = useState(false)
   return (
-    <div className="flex h-full items-center justify-center overflow-y-auto p-8">
-      <div className="card max-w-2xl space-y-5 p-8">
-        <div className="drag -mt-2 h-4" />
-        <h1 className="text-2xl font-semibold">Welcome to DigiPat</h1>
-        <p className="text-sm text-stone-600 dark:text-stone-300">
-          A digital simulated patient that runs offline on your Mac. Please read the following before you start.
-        </p>
-        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed">
-          {DISCLAIMER_POINTS.map((p) => (
-            <li key={p}>{p}</li>
-          ))}
-        </ul>
-        <label className="flex items-start gap-3 rounded-lg bg-stone-100 p-3 text-sm dark:bg-stone-800">
-          <input
-            type="checkbox"
-            className="mt-0.5 h-4 w-4 accent-brand-600"
-            checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}
-          />
-          <span>
-            I understand that this is an educational simulation, not a medical device, and that I must not use it
-            for real patients or enter real patient data.
-          </span>
-        </label>
-        <div className="flex justify-end">
-          <button className="btn-primary" disabled={!checked} onClick={onAccept}>
-            Continue
-          </button>
+    <div className="flex h-full flex-col bg-canvas">
+      <div className="drag h-12 shrink-0" />
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-3xl px-8 pt-2 pb-14">
+          <div className="overflow-hidden rounded-3xl border border-line bg-surface shadow-card">
+            <div className="flex items-center justify-between gap-6 bg-sky px-8 py-6">
+              <div>
+                <h1 className="page-title text-[28px]">Welcome to DigiPat</h1>
+                <p className="mt-1.5 max-w-[52ch] text-[15px] text-text-2">
+                  A digital simulated patient for practising OSCE stations, running offline on your Mac. Please read these
+                  six points before your first station.
+                </p>
+              </div>
+              <StationIllustration station={{ id: 'welcome', specialty: 'communication' }} className="h-24 w-28 shrink-0" />
+            </div>
+            <div className="space-y-6 px-8 py-7">
+              <ol className="space-y-3">
+                {DISCLAIMER_POINTS.map((p, i) => (
+                  <li key={p} className="flex gap-3.5 text-[14.5px] leading-relaxed text-text">
+                    <span className="num flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-2 text-[13px] font-bold text-text-2 ring-1 ring-line">
+                      {i + 1}
+                    </span>
+                    <span className="pt-0.5">{p}</span>
+                  </li>
+                ))}
+              </ol>
+              <div className="rounded-2xl bg-mint p-4">
+                <Choice type="checkbox" align="start" checked={checked} onChange={setChecked}>
+                  <span className="block text-[14.5px] leading-relaxed font-medium text-text">
+                    I understand that DigiPat is an educational simulation, not a medical device, and that I must not use
+                    it for real patients or enter real patient data.
+                  </span>
+                </Choice>
+              </div>
+            </div>
+            <div className="flex justify-end border-t border-line bg-surface-2 px-8 py-4">
+              <button className="btn-primary min-h-10 px-6" disabled={!checked} onClick={onAccept}>
+                Continue <Icon name="arrow-right" className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

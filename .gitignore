@@ -6,3 +6,7 @@ out/
 *.log
 .DS_Store
 tests/llm/results/
+# Impeccable design tooling: local screenshots, cache and question logs (briefs and config are tracked).
+.impeccable/review/
+.impeccable/questions/
+.impeccable/hook.cache.json

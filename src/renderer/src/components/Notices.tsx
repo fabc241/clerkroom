@@ -1,9 +1,12 @@
+import { Icon, TypingDots } from './ui'
+
 export function EducationalBadge(): React.JSX.Element {
   return (
     <span
-      className="chip bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300"
+      className="pill-neutral gap-1.5"
       title="Educational simulation only. Not a medical device. Not for diagnosis or real patient care."
     >
+      <Icon name="shield" className="h-3.5 w-3.5" />
       Educational simulation · not a medical device
     </span>
   )
@@ -12,39 +15,50 @@ export function EducationalBadge(): React.JSX.Element {
 /** Persistent footer for stations touching on suicide, self-harm, substances, etc. */
 export function SensitiveTopicFooter(): React.JSX.Element {
   return (
-    <div className="border-t border-violet-200 bg-violet-50 px-4 py-2 text-xs text-violet-900 dark:border-violet-900 dark:bg-violet-950 dark:text-violet-200">
-      This is a fictional simulation covering a sensitive topic. If you are personally affected or in
-      distress, please contact local emergency services or a crisis line.{' '}
-      <button className="underline" onClick={() => window.digipat.openExternal('crisis-info')}>
-        Find a helpline
-      </button>
+    <div className="flex items-center gap-3 border-t border-line bg-lilac px-6 py-2.5 text-[13px] text-text">
+      <span className="pill bg-surface text-text-2">Sensitive topic</span>
+      <p>
+        This is a fictional simulation. If you are personally affected or in distress, please contact local emergency
+        services or a crisis line.{' '}
+        <button className="link" onClick={() => window.digipat.openExternal('crisis-info')}>
+          Find a helpline
+        </button>
+      </p>
     </div>
   )
 }
 
 export function AiFeedbackNotice(): React.JSX.Element {
   return (
-    <p className="rounded-lg bg-stone-100 px-3 py-2 text-xs text-stone-600 dark:bg-stone-800 dark:text-stone-300">
-      AI-generated formative feedback — it may be inaccurate and is not an examiner's judgement. Use it
-      to guide practice, and discuss with a tutor.
+    <p className="flex items-start gap-2.5 rounded-xl bg-surface-2 px-4 py-3 text-[13px] text-text-2 ring-1 ring-line ring-inset">
+      <Icon name="cpu" className="mt-0.5 h-4 w-4 shrink-0" />
+      <span>
+        AI-generated formative feedback from a model running on this Mac. It may be inaccurate and is not an
+        examiner’s judgement. Use it to guide practice, and discuss it with a tutor.
+      </span>
     </p>
   )
 }
 
 export function ErrorBox({ message }: { message: string }): React.JSX.Element {
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
-      {message}
+    <div role="alert" className="flex items-start gap-3 rounded-xl bg-rose px-4 py-3 text-[14px] text-text">
+      <Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0 text-bad" />
+      <span className="whitespace-pre-wrap">{message}</span>
+    </div>
+  )
+}
+
+/** Short confirmation, e.g. after saving. */
+export function NoteBox({ message }: { message: string }): React.JSX.Element {
+  return (
+    <div role="status" className="flex items-start gap-3 rounded-xl bg-mint px-4 py-3 text-[14px] text-text">
+      <Icon name="check-circle" className="mt-0.5 h-4 w-4 shrink-0 text-good" />
+      <span>{message}</span>
     </div>
   )
 }
 
 export function ThinkingDots(): React.JSX.Element {
-  return (
-    <span className="inline-flex gap-1" aria-label="thinking">
-      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:0ms]" />
-      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:150ms]" />
-      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:300ms]" />
-    </span>
-  )
+  return <TypingDots label="Thinking" />
 }

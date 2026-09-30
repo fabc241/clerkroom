@@ -1,12 +1,183 @@
 @import 'tailwindcss';
+@import '@fontsource/plus-jakarta-sans/latin-400.css';
+@import '@fontsource/plus-jakarta-sans/latin-500.css';
+@import '@fontsource/plus-jakarta-sans/latin-600.css';
+@import '@fontsource/plus-jakarta-sans/latin-700.css';
 
-@theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-  --color-brand-50: #eef6f6;
-  --color-brand-100: #d4eaea;
-  --color-brand-500: #2a8a8a;
-  --color-brand-600: #217373;
-  --color-brand-700: #1a5c5c;
+/*
+ * A calm, illustrated clinical-skills studio: white panels on a cool canvas, pastel tints that own
+ * card tops and question cards, navy pill buttons. The appearance follows prefers-color-scheme,
+ * which the main process sets from the Light / Dark / System setting via nativeTheme.themeSource.
+ * On tints use --text or --text-2 only; --text-3 is for panels and the canvas.
+ */
+:root {
+  --canvas: #f4f6f9;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --line: #e2e7ee;
+  --line-strong: #cbd3de;
+  --text: #1b2232;
+  --text-2: #4a5467;
+  --text-3: #636c7e;
+  --accent: #1c2331;
+  --on-accent: #ffffff;
+  --focus: #3a6fd8;
+
+  --tint-sky: #dcebf6;
+  --tint-mint: #d6eee0;
+  --tint-butter: #faefcb;
+  --tint-rose: #f7dddb;
+  --tint-peach: #fbe5d2;
+  --tint-lilac: #e6e2f6;
+  --tint-slate: #dde5ee;
+
+  --pill-mint-bg: #cdebd8;
+  --pill-mint-text: #1d6a41;
+  --pill-butter-bg: #fae4a6;
+  --pill-butter-text: #6e4a00;
+  --pill-rose-bg: #f6cbc7;
+  --pill-rose-text: #96271e;
+
+  --good: #23875a;
+  --warn: #9a6700;
+  --bad: #c23b33;
+
+  /* Illustration outline. */
+  --ill-line: #2b3346;
+
+  --shadow: 0 1px 2px rgb(20 28 45 / 0.06), 0 6px 18px -6px rgb(20 28 45 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(20 28 45 / 0.08), 0 14px 30px -10px rgb(20 28 45 / 0.22);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #1f252c;
+    --surface: #272e37;
+    --surface-2: #2e363f;
+    --line: #37404b;
+    --line-strong: #47525f;
+    --text: #eef1f5;
+    --text-2: #c3c9d3;
+    --text-3: #9aa3b0;
+    --accent: #eef1f5;
+    --on-accent: #1f252c;
+    --focus: #7aa7ff;
+
+    --tint-sky: #2c4a60;
+    --tint-mint: #2d5344;
+    --tint-butter: #57502f;
+    --tint-rose: #5b3639;
+    --tint-peach: #5d4432;
+    --tint-lilac: #443d63;
+    --tint-slate: #35434f;
+
+    --pill-mint-bg: #1f4a33;
+    --pill-mint-text: #9fe3bd;
+    --pill-butter-bg: #4d3c10;
+    --pill-butter-text: #f5d27a;
+    --pill-rose-bg: #55231f;
+    --pill-rose-text: #ffb4ac;
+
+    --good: #5ccf94;
+    --warn: #e3b341;
+    --bad: #ff8a80;
+
+    --ill-line: #e4e8ee;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 20px -8px rgb(0 0 0 / 0.5);
+    --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 16px 32px -10px rgb(0 0 0 / 0.6);
+    color-scheme: dark;
+  }
+}
+
+/*
+ * The consulting room keeps its light sky scene in both appearances, as in the reference: inside it
+ * the light tokens apply, and in dark the whole field is dimmed a step.
+ */
+.room {
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --line: #d6dee8;
+  --line-strong: #c3ccd8;
+  --text: #1b2232;
+  --text-2: #4a5467;
+  --text-3: #5b6477;
+  --tint-butter: #faefcb;
+  --tint-mint: #d6eee0;
+  --ill-line: #2b3346;
+  --shadow: 0 1px 2px rgb(20 28 45 / 0.08), 0 6px 16px -6px rgb(20 28 45 / 0.18);
+  --room-sky: #cfe5f0;
+  --room-floor: #b5cfdc;
+  --scene-h: clamp(150px, 42vh, 330px);
+  background: var(--room-sky);
+  color: var(--text);
+}
+@media (max-height: 700px) {
+  .room {
+    --scene-h: 128px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .room {
+    --room-sky: #b9d4e1;
+    --room-floor: #a1bccb;
+  }
+}
+/* Older lines fade toward the top instead of being cut off. */
+.room-scroll {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 56px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 56px);
+}
+/* Speech-bubble tails pointing down at the speaker. */
+.bubble-you,
+.bubble-them {
+  position: relative;
+}
+.bubble-you::after,
+.bubble-them::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-radius: 0 0 4px 0;
+}
+.bubble-you::after {
+  left: 22px;
+}
+.bubble-them::after {
+  right: 22px;
+}
+
+@theme inline {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-focus: var(--focus);
+  --color-sky: var(--tint-sky);
+  --color-mint: var(--tint-mint);
+  --color-butter: var(--tint-butter);
+  --color-rose: var(--tint-rose);
+  --color-peach: var(--tint-peach);
+  --color-lilac: var(--tint-lilac);
+  --color-slate: var(--tint-slate);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --shadow-card: var(--shadow);
+  --shadow-lift: var(--shadow-lift);
 }
 
 html,
@@ -16,9 +187,15 @@ body,
 }
 
 body {
-  @apply bg-stone-50 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
+  background: var(--canvas);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
   -webkit-user-select: none;
   user-select: none;
+  caret-color: var(--focus);
 }
 
 /* Allow selecting conversation and feedback text. */
@@ -29,6 +206,35 @@ input {
   user-select: text;
 }
 
+::selection {
+  background: color-mix(in oklab, var(--focus) 26%, transparent);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+
+::placeholder {
+  color: var(--text-3);
+  opacity: 1;
+}
+
 .drag {
   -webkit-app-region: drag;
 }
@@ -36,27 +242,239 @@ input {
   -webkit-app-region: no-drag;
 }
 
+@utility panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+@utility field-label {
+  /* Label for a control or value; never used as a kicker above a heading. */
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+@utility page-title {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-wrap: balance;
+}
+@utility section-title {
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+@utility num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* Buttons: navy pill for the main action, quiet outline otherwise. */
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  padding: 0 0.95rem;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out,
+    color 140ms ease-out,
+    box-shadow 140ms ease-out;
+  &:hover:not(:disabled) {
+    background: var(--surface-2);
+    border-color: color-mix(in oklab, var(--line-strong) 60%, var(--text-3));
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
 }
 @utility btn-primary {
-  @apply btn bg-brand-600 text-white hover:bg-brand-700;
-}
-@utility btn-secondary {
-  @apply btn border border-stone-300 bg-white text-stone-800 hover:bg-stone-100 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800;
+  @apply btn;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  &:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--accent) 86%, var(--focus));
+    border-color: color-mix(in oklab, var(--accent) 86%, var(--focus));
+    color: var(--on-accent);
+  }
 }
 @utility btn-danger {
-  @apply btn border border-red-300 bg-white text-red-700 hover:bg-red-50 dark:border-red-900 dark:bg-stone-900 dark:text-red-400 dark:hover:bg-red-950;
+  @apply btn;
+  color: var(--bad);
+  border-color: color-mix(in oklab, var(--bad) 45%, var(--line));
+  &:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--bad) 8%, var(--surface));
+    border-color: var(--bad);
+  }
 }
-@utility card {
-  @apply rounded-xl border border-stone-200 bg-white p-5 dark:border-stone-800 dark:bg-stone-900;
+@utility btn-sm {
+  min-height: 1.9rem;
+  padding: 0 0.7rem;
+  font-size: 12.5px;
+  border-radius: 8px;
 }
-@utility input {
-  @apply w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-stone-700 dark:bg-stone-900;
+@utility btn-icon {
+  @apply btn;
+  padding: 0;
+  width: 2.25rem;
 }
-@utility label {
-  @apply mb-1 block text-xs font-medium tracking-wide text-stone-500 uppercase dark:text-stone-400;
+@utility link {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--focus) 60%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  &:hover {
+    color: var(--focus);
+  }
 }
+
+@utility field {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.55rem 0.8rem;
+  font-size: 14.5px;
+  line-height: 1.5;
+  outline: none;
+  transition:
+    border-color 140ms ease-out,
+    box-shadow 140ms ease-out;
+  &:focus {
+    border-color: var(--focus);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--focus) 20%, transparent);
+  }
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+@utility pill-mint {
+  @apply pill;
+  background: var(--pill-mint-bg);
+  color: var(--pill-mint-text);
+}
+@utility pill-butter {
+  @apply pill;
+  background: var(--pill-butter-bg);
+  color: var(--pill-butter-text);
+}
+@utility pill-rose {
+  @apply pill;
+  background: var(--pill-rose-bg);
+  color: var(--pill-rose-text);
+}
+@utility pill-neutral {
+  @apply pill;
+  background: var(--surface-2);
+  color: var(--text-2);
+  border: 1px solid var(--line);
+}
+
+/* Filter chips. */
 @utility chip {
-  @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding: 0 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background-color 140ms ease-out,
+    color 140ms ease-out,
+    border-color 140ms ease-out;
+  &:hover {
+    color: var(--text);
+    border-color: color-mix(in oklab, var(--line-strong) 60%, var(--text-3));
+  }
+}
+@utility chip-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  &:hover {
+    color: var(--on-accent);
+  }
+}
+
+/* The evaluation gauge draws from zero to the score once, when feedback arrives. */
+.gauge-arc {
+  transition: stroke-dashoffset 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rise-in {
+  animation: rise-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.typing-dots span {
+  animation: typing 1.1s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) {
+  animation-delay: 150ms;
+}
+.typing-dots span:nth-child(3) {
+  animation-delay: 300ms;
+}
+@keyframes typing {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge-arc {
+    transition: none;
+  }
+  .rise-in,
+  .typing-dots span {
+    animation: none;
+  }
 }

@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { SessionListItem } from '@shared/sessionTypes'
 import { DOMAINS, DOMAIN_LABELS } from '@shared/constants'
+import { PASS_MARK } from '@shared/rubric'
 import type { Navigate } from '../App'
-import { RATING_STYLE, RESULT_LABEL, RESULT_STYLE, formatDate } from '../lib/format'
+import { Icon, PageHeader, Panel, ProgressBar } from '../components/ui'
+import { RESULT_LABEL, formatDate } from '../lib/format'
+
+const TRACK_MAX = 30
+const RESULT_PILL = { pass: 'pill-mint', fail: 'pill-rose', incomplete: 'pill-butter' } as const
 
 export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Element {
   const [sessions, setSessions] = useState<SessionListItem[]>([])
@@ -11,6 +16,7 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
   useEffect(refresh, [])
 
   const marked = sessions.filter((s) => s.domainScores)
+  const passed = marked.filter((s) => s.result === 'pass').length
 
   // Average of the last five marked attempts per domain, to show where to focus.
   const domainAverages = useMemo(() => {
@@ -20,76 +26,129 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
       return { domain: d, avg: vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null }
     })
   }, [marked])
+  const weakest = [...domainAverages].filter((d) => d.avg !== null).sort((a, b) => a.avg! - b.avg!)[0]
+  const track = marked.slice(0, TRACK_MAX).reverse()
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-8">
-      <div>
-        <h1 className="text-xl font-semibold">Progress</h1>
-        <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
-          Your attempts are stored only on this Mac.
-        </p>
-      </div>
+    <div className="mx-auto max-w-5xl space-y-6 px-8 pt-7 pb-14">
+      <PageHeader
+        title="Progress"
+        description="Every attempt you have made, stored only on this Mac."
+        actions={
+          marked.length > 0 && (
+            <span className="pill-mint px-3 py-1 text-[13px]">
+              <Icon name="check-circle" className="h-4 w-4" /> {passed} of {marked.length} passed
+            </span>
+          )
+        }
+      />
+
+      {track.length > 0 && (
+        <Panel
+          title="Scores over time"
+          aside={<span className="field-label">Oldest to newest · pass mark {PASS_MARK}%</span>}
+        >
+          <div className="h-48 rounded-2xl bg-sky px-4 pt-5">
+            <ol className="relative flex h-full items-end gap-2.5" aria-label="Scores of marked attempts, oldest first">
+              <li
+                className="pointer-events-none absolute inset-x-0 border-t-2 border-dashed border-text-3/60"
+                style={{ bottom: `${PASS_MARK}%` }}
+                aria-hidden
+              />
+              {track.map((s) => (
+                <li key={s.id} className="flex h-full max-w-12 min-w-4 flex-1 flex-col justify-end">
+                  <button
+                    className={`w-full rounded-t-lg transition-opacity hover:opacity-80 ${
+                      s.result === 'pass' ? 'bg-good' : s.result === 'incomplete' ? 'bg-warn' : 'bg-bad/70'
+                    }`}
+                    style={{ height: `${Math.max(3, s.overallPercent ?? 0)}%` }}
+                    title={`${s.stationTitle} · ${formatDate(s.startedAt)} · ${s.overallPercent}%`}
+                    aria-label={`${s.stationTitle}, ${s.overallPercent}%, ${s.result ? RESULT_LABEL[s.result] : 'not evaluated'}`}
+                    onClick={() => navigate({ name: 'feedback', sessionId: s.id })}
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="flex flex-wrap gap-4 text-[12.5px] font-semibold text-text-2">
+            <span className="flex items-center gap-1.5">
+              <span className="h-3 w-3 rounded bg-good" /> Passed
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-3 w-3 rounded bg-bad/70" /> Not passed
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-3 w-3 rounded bg-warn" /> Incomplete
+            </span>
+          </div>
+        </Panel>
+      )}
 
       {marked.length > 0 && (
-        <div className="card">
-          <div className="label mb-3">Recent performance by domain (last {Math.min(5, marked.length)} marked attempts)</div>
-          <div className="grid grid-cols-3 gap-6">
+        <Panel title={`By domain · last ${Math.min(5, marked.length)} attempts`}>
+          <div className="space-y-2.5">
             {domainAverages.map((d) => (
-              <div key={d.domain}>
-                <div className="text-sm">{DOMAIN_LABELS[d.domain]}</div>
-                <div className="text-2xl font-semibold tabular-nums">{d.avg === null ? '—' : `${d.avg}%`}</div>
-                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-stone-200 dark:bg-stone-800">
-                  <div className="h-full bg-brand-500" style={{ width: `${d.avg ?? 0}%` }} />
-                </div>
+              <div key={d.domain} className="grid grid-cols-[180px_1fr_48px] items-center gap-4 text-[14px]">
+                <span className="font-semibold text-text-2">{DOMAIN_LABELS[d.domain]}</span>
+                <ProgressBar value={d.avg ?? 0} tone={(d.avg ?? 0) >= PASS_MARK ? 'good' : 'accent'} />
+                <span className="num text-right font-semibold text-text">{d.avg === null ? '—' : `${d.avg}%`}</span>
               </div>
             ))}
           </div>
-          {(() => {
-            const weakest = [...domainAverages].filter((d) => d.avg !== null).sort((a, b) => a.avg! - b.avg!)[0]
-            return weakest ? (
-              <p className="mt-4 text-sm text-stone-600 dark:text-stone-300">
-                Focus area: <span className="font-medium">{DOMAIN_LABELS[weakest.domain]}</span>.
-              </p>
-            ) : null
-          })()}
-        </div>
+          {weakest && (
+            <p className="flex items-center gap-2 text-[14px] text-text-2">
+              <Icon name="bulb" className="h-4 w-4" />
+              <span>
+                Focus next on <span className="font-semibold text-text">{DOMAIN_LABELS[weakest.domain]}</span>.
+              </span>
+            </p>
+          )}
+        </Panel>
       )}
 
-      <div className="card p-0">
+      <Panel title="All attempts">
         {sessions.length === 0 ? (
-          <p className="p-5 text-sm text-stone-500">No attempts yet. Start a station from the Stations page.</p>
+          <p className="text-text-2">
+            No attempts yet.{' '}
+            <button className="link" onClick={() => navigate({ name: 'library' })}>
+              Choose a station
+            </button>{' '}
+            to start.
+          </p>
         ) : (
-          <table className="w-full text-sm">
+          <table className="w-full border-collapse text-left">
             <thead>
-              <tr className="border-b border-stone-200 text-left text-xs text-stone-500 dark:border-stone-800">
-                <th className="px-5 py-2 font-medium">Date</th>
-                <th className="py-2 font-medium">Station</th>
-                <th className="py-2 font-medium">Result</th>
-                <th className="py-2" />
+              <tr className="field-label border-b border-line">
+                <th className="py-2 font-semibold">Date</th>
+                <th className="py-2 font-semibold">Station</th>
+                <th className="py-2 font-semibold">Result</th>
+                <th className="py-2 text-right font-semibold">Score</th>
+                <th className="w-px py-2" />
               </tr>
             </thead>
             <tbody>
               {sessions.map((s) => (
-                <tr key={s.id} className="border-b border-stone-100 last:border-0 dark:border-stone-800">
-                  <td className="px-5 py-2.5 whitespace-nowrap text-stone-500">{formatDate(s.startedAt)}</td>
-                  <td className="py-2.5">{s.stationTitle}</td>
-                  <td className="py-2.5">
-                    {s.globalRating && s.result ? (
-                      <span className="flex flex-wrap gap-1.5">
-                        <span className={`chip ${RESULT_STYLE[s.result]}`}>{RESULT_LABEL[s.result]}</span>
-                        <span className={`chip ${RATING_STYLE[s.globalRating]}`}>
-                          {s.globalRating} · {s.overallPercent}%
-                        </span>
+                <tr key={s.id} className="border-b border-line last:border-0">
+                  <td className="py-3 pr-4 text-[13.5px] whitespace-nowrap text-text-2">{formatDate(s.startedAt)}</td>
+                  <td className="py-3 pr-4 text-[14.5px] font-semibold text-text">{s.stationTitle}</td>
+                  <td className="py-3">
+                    {s.result ? (
+                      <span className={RESULT_PILL[s.result]}>
+                        {RESULT_LABEL[s.result]} · {s.globalRating}
                       </span>
                     ) : (
-                      <span className="text-xs text-stone-400">Not marked</span>
+                      <span className="pill-neutral">Not evaluated</span>
                     )}
                   </td>
-                  <td className="py-2.5 pr-5 text-right whitespace-nowrap">
+                  <td className="num py-3 text-right text-[15px] font-bold text-text">
+                    {s.overallPercent === null ? '—' : `${s.overallPercent}%`}
+                  </td>
+                  <td className="py-2.5 pl-6 text-right whitespace-nowrap">
                     {confirm === s.id ? (
-                      <>
+                      <span className="inline-flex items-center gap-2">
+                        <span className="text-[13.5px] text-text">Delete this attempt?</span>
                         <button
-                          className="btn-danger px-2 py-1 text-xs"
+                          className="btn-danger btn-sm"
                           onClick={async () => {
                             await window.digipat.deleteSession(s.id)
                             setConfirm(null)
@@ -97,26 +156,23 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
                           }}
                         >
                           Delete
-                        </button>{' '}
-                        <button className="btn-secondary px-2 py-1 text-xs" onClick={() => setConfirm(null)}>
+                        </button>
+                        <button className="btn btn-sm" onClick={() => setConfirm(null)}>
                           Cancel
                         </button>
-                      </>
+                      </span>
                     ) : (
-                      <>
-                        <button
-                          className="btn-secondary px-2 py-1 text-xs"
-                          onClick={() => navigate({ name: 'feedback', sessionId: s.id })}
-                        >
+                      <span className="inline-flex gap-2">
+                        <button className="btn btn-sm" onClick={() => navigate({ name: 'feedback', sessionId: s.id })}>
                           Open
-                        </button>{' '}
-                        <button className="btn-secondary px-2 py-1 text-xs" onClick={() => window.digipat.exportSession(s.id, 'json')}>
-                          JSON
-                        </button>{' '}
-                        <button className="btn-secondary px-2 py-1 text-xs" onClick={() => setConfirm(s.id)}>
-                          Delete
                         </button>
-                      </>
+                        <button className="btn btn-sm" onClick={() => window.digipat.exportSession(s.id, 'json')}>
+                          JSON
+                        </button>
+                        <button className="btn btn-sm" onClick={() => setConfirm(s.id)}>
+                          Delete…
+                        </button>
+                      </span>
                     )}
                   </td>
                 </tr>
@@ -124,7 +180,7 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
             </tbody>
           </table>
         )}
-      </div>
+      </Panel>
     </div>
   )
 }

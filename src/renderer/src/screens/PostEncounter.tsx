@@ -4,6 +4,7 @@ import { appendDictation } from '@shared/voice'
 import type { Navigate } from '../App'
 import { DictateButton } from '../components/DictateButton'
 import { ErrorBox } from '../components/Notices'
+import { Icon, PageHeader, Stepper } from '../components/ui'
 
 export function PostEncounter({
   stationId,
@@ -30,7 +31,7 @@ export function PostEncounter({
     })
   }, [stationId])
 
-  if (!station) return <div className="p-8 text-sm text-stone-500">Loading…</div>
+  if (!station) return <div className="p-10 text-text-3">Loading…</div>
 
   const submit = async (): Promise<void> => {
     setSaving(true)
@@ -46,45 +47,73 @@ export function PostEncounter({
     }
   }
 
+  const answered = answers.filter((a) => a.trim()).length
+  const CARD = [
+    { bg: 'bg-sky', icon: 'list' },
+    { bg: 'bg-mint', icon: 'bulb' },
+    { bg: 'bg-butter', icon: 'book' },
+    { bg: 'bg-lilac', icon: 'stethoscope' },
+    { bg: 'bg-peach', icon: 'flask' }
+  ] as const
+
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-8">
-      <div>
-        <div className="label">Station ended</div>
-        <h1 className="text-xl font-semibold">{station.title} — examiner questions</h1>
-        <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
-          Answer as you would to an examiner. Short, structured answers are fine.
-          {voiceInput && ' You can type or dictate each answer, then edit it before submitting.'}
-        </p>
-      </div>
-      {station.postEncounterQuestions.map((q, i) => (
-        <div key={q.q} className="card space-y-2">
-          <div className="flex items-start gap-3">
-            <div className="flex-1 text-sm font-medium">
-              {i + 1}. {q.q}
-            </div>
-            {voiceInput && (
-              <DictateButton
-                className="shrink-0 px-2.5 py-1"
-                ready={voiceReady}
-                disabled={saving}
-                onError={setError}
-                onText={(t) => setAnswers((a) => a.map((v, j) => (j === i ? appendDictation(v, t) : v)))}
+    <div className="mx-auto max-w-4xl space-y-6 px-8 pt-7 pb-14">
+      <PageHeader
+        title={`Examiner questions: ${station.title}`}
+        description={
+          <>
+            Answer as you would to an examiner; short, structured answers are fine.
+            {voiceInput && ' You can type or dictate each answer, then edit it before submitting.'}
+          </>
+        }
+      >
+        <Stepper current={2} />
+      </PageHeader>
+
+      <div className="panel space-y-4 p-5">
+        {station.postEncounterQuestions.map((q, i) => {
+          const c = CARD[i % CARD.length]
+          return (
+            <section key={q.q} className={`space-y-3 rounded-2xl p-4 ${c.bg}`}>
+              <div className="flex items-start gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface text-text shadow-card">
+                  <Icon name={c.icon} className="h-[18px] w-[18px]" />
+                </span>
+                <label htmlFor={`answer-${i}`} className="flex-1 pt-1.5 text-[15.5px] leading-snug font-semibold text-text">
+                  {q.q}
+                </label>
+                {voiceInput && (
+                  <DictateButton
+                    className="shrink-0 bg-surface"
+                    ready={voiceReady}
+                    disabled={saving}
+                    onError={setError}
+                    onText={(t) => setAnswers((a) => a.map((v, j) => (j === i ? appendDictation(v, t) : v)))}
+                  />
+                )}
+              </div>
+              <textarea
+                id={`answer-${i}`}
+                className="field min-h-24 resize-y"
+                placeholder="Type your answer here…"
+                value={answers[i] ?? ''}
+                onChange={(e) => setAnswers((a) => a.map((v, j) => (j === i ? e.target.value : v)))}
               />
-            )}
-          </div>
-          <textarea
-            className="input min-h-28"
-            aria-label={`Answer to question ${i + 1}`}
-            value={answers[i] ?? ''}
-            onChange={(e) => setAnswers((a) => a.map((v, j) => (j === i ? e.target.value : v)))}
-          />
-        </div>
-      ))}
+            </section>
+          )
+        })}
+      </div>
+
       {error && <ErrorBox message={error} />}
-      <div className="flex justify-end">
-        <button className="btn-primary" disabled={saving} onClick={submit}>
-          Submit and get feedback
+      <div className="flex flex-col items-center gap-2">
+        <button className="btn-primary min-h-11 px-6 text-[14.5px]" disabled={saving} onClick={submit}>
+          Submit answers for evaluation
         </button>
+        <p className="text-[13px] text-text-3">
+          {answered === station.postEncounterQuestions.length
+            ? 'All questions answered.'
+            : `${answered} of ${station.postEncounterQuestions.length} answered. Blank answers score nothing.`}
+        </p>
       </div>
     </div>
   )

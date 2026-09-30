@@ -1,9 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
+import { DIFFICULTIES } from '@shared/constants'
 import type { StationSummary } from '@shared/stationSchema'
 import type { SessionListItem } from '@shared/sessionTypes'
 import type { Navigate } from '../App'
-import { ErrorBox } from '../components/Notices'
-import { RATING_STYLE, SPECIALTY_LABEL, TYPE_LABEL } from '../lib/format'
+import { StationIllustration, TINT_BG, TINT_VAR, stationArt } from '../components/Illustrations'
+import { ErrorBox, NoteBox } from '../components/Notices'
+import { ChipGroup, Icon, LevelPill } from '../components/ui'
+import { SPECIALTY_LABEL, TYPE_LABEL } from '../lib/format'
+
+const LEVEL_LABEL: Record<string, string> = { foundation: 'Foundation', intermediate: 'Intermediate', advanced: 'Advanced' }
 
 export function Library({ navigate, modelReady }: { navigate: Navigate; modelReady: boolean }): React.JSX.Element {
   const [stations, setStations] = useState<StationSummary[]>([])
@@ -41,127 +46,125 @@ export function Library({ navigate, modelReady }: { navigate: Navigate; modelRea
     if (!res) return
     setImportMsg(
       res.ok
-        ? { ok: true, text: `Imported "${res.station.title}".` }
+        ? { ok: true, text: `Imported “${res.station.title}”.` }
         : { ok: false, text: `Import failed:\n${res.errors.slice(0, 8).join('\n')}` }
     )
     refresh()
   }
 
-  const select = (value: string, set: (v: string) => void, opts: [string, string][]): React.JSX.Element => (
-    <select className="input w-auto" value={value} onChange={(e) => set(e.target.value)}>
-      {opts.map(([v, l]) => (
-        <option key={v} value={v}>
-          {l}
-        </option>
-      ))}
-    </select>
-  )
-
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-8">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold">Stations</h1>
-          <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
-            Choose a fictional clinical station. You will get reading time, then a timed consultation with a simulated
-            patient, followed by questions and formative feedback.
-          </p>
+    <div className="mx-auto max-w-[1400px] space-y-6 px-8 pt-7 pb-14">
+      <div className="panel flex items-start justify-between gap-4 px-5 py-4">
+        <div className="min-w-0 flex-1 space-y-2.5">
+          <ChipGroup
+            label="Specialty"
+            value={specialty}
+            onChange={setSpecialty}
+            options={[['all', 'All'], ...(Object.entries(SPECIALTY_LABEL) as [string, string][])]}
+          />
+          <ChipGroup
+            label="Station type"
+            value={type}
+            onChange={setType}
+            options={[['all', 'All'], ...(Object.entries(TYPE_LABEL) as [string, string][])]}
+          />
+          <ChipGroup
+            label="Level"
+            value={difficulty}
+            onChange={setDifficulty}
+            options={[['all', 'All'], ...DIFFICULTIES.map((d): [string, string] => [d, LEVEL_LABEL[d]])]}
+          />
         </div>
-        <button className="btn-secondary shrink-0" onClick={importStation}>
-          Import station…
+        <button className="btn shrink-0" onClick={importStation}>
+          <Icon name="upload" className="h-4 w-4" /> Import station…
         </button>
       </div>
 
       {!modelReady && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
-          The local model isn't loaded yet.{' '}
-          <button className="font-medium underline" onClick={() => navigate({ name: 'model' })}>
-            Set up the model
-          </button>{' '}
-          to start a station.
-        </div>
+        <ErrorBox message="The local model isn’t loaded yet, so stations can’t start. Open Model in the sidebar to load it." />
       )}
-      {importMsg &&
-        (importMsg.ok ? (
-          <div className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-            {importMsg.text}
-          </div>
-        ) : (
-          <pre className="whitespace-pre-wrap">
-            <ErrorBox message={importMsg.text} />
-          </pre>
-        ))}
+      {importMsg && (importMsg.ok ? <NoteBox message={importMsg.text} /> : <ErrorBox message={importMsg.text} />)}
 
-      <div className="flex flex-wrap gap-2">
-        {select(specialty, setSpecialty, [['all', 'All specialties'], ...Object.entries(SPECIALTY_LABEL)])}
-        {select(type, setType, [['all', 'All station types'], ...Object.entries(TYPE_LABEL)])}
-        {select(difficulty, setDifficulty, [
-          ['all', 'All levels'],
-          ['foundation', 'Foundation'],
-          ['intermediate', 'Intermediate'],
-          ['advanced', 'Advanced']
-        ])}
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <ul className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
         {filtered.map((s) => {
           const b = best.get(s.id)
+          const { tint } = stationArt(s)
           return (
-            <div key={s.id} className="card flex flex-col gap-3">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h2 className="font-medium">{s.title}</h2>
-                  <div className="mt-1 flex flex-wrap gap-1.5">
-                    <span className="chip bg-brand-50 text-brand-700 dark:bg-stone-800 dark:text-brand-100">
-                      {SPECIALTY_LABEL[s.specialty]}
-                    </span>
-                    <span className="chip bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300">
-                      {TYPE_LABEL[s.stationType]}
-                    </span>
-                    <span className="chip bg-stone-100 text-stone-700 capitalize dark:bg-stone-800 dark:text-stone-300">
-                      {s.difficulty}
-                    </span>
-                    {s.sensitiveTopic && (
-                      <span className="chip bg-violet-100 text-violet-800 dark:bg-violet-950 dark:text-violet-300">
-                        Sensitive topic
+            <li
+              key={s.id}
+              className="group flex flex-col overflow-hidden rounded-2xl border border-line shadow-card transition-[box-shadow,transform] duration-200 ease-out focus-within:shadow-lift hover:-translate-y-0.5 hover:shadow-lift"
+            >
+              <div className={`relative flex min-h-48 flex-col px-4 pt-3 pb-3.5 ${TINT_BG[tint]}`}>
+                <div className="flex items-start justify-between gap-2 text-[12.5px] font-semibold text-text-2">
+                  <span className="flex flex-wrap gap-1.5">
+                    {b && (
+                      <span className={b.result === 'pass' ? 'pill-mint' : 'pill bg-surface text-text-2'} title="Best previous attempt">
+                        {b.result === 'pass' && <Icon name="check" className="h-3 w-3" />}
+                        Best {b.overallPercent}%
                       </span>
                     )}
-                    {!s.bundled && (
-                      <span className="chip bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300">Custom</span>
-                    )}
-                  </div>
-                </div>
-                {b && b.globalRating && (
-                  <span className={`chip shrink-0 ${RATING_STYLE[b.globalRating]}`} title="Best previous attempt">
-                    Best: {b.overallPercent}%{b.result === 'pass' ? ' · Passed' : ''}
+                    {s.sensitiveTopic && <span className="pill bg-surface text-text-2">Sensitive topic</span>}
+                    {!s.bundled && <span className="pill bg-surface text-text-2">Custom</span>}
                   </span>
-                )}
+                  <span className="num flex shrink-0 items-center gap-1">
+                    <Icon name="clock" className="h-3.5 w-3.5" />~{Math.round(s.timing.stationSec / 60)} min
+                  </span>
+                </div>
+                <div className="flex flex-1 items-center justify-center py-1">
+                  <StationIllustration station={s} className="h-28 w-32 transition-transform duration-300 ease-out group-hover:scale-105" />
+                </div>
+                <div className="flex min-h-[2.75em] items-end text-[17px] leading-snug">
+                  <h2 className="line-clamp-2 font-bold text-text">{s.title}</h2>
+                </div>
               </div>
-              <div className="text-xs text-stone-500">
-                {Math.round(s.timing.readingSec / 60)} min reading · {Math.round(s.timing.stationSec / 60)} min station
+              {/* A lighter step of the card's own hue, so each card reads as one pastel object. */}
+              <div
+                className="flex flex-1 flex-col gap-3 px-4 pt-3 pb-4"
+                style={{ background: `color-mix(in oklab, ${TINT_VAR[tint]} 42%, var(--surface))` }}
+              >
+                <p className="text-[12.5px] font-medium text-text-2">
+                  {SPECIALTY_LABEL[s.specialty]} · {TYPE_LABEL[s.stationType]}
+                </p>
+                <div className="mt-auto flex items-center justify-between gap-2">
+                  <LevelPill level={s.difficulty} />
+                  <span className="flex items-center gap-1.5">
+                    <button
+                      className="btn-icon h-8 min-h-8 w-8 shrink-0"
+                      title={s.bundled ? 'Duplicate & edit' : 'Edit'}
+                      aria-label={s.bundled ? `Duplicate and edit ${s.title}` : `Edit ${s.title}`}
+                      onClick={() => navigate({ name: 'editor', stationId: s.id, duplicate: s.bundled })}
+                    >
+                      <Icon name="edit" className="h-4 w-4 shrink-0" />
+                    </button>
+                    <button
+                      className="btn-primary btn-sm"
+                      disabled={!modelReady}
+                      onClick={() => navigate({ name: 'brief', stationId: s.id })}
+                    >
+                      Start station
+                    </button>
+                  </span>
+                </div>
               </div>
-              <div className="mt-auto flex gap-2">
-                <button
-                  className="btn-primary"
-                  disabled={!modelReady}
-                  onClick={() => navigate({ name: 'brief', stationId: s.id })}
-                >
-                  Start station
-                </button>
-                <button
-                  className="btn-secondary"
-                  onClick={() =>
-                    navigate({ name: 'editor', stationId: s.id, duplicate: s.bundled })
-                  }
-                >
-                  {s.bundled ? 'Duplicate & edit' : 'Edit'}
-                </button>
-              </div>
-            </div>
+            </li>
           )
         })}
-      </div>
-      {filtered.length === 0 && <p className="text-sm text-stone-500">No stations match these filters.</p>}
+      </ul>
+      {filtered.length === 0 && (
+        <p className="text-text-2">
+          No stations match these filters.{' '}
+          <button
+            className="link"
+            onClick={() => {
+              setSpecialty('all')
+              setType('all')
+              setDifficulty('all')
+            }}
+          >
+            Show all stations
+          </button>
+        </p>
+      )}
     </div>
   )
 }

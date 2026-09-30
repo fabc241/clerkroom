@@ -1,4 +1,4 @@
-import { app, BrowserWindow, session } from 'electron'
+import { app, BrowserWindow, nativeTheme, session } from 'electron'
 import { join } from 'path'
 import { fileURLToPath } from 'url'
 import { is } from '@electron-toolkit/utils'
@@ -25,6 +25,8 @@ function createWindow(): void {
     show: false,
     title: 'DigiPat',
     titleBarStyle: 'hiddenInset',
+    // Matches the sheet's paper so the window never flashes the wrong appearance before first paint.
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#161618' : '#fdfdfc',
     webPreferences: {
       preload: join(here, '../preload/index.cjs'),
       contextIsolation: true,
@@ -62,6 +64,7 @@ app.on('second-instance', () => {
 app.whenReady().then(() => {
   const userData = app.getPath('userData')
   const settings = new SettingsStore(join(userData, 'settings.json'))
+  nativeTheme.themeSource = settings.get().appearance
 
   // Deny every permission request (camera, geolocation, notifications...). The one exception is
   // the microphone, for the app's own window and only while the user has voice input turned on.

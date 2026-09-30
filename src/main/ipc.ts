@@ -1,4 +1,4 @@
-import { app, dialog, ipcMain, shell, systemPreferences, type BrowserWindow } from 'electron'
+import { app, dialog, ipcMain, nativeTheme, shell, systemPreferences, type BrowserWindow } from 'electron'
 import { readFileSync, writeFileSync } from 'fs'
 import type { ModelChoice, Settings } from '@shared/ipcTypes'
 import { MODEL_OPTIONS, modelManager, modelsDir } from './qvac/modelManager'
@@ -37,6 +37,8 @@ export function registerIpc(deps: {
     const next = settings.update(patch)
     // Turning voice input off releases the speech model's memory straight away.
     if (patch.voiceInput === false) void voiceManager.unload()
+    // The renderer follows prefers-color-scheme, which Electron derives from themeSource.
+    if (patch.appearance) nativeTheme.themeSource = next.appearance
     return next
   })
 

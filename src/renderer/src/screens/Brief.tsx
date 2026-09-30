@@ -3,6 +3,8 @@ import type { Settings } from '@shared/ipcTypes'
 import type { Station } from '@shared/stationSchema'
 import type { Navigate } from '../App'
 import { ErrorBox } from '../components/Notices'
+import { StationIllustration, TINT_BG, stationArt } from '../components/Illustrations'
+import { Icon, ProgressBar, Stepper } from '../components/ui'
 import { useCountdown } from '../components/useCountdown'
 import { formatClock } from '../lib/format'
 
@@ -22,7 +24,7 @@ export function Brief({
     window.digipat.getStation(stationId).then((r) => setStation(r?.station ?? null))
   }, [stationId])
 
-  if (!station) return <div className="p-8 text-sm text-stone-500">Loading station…</div>
+  if (!station) return <div className="p-10 text-text-3">Loading station…</div>
   return <BriefInner station={station} settings={settings} modelReady={modelReady} navigate={navigate} />
 }
 
@@ -56,34 +58,68 @@ function BriefInner({
 
   const remaining = useCountdown(reading, () => void enter(), reading > 0 && modelReady)
 
+  const minutes = Math.round(stationSec / 60)
+  const { tint } = stationArt(station)
+  const bullets = [
+    `You have ${minutes} minutes with the patient. Type what you would say, as you would say it.`,
+    ...(station.examFindings.length > 0 || station.investigations.length > 0
+      ? ['Examine the patient or request investigations from the side panel. Results are written by the station author.']
+      : []),
+    'The patient is simulated by a local AI and may occasionally respond imperfectly.'
+  ]
+
   return (
-    <div className="flex h-full items-center justify-center overflow-y-auto p-8">
-      <div className="card w-full max-w-2xl space-y-5 p-8">
-        <div className="flex items-center justify-between">
-          <div className="label">Reading time</div>
-          {reading > 0 && <div className="font-mono text-2xl tabular-nums">{formatClock(remaining)}</div>}
-        </div>
-        <h1 className="text-xl font-semibold">{station.title}</h1>
-        <div className="selectable rounded-lg bg-stone-50 p-4 text-sm leading-relaxed dark:bg-stone-950">
-          {station.candidateBrief}
-        </div>
-        <ul className="list-disc space-y-1 pl-5 text-xs text-stone-500">
-          <li>You will have {Math.round(stationSec / 60)} minutes. Type what you would say to the patient.</li>
-          {(station.examFindings.length > 0 || station.investigations.length > 0) && (
-            <li>Use the side panel to examine the patient or request investigations; results come from the station.</li>
-          )}
-          <li>The patient is simulated by a local AI. It may occasionally respond imperfectly.</li>
-        </ul>
-        {!modelReady && <ErrorBox message="The model is not loaded. Go to Model to load it first." />}
-        {error && <ErrorBox message={error} />}
-        <div className="flex justify-between">
-          <button className="btn-secondary" onClick={() => navigate({ name: 'library' })}>
-            Back
-          </button>
-          <button className="btn-primary" disabled={!modelReady || starting} onClick={enter}>
-            {reading > 0 ? 'Enter the station now' : 'Enter the station'}
-          </button>
-        </div>
+    <div className="h-full overflow-y-auto bg-canvas">
+      <div className="mx-auto flex min-h-full max-w-3xl flex-col justify-center gap-5 px-8 py-8">
+        <Stepper current={0} />
+        <article className="overflow-hidden rounded-3xl border border-line bg-surface shadow-card">
+          <div className={`flex items-end justify-between gap-6 px-8 pt-6 pb-5 ${TINT_BG[tint]}`}>
+            <div className="min-w-0 pb-1">
+              <h1 className="page-title text-[26px]">{station.title}</h1>
+              <p className="mt-1 text-[13.5px] font-medium text-text-2">
+                {station.patient.name}, {station.patient.age} · {minutes} minute consultation
+              </p>
+            </div>
+            <StationIllustration station={station} className="h-28 w-32 shrink-0" />
+          </div>
+          <div className="space-y-6 px-8 py-7">
+            {reading > 0 && (
+              <div className="flex items-center gap-4 rounded-2xl bg-surface-2 px-4 py-3 ring-1 ring-line ring-inset">
+                <Icon name="clock" className="h-5 w-5 shrink-0 text-text-2" />
+                <div className="flex-1">
+                  <div className="flex items-baseline justify-between">
+                    <span className="field-label">Reading time</span>
+                    <span className="num text-[22px] font-bold text-text">{formatClock(remaining)}</span>
+                  </div>
+                  <ProgressBar className="mt-1.5" value={((reading - remaining) / reading) * 100} />
+                </div>
+              </div>
+            )}
+            <section>
+              <h2 className="section-title mb-2">Your task</h2>
+              <p className="selectable max-w-[65ch] text-[17px] leading-[1.65] text-text">{station.candidateBrief}</p>
+            </section>
+            <ul className="space-y-2 text-[14px] text-text-2">
+              {bullets.map((b) => (
+                <li key={b} className="flex gap-2.5">
+                  <Icon name="check-circle" className="mt-0.5 h-4 w-4 shrink-0 text-good" />
+                  {b}
+                </li>
+              ))}
+            </ul>
+            {!modelReady && <ErrorBox message="The model is not loaded. Go back and open Model to load it first." />}
+            {error && <ErrorBox message={error} />}
+          </div>
+          <div className="flex items-center justify-between gap-4 border-t border-line bg-surface-2 px-8 py-4">
+            <button className="btn" onClick={() => navigate({ name: 'library' })}>
+              Back to stations
+            </button>
+            <button className="btn-primary min-h-10 px-5" disabled={!modelReady || starting} onClick={enter}>
+              {reading > 0 ? 'Start the consultation now' : 'Start the consultation'}
+              <Icon name="arrow-right" className="h-4 w-4" />
+            </button>
+          </div>
+        </article>
       </div>
     </div>
   )

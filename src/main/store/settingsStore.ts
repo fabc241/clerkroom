@@ -1,5 +1,5 @@
 import { existsSync } from 'fs'
-import type { Settings } from '@shared/ipcTypes'
+import type { Appearance, Settings } from '@shared/ipcTypes'
 import { readJson, writeJson } from './jsonFiles'
 
 const DEFAULTS: Settings = {
@@ -7,8 +7,11 @@ const DEFAULTS: Settings = {
   model: 'medpsy-4b-q4',
   stationSecondsOverride: null,
   skipReadingTime: false,
-  voiceInput: false
+  voiceInput: false,
+  appearance: 'system'
 }
+
+const APPEARANCES: Appearance[] = ['system', 'light', 'dark']
 
 export class SettingsStore {
   private cache: Settings
@@ -26,6 +29,7 @@ export class SettingsStore {
     const clean = Object.fromEntries(
       Object.entries(patch).filter(([k]) => allowed.includes(k as keyof Settings))
     ) as Partial<Settings>
+    if (clean.appearance !== undefined && !APPEARANCES.includes(clean.appearance)) delete clean.appearance
     this.cache = { ...this.cache, ...clean }
     writeJson(this.path, this.cache)
     return this.get()

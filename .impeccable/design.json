@@ -1,0 +1,1409 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T16:23:54.963Z",
+  "title": "Design System: DigiPat",
+  "extensions": {
+    "colorMeta": {
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Cool Canvas",
+        "canonical": "#f4f6f9",
+        "oklch": "oklch(97.2% 0.005 258.3)",
+        "appearance": "light",
+        "cssVar": "--canvas",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242527",
+          "#404244",
+          "#606164",
+          "#818285",
+          "#a3a5a8",
+          "#c7c9cc",
+          "#edeff1"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Panel White",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "appearance": "light",
+        "cssVar": "--surface",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "surface-2": {
+        "role": "neutral",
+        "displayName": "Soft Well",
+        "canonical": "#f6f8fb",
+        "oklch": "oklch(97.8% 0.005 258.3)",
+        "appearance": "light",
+        "cssVar": "--surface-2",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242527",
+          "#404244",
+          "#606164",
+          "#818285",
+          "#a3a5a8",
+          "#c7c9cc",
+          "#edeff1"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e2e7ee",
+        "oklch": "oklch(92.6% 0.011 256.7)",
+        "appearance": "light",
+        "cssVar": "--line",
+        "tonalRamp": [
+          "#080b10",
+          "#22252a",
+          "#3e4248",
+          "#5d6268",
+          "#7e8389",
+          "#a1a5ac",
+          "#c5cad0",
+          "#eaeff6"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Firm Line",
+        "canonical": "#cbd3de",
+        "oklch": "oklch(86.4% 0.018 256.3)",
+        "appearance": "light",
+        "cssVar": "--line-strong",
+        "tonalRamp": [
+          "#070b13",
+          "#20262e",
+          "#3c434b",
+          "#5b626b",
+          "#7c838d",
+          "#9ea6b0",
+          "#c2cad5",
+          "#e7effb"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Navy Ink",
+        "canonical": "#1b2232",
+        "oklch": "oklch(25.3% 0.032 265.9)",
+        "appearance": "light",
+        "cssVar": "--text",
+        "tonalRamp": [
+          "#050a19",
+          "#1e2535",
+          "#3a4254",
+          "#596174",
+          "#798296",
+          "#9ca5ba",
+          "#bfc9df",
+          "#e4efff"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Slate Ink",
+        "canonical": "#4a5467",
+        "oklch": "oklch(44.5% 0.034 263.2)",
+        "appearance": "light",
+        "cssVar": "--text-2",
+        "tonalRamp": [
+          "#050b19",
+          "#1c2536",
+          "#394254",
+          "#576175",
+          "#788397",
+          "#9aa5bb",
+          "#becae0",
+          "#e3efff"
+        ]
+      },
+      "text-3": {
+        "role": "neutral",
+        "displayName": "Quiet Ink",
+        "canonical": "#636c7e",
+        "oklch": "oklch(53.0% 0.030 264.3)",
+        "appearance": "light",
+        "cssVar": "--text-3",
+        "tonalRamp": [
+          "#050b18",
+          "#1e2534",
+          "#3a4253",
+          "#596173",
+          "#798395",
+          "#9ca5b9",
+          "#bfc9de",
+          "#e4efff"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Consulting Navy",
+        "canonical": "#1c2331",
+        "oklch": "oklch(25.6% 0.028 263.9)",
+        "appearance": "light",
+        "cssVar": "--accent",
+        "tonalRamp": [
+          "#060b17",
+          "#1e2533",
+          "#3a4252",
+          "#596172",
+          "#7a8394",
+          "#9ca5b8",
+          "#c0c9dc",
+          "#e5efff"
+        ]
+      },
+      "on-accent": {
+        "role": "primary",
+        "displayName": "On Navy",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "appearance": "light",
+        "cssVar": "--on-accent",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "focus": {
+        "role": "primary",
+        "displayName": "Focus Blue",
+        "canonical": "#3a6fd8",
+        "oklch": "oklch(56.3% 0.171 262.2)",
+        "appearance": "light",
+        "cssVar": "--focus",
+        "tonalRamp": [
+          "#00003c",
+          "#011d5e",
+          "#1c3e81",
+          "#3a5fa5",
+          "#5a81ca",
+          "#7ca4f0",
+          "#9fc9ff",
+          "#c3efff"
+        ]
+      },
+      "tint-sky": {
+        "role": "tertiary",
+        "displayName": "Sky Tint",
+        "canonical": "#dcebf6",
+        "oklch": "oklch(93.2% 0.022 239.4)",
+        "appearance": "light",
+        "cssVar": "--tint-sky",
+        "tonalRamp": [
+          "#040c13",
+          "#1b272f",
+          "#38444d",
+          "#56636d",
+          "#77848e",
+          "#99a7b2",
+          "#bdcbd6",
+          "#e2f1fc"
+        ]
+      },
+      "tint-mint": {
+        "role": "tertiary",
+        "displayName": "Mint Tint",
+        "canonical": "#d6eee0",
+        "oklch": "oklch(92.8% 0.031 160.2)",
+        "appearance": "light",
+        "cssVar": "--tint-mint",
+        "tonalRamp": [
+          "#010f07",
+          "#172a20",
+          "#33473c",
+          "#52675b",
+          "#73887c",
+          "#95ab9e",
+          "#b8d0c2",
+          "#ddf5e7"
+        ]
+      },
+      "tint-butter": {
+        "role": "tertiary",
+        "displayName": "Butter Tint",
+        "canonical": "#faefcb",
+        "oklch": "oklch(95.2% 0.048 93.0)",
+        "appearance": "light",
+        "cssVar": "--tint-butter",
+        "tonalRamp": [
+          "#120a00",
+          "#2d2405",
+          "#4b4123",
+          "#6b6141",
+          "#8c8261",
+          "#afa583",
+          "#d4c9a6",
+          "#f9eeca"
+        ]
+      },
+      "tint-rose": {
+        "role": "tertiary",
+        "displayName": "Rose Tint",
+        "canonical": "#f7dddb",
+        "oklch": "oklch(91.8% 0.029 23.0)",
+        "appearance": "light",
+        "cssVar": "--tint-rose",
+        "tonalRamp": [
+          "#160606",
+          "#321f1e",
+          "#503c3b",
+          "#715b59",
+          "#937c7a",
+          "#b79e9d",
+          "#dcc2c0",
+          "#ffe7e5"
+        ]
+      },
+      "tint-peach": {
+        "role": "tertiary",
+        "displayName": "Peach Tint",
+        "canonical": "#fbe5d2",
+        "oklch": "oklch(93.5% 0.035 63.2)",
+        "appearance": "light",
+        "cssVar": "--tint-peach",
+        "tonalRamp": [
+          "#150700",
+          "#312112",
+          "#503e2f",
+          "#705d4d",
+          "#927e6d",
+          "#b5a18f",
+          "#dac5b2",
+          "#ffead7"
+        ]
+      },
+      "tint-lilac": {
+        "role": "tertiary",
+        "displayName": "Lilac Tint",
+        "canonical": "#e6e2f6",
+        "oklch": "oklch(92.2% 0.027 295.0)",
+        "appearance": "light",
+        "cssVar": "--tint-lilac",
+        "tonalRamp": [
+          "#0c0915",
+          "#262231",
+          "#433f4f",
+          "#625e6f",
+          "#837f91",
+          "#a6a2b5",
+          "#cac6da",
+          "#efebff"
+        ]
+      },
+      "tint-slate": {
+        "role": "tertiary",
+        "displayName": "Slate Tint",
+        "canonical": "#dde5ee",
+        "oklch": "oklch(91.8% 0.015 251.2)",
+        "appearance": "light",
+        "cssVar": "--tint-slate",
+        "tonalRamp": [
+          "#070c11",
+          "#20262c",
+          "#3c434a",
+          "#5b626a",
+          "#7c838b",
+          "#9ea6ae",
+          "#c2cad3",
+          "#e7eff9"
+        ]
+      },
+      "pill-mint-bg": {
+        "role": "tertiary",
+        "displayName": "Foundation Pill",
+        "canonical": "#cdebd8",
+        "oklch": "oklch(91.3% 0.041 157.7)",
+        "appearance": "light",
+        "cssVar": "--pill-mint-bg",
+        "tonalRamp": [
+          "#001005",
+          "#122b1d",
+          "#2f493a",
+          "#4e6958",
+          "#6f8a79",
+          "#91ad9b",
+          "#b4d2bf",
+          "#d9f7e4"
+        ]
+      },
+      "pill-mint-text": {
+        "role": "tertiary",
+        "displayName": "Foundation Pill Ink",
+        "canonical": "#1d6a41",
+        "oklch": "oklch(46.7% 0.100 155.5)",
+        "appearance": "light",
+        "cssVar": "--pill-mint-text",
+        "tonalRamp": [
+          "#001500",
+          "#00320d",
+          "#00512a",
+          "#267248",
+          "#4b9468",
+          "#6fb88a",
+          "#93ddad",
+          "#b8ffd2"
+        ]
+      },
+      "pill-butter-bg": {
+        "role": "tertiary",
+        "displayName": "Intermediate Pill",
+        "canonical": "#fae4a6",
+        "oklch": "oklch(92.2% 0.082 90.8)",
+        "appearance": "light",
+        "cssVar": "--pill-butter-bg",
+        "tonalRamp": [
+          "#180600",
+          "#342200",
+          "#523f00",
+          "#735f22",
+          "#958045",
+          "#b8a367",
+          "#ddc88b",
+          "#ffedaf"
+        ]
+      },
+      "pill-butter-text": {
+        "role": "tertiary",
+        "displayName": "Intermediate Pill Ink",
+        "canonical": "#6e4a00",
+        "oklch": "oklch(43.8% 0.092 76.9)",
+        "appearance": "light",
+        "cssVar": "--pill-butter-text",
+        "tonalRamp": [
+          "#1e0100",
+          "#3d1c00",
+          "#5d3a00",
+          "#7e5919",
+          "#a17b3e",
+          "#c69e61",
+          "#ebc284",
+          "#ffe7a8"
+        ]
+      },
+      "pill-rose-bg": {
+        "role": "tertiary",
+        "displayName": "Advanced Pill",
+        "canonical": "#f6cbc7",
+        "oklch": "oklch(87.8% 0.049 24.4)",
+        "appearance": "light",
+        "cssVar": "--pill-rose-bg",
+        "tonalRamp": [
+          "#1c0203",
+          "#3a1b19",
+          "#5a3835",
+          "#7b5653",
+          "#9e7774",
+          "#c29a96",
+          "#e8bdb9",
+          "#ffe2de"
+        ]
+      },
+      "pill-rose-text": {
+        "role": "tertiary",
+        "displayName": "Advanced Pill Ink",
+        "canonical": "#96271e",
+        "oklch": "oklch(44.9% 0.148 29.0)",
+        "appearance": "light",
+        "cssVar": "--pill-rose-text",
+        "tonalRamp": [
+          "#2d0000",
+          "#510000",
+          "#752018",
+          "#9a4237",
+          "#c06457",
+          "#e68779",
+          "#ffab9c",
+          "#ffd0c0"
+        ]
+      },
+      "good": {
+        "role": "semantic",
+        "displayName": "Pass Green",
+        "canonical": "#23875a",
+        "oklch": "oklch(55.5% 0.115 159.0)",
+        "appearance": "light",
+        "cssVar": "--good",
+        "tonalRamp": [
+          "#001600",
+          "#00340d",
+          "#00532a",
+          "#007449",
+          "#379769",
+          "#5ebb8b",
+          "#83e0ae",
+          "#a9ffd3"
+        ]
+      },
+      "warn": {
+        "role": "semantic",
+        "displayName": "Borderline Amber",
+        "canonical": "#9a6700",
+        "oklch": "oklch(55.4% 0.117 75.0)",
+        "appearance": "light",
+        "cssVar": "--warn",
+        "tonalRamp": [
+          "#240000",
+          "#441500",
+          "#653500",
+          "#875500",
+          "#ab7720",
+          "#d09a49",
+          "#f6be6e",
+          "#ffe393"
+        ]
+      },
+      "bad": {
+        "role": "semantic",
+        "displayName": "Fail Red",
+        "canonical": "#c23b33",
+        "oklch": "oklch(55.0% 0.173 27.7)",
+        "appearance": "light",
+        "cssVar": "--bad",
+        "tonalRamp": [
+          "#2d0000",
+          "#510000",
+          "#751f1a",
+          "#9a4239",
+          "#c06359",
+          "#e7867b",
+          "#ffaa9e",
+          "#ffcfc2"
+        ]
+      },
+      "ill-line": {
+        "role": "neutral",
+        "displayName": "Illustration Outline",
+        "canonical": "#2b3346",
+        "oklch": "oklch(32.2% 0.036 266.7)",
+        "appearance": "light",
+        "cssVar": "--ill-line",
+        "tonalRamp": [
+          "#050a1a",
+          "#1d2537",
+          "#394255",
+          "#586176",
+          "#798298",
+          "#9ba5bc",
+          "#bfc9e1",
+          "#e4efff"
+        ]
+      },
+      "room-sky": {
+        "role": "neutral",
+        "displayName": "Room Sky",
+        "canonical": "#cfe5f0",
+        "oklch": "oklch(90.9% 0.028 229.2)",
+        "appearance": "light",
+        "cssVar": "--room-sky",
+        "tonalRamp": [
+          "#010d14",
+          "#162830",
+          "#33454e",
+          "#51656e",
+          "#728690",
+          "#94a9b3",
+          "#b7cdd8",
+          "#dcf3fe"
+        ]
+      },
+      "room-floor": {
+        "role": "neutral",
+        "displayName": "Room Floor",
+        "canonical": "#b5cfdc",
+        "oklch": "oklch(83.9% 0.033 229.3)",
+        "appearance": "light",
+        "cssVar": "--room-floor",
+        "tonalRamp": [
+          "#000d16",
+          "#122832",
+          "#2f4650",
+          "#4e6571",
+          "#6e8793",
+          "#90aab6",
+          "#b4cedb",
+          "#d9f3ff"
+        ]
+      },
+      "canvas-dark": {
+        "role": "neutral",
+        "displayName": "Cool Canvas (Dark)",
+        "canonical": "#1f252c",
+        "oklch": "oklch(26.2% 0.016 252.4)",
+        "appearance": "dark",
+        "cssVar": "--canvas",
+        "tonalRamp": [
+          "#070c12",
+          "#20262d",
+          "#3c434a",
+          "#5b626a",
+          "#7c838c",
+          "#9ea6af",
+          "#c2cad3",
+          "#e7eff9"
+        ]
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Panel White (Dark)",
+        "canonical": "#272e37",
+        "oklch": "oklch(29.8% 0.019 254.8)",
+        "appearance": "dark",
+        "cssVar": "--surface",
+        "tonalRamp": [
+          "#060c13",
+          "#1f262e",
+          "#3b434c",
+          "#5a626c",
+          "#7b838e",
+          "#9da6b1",
+          "#c1cad6",
+          "#e6effc"
+        ]
+      },
+      "surface-2-dark": {
+        "role": "neutral",
+        "displayName": "Soft Well (Dark)",
+        "canonical": "#2e363f",
+        "oklch": "oklch(32.9% 0.019 251.5)",
+        "appearance": "dark",
+        "cssVar": "--surface-2",
+        "tonalRamp": [
+          "#060c13",
+          "#1e262e",
+          "#3b434c",
+          "#59626c",
+          "#7a838e",
+          "#9ca6b1",
+          "#c0cad6",
+          "#e5f0fb"
+        ]
+      },
+      "line-dark": {
+        "role": "neutral",
+        "displayName": "Hairline (Dark)",
+        "canonical": "#37404b",
+        "oklch": "oklch(36.8% 0.022 253.6)",
+        "appearance": "dark",
+        "cssVar": "--line",
+        "tonalRamp": [
+          "#050c14",
+          "#1d2630",
+          "#3a434e",
+          "#59626e",
+          "#798390",
+          "#9ca6b3",
+          "#bfcad8",
+          "#e4f0fe"
+        ]
+      },
+      "line-strong-dark": {
+        "role": "neutral",
+        "displayName": "Firm Line (Dark)",
+        "canonical": "#47525f",
+        "oklch": "oklch(43.4% 0.026 252.7)",
+        "appearance": "dark",
+        "cssVar": "--line-strong",
+        "tonalRamp": [
+          "#040c16",
+          "#1c2631",
+          "#384350",
+          "#576270",
+          "#788492",
+          "#9aa6b5",
+          "#becbda",
+          "#e3f0ff"
+        ]
+      },
+      "text-dark": {
+        "role": "neutral",
+        "displayName": "Navy Ink (Dark)",
+        "canonical": "#eef1f5",
+        "oklch": "oklch(95.7% 0.006 255.5)",
+        "appearance": "dark",
+        "cssVar": "--text",
+        "tonalRamp": [
+          "#090b0e",
+          "#232528",
+          "#404245",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9cd",
+          "#eceff3"
+        ]
+      },
+      "text-2-dark": {
+        "role": "neutral",
+        "displayName": "Slate Ink (Dark)",
+        "canonical": "#c3c9d3",
+        "oklch": "oklch(83.4% 0.015 260.7)",
+        "appearance": "dark",
+        "cssVar": "--text-2",
+        "tonalRamp": [
+          "#080b12",
+          "#21252d",
+          "#3d424a",
+          "#5c626a",
+          "#7d838c",
+          "#a0a5af",
+          "#c3c9d3",
+          "#e9eff9"
+        ]
+      },
+      "text-3-dark": {
+        "role": "neutral",
+        "displayName": "Quiet Ink (Dark)",
+        "canonical": "#9aa3b0",
+        "oklch": "oklch(71.2% 0.022 257.5)",
+        "appearance": "dark",
+        "cssVar": "--text-3",
+        "tonalRamp": [
+          "#060b14",
+          "#1e2630",
+          "#3b434e",
+          "#5a626e",
+          "#7a8390",
+          "#9da6b3",
+          "#c1cad7",
+          "#e6effd"
+        ]
+      },
+      "accent-dark": {
+        "role": "primary",
+        "displayName": "Consulting Navy (Dark)",
+        "canonical": "#eef1f5",
+        "oklch": "oklch(95.7% 0.006 255.5)",
+        "appearance": "dark",
+        "cssVar": "--accent",
+        "tonalRamp": [
+          "#090b0e",
+          "#232528",
+          "#404245",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9cd",
+          "#eceff3"
+        ]
+      },
+      "on-accent-dark": {
+        "role": "primary",
+        "displayName": "On Navy (Dark)",
+        "canonical": "#1f252c",
+        "oklch": "oklch(26.2% 0.016 252.4)",
+        "appearance": "dark",
+        "cssVar": "--on-accent",
+        "tonalRamp": [
+          "#070c12",
+          "#20262d",
+          "#3c434a",
+          "#5b626a",
+          "#7c838c",
+          "#9ea6af",
+          "#c2cad3",
+          "#e7eff9"
+        ]
+      },
+      "focus-dark": {
+        "role": "primary",
+        "displayName": "Focus Blue (Dark)",
+        "canonical": "#7aa7ff",
+        "oklch": "oklch(73.3% 0.137 262.9)",
+        "appearance": "dark",
+        "cssVar": "--focus",
+        "tonalRamp": [
+          "#00003c",
+          "#021d5e",
+          "#1d3d81",
+          "#3b5ea5",
+          "#5b81ca",
+          "#7da4f0",
+          "#a0c9ff",
+          "#c4efff"
+        ]
+      },
+      "tint-sky-dark": {
+        "role": "tertiary",
+        "displayName": "Sky Tint (Dark)",
+        "canonical": "#2c4a60",
+        "oklch": "oklch(39.6% 0.052 241.6)",
+        "appearance": "dark",
+        "cssVar": "--tint-sky",
+        "tonalRamp": [
+          "#000c1f",
+          "#09283c",
+          "#28455b",
+          "#46657c",
+          "#67879f",
+          "#89aac3",
+          "#accee8",
+          "#d1f4ff"
+        ]
+      },
+      "tint-mint-dark": {
+        "role": "tertiary",
+        "displayName": "Mint Tint (Dark)",
+        "canonical": "#2d5344",
+        "oklch": "oklch(40.9% 0.051 166.6)",
+        "appearance": "dark",
+        "cssVar": "--tint-mint",
+        "tonalRamp": [
+          "#001107",
+          "#042d20",
+          "#254b3c",
+          "#446b5b",
+          "#658c7c",
+          "#87b09e",
+          "#abd4c2",
+          "#cffae7"
+        ]
+      },
+      "tint-butter-dark": {
+        "role": "tertiary",
+        "displayName": "Butter Tint (Dark)",
+        "canonical": "#57502f",
+        "oklch": "oklch(42.9% 0.050 97.7)",
+        "appearance": "dark",
+        "cssVar": "--tint-butter",
+        "tonalRamp": [
+          "#110a00",
+          "#2c2504",
+          "#494222",
+          "#696240",
+          "#8a8360",
+          "#ada682",
+          "#d2caa5",
+          "#f7efc9"
+        ]
+      },
+      "tint-rose-dark": {
+        "role": "tertiary",
+        "displayName": "Rose Tint (Dark)",
+        "canonical": "#5b3639",
+        "oklch": "oklch(37.9% 0.053 14.7)",
+        "appearance": "dark",
+        "cssVar": "--tint-rose",
+        "tonalRamp": [
+          "#1c0105",
+          "#3b191d",
+          "#5b3639",
+          "#7d5558",
+          "#a07678",
+          "#c4989a",
+          "#eabcbe",
+          "#ffe1e3"
+        ]
+      },
+      "tint-peach-dark": {
+        "role": "tertiary",
+        "displayName": "Peach Tint (Dark)",
+        "canonical": "#5d4432",
+        "oklch": "oklch(40.9% 0.045 56.9)",
+        "appearance": "dark",
+        "cssVar": "--tint-peach",
+        "tonalRamp": [
+          "#180500",
+          "#351f0e",
+          "#543c2a",
+          "#755b48",
+          "#987c68",
+          "#bc9f8a",
+          "#e1c2ad",
+          "#ffe8d2"
+        ]
+      },
+      "tint-lilac-dark": {
+        "role": "tertiary",
+        "displayName": "Lilac Tint (Dark)",
+        "canonical": "#443d63",
+        "oklch": "oklch(38.4% 0.064 291.5)",
+        "appearance": "dark",
+        "cssVar": "--tint-lilac",
+        "tonalRamp": [
+          "#0d0423",
+          "#261e41",
+          "#423b61",
+          "#615b83",
+          "#827ca6",
+          "#a59ecb",
+          "#c9c2f0",
+          "#eee8ff"
+        ]
+      },
+      "tint-slate-dark": {
+        "role": "tertiary",
+        "displayName": "Slate Tint (Dark)",
+        "canonical": "#35434f",
+        "oklch": "oklch(37.5% 0.027 244.5)",
+        "appearance": "dark",
+        "cssVar": "--tint-slate",
+        "tonalRamp": [
+          "#030c16",
+          "#192732",
+          "#364450",
+          "#546370",
+          "#758592",
+          "#97a7b5",
+          "#bbccda",
+          "#e0f1ff"
+        ]
+      },
+      "pill-mint-bg-dark": {
+        "role": "tertiary",
+        "displayName": "Foundation Pill (Dark)",
+        "canonical": "#1f4a33",
+        "oklch": "oklch(37.1% 0.063 157.8)",
+        "appearance": "dark",
+        "cssVar": "--pill-mint-bg",
+        "tonalRamp": [
+          "#001202",
+          "#002e19",
+          "#214c35",
+          "#416c53",
+          "#628e74",
+          "#84b196",
+          "#a8d6ba",
+          "#ccfcdf"
+        ]
+      },
+      "pill-mint-text-dark": {
+        "role": "tertiary",
+        "displayName": "Foundation Pill Ink (Dark)",
+        "canonical": "#9fe3bd",
+        "oklch": "oklch(86.0% 0.087 159.4)",
+        "appearance": "dark",
+        "cssVar": "--pill-mint-text",
+        "tonalRamp": [
+          "#001400",
+          "#003115",
+          "#004f31",
+          "#2d704f",
+          "#509270",
+          "#73b692",
+          "#97dbb5",
+          "#bcffda"
+        ]
+      },
+      "pill-butter-bg-dark": {
+        "role": "tertiary",
+        "displayName": "Intermediate Pill (Dark)",
+        "canonical": "#4d3c10",
+        "oklch": "oklch(36.5% 0.064 87.1)",
+        "appearance": "dark",
+        "cssVar": "--pill-butter-bg",
+        "tonalRamp": [
+          "#160700",
+          "#322200",
+          "#513f14",
+          "#715f35",
+          "#938055",
+          "#b6a377",
+          "#dbc79a",
+          "#ffedbe"
+        ]
+      },
+      "pill-butter-text-dark": {
+        "role": "tertiary",
+        "displayName": "Intermediate Pill Ink (Dark)",
+        "canonical": "#f5d27a",
+        "oklch": "oklch(87.5% 0.114 88.3)",
+        "appearance": "dark",
+        "cssVar": "--pill-butter-text",
+        "tonalRamp": [
+          "#1e0200",
+          "#3b1d00",
+          "#5b3c00",
+          "#7c5c00",
+          "#9f7e1e",
+          "#c3a148",
+          "#e8c56d",
+          "#ffeb92"
+        ]
+      },
+      "pill-rose-bg-dark": {
+        "role": "tertiary",
+        "displayName": "Advanced Pill (Dark)",
+        "canonical": "#55231f",
+        "oklch": "oklch(32.7% 0.075 26.6)",
+        "appearance": "dark",
+        "cssVar": "--pill-rose-bg",
+        "tonalRamp": [
+          "#230000",
+          "#431210",
+          "#64312c",
+          "#87504a",
+          "#ab716a",
+          "#d0938c",
+          "#f7b7af",
+          "#ffdcd4"
+        ]
+      },
+      "pill-rose-text-dark": {
+        "role": "tertiary",
+        "displayName": "Advanced Pill Ink (Dark)",
+        "canonical": "#ffb4ac",
+        "oklch": "oklch(83.9% 0.089 25.9)",
+        "appearance": "dark",
+        "cssVar": "--pill-rose-text",
+        "tonalRamp": [
+          "#260000",
+          "#470c0c",
+          "#692c28",
+          "#8d4c46",
+          "#b26d66",
+          "#d78f88",
+          "#feb3ab",
+          "#ffd8d0"
+        ]
+      },
+      "good-dark": {
+        "role": "semantic",
+        "displayName": "Pass Green (Dark)",
+        "canonical": "#5ccf94",
+        "oklch": "oklch(77.2% 0.136 158.4)",
+        "appearance": "dark",
+        "cssVar": "--good",
+        "tonalRamp": [
+          "#001600",
+          "#00340a",
+          "#005428",
+          "#007546",
+          "#329867",
+          "#5abc89",
+          "#80e1ac",
+          "#a6ffd0"
+        ]
+      },
+      "warn-dark": {
+        "role": "semantic",
+        "displayName": "Borderline Amber (Dark)",
+        "canonical": "#e3b341",
+        "oklch": "oklch(79.0% 0.139 85.2)",
+        "appearance": "dark",
+        "cssVar": "--warn",
+        "tonalRamp": [
+          "#200000",
+          "#3e1b00",
+          "#5e3a00",
+          "#805a00",
+          "#a37c11",
+          "#c79f41",
+          "#edc368",
+          "#ffe98d"
+        ]
+      },
+      "bad-dark": {
+        "role": "semantic",
+        "displayName": "Fail Red (Dark)",
+        "canonical": "#ff8a80",
+        "oklch": "oklch(75.9% 0.144 26.1)",
+        "appearance": "dark",
+        "cssVar": "--bad",
+        "tonalRamp": [
+          "#2d0000",
+          "#510000",
+          "#751f1d",
+          "#9a413c",
+          "#c0635c",
+          "#e7867d",
+          "#ffaaa0",
+          "#ffcfc4"
+        ]
+      },
+      "ill-line-dark": {
+        "role": "neutral",
+        "displayName": "Illustration Outline (Dark)",
+        "canonical": "#e4e8ee",
+        "oklch": "oklch(93.0% 0.009 258.3)",
+        "appearance": "dark",
+        "cssVar": "--ill-line",
+        "tonalRamp": [
+          "#090b0f",
+          "#22252a",
+          "#3f4247",
+          "#5e6167",
+          "#7f8388",
+          "#a1a5ab",
+          "#c5c9cf",
+          "#ebeff5"
+        ]
+      },
+      "room-sky-dark": {
+        "role": "neutral",
+        "displayName": "Room Sky (Dark)",
+        "canonical": "#b9d4e1",
+        "oklch": "oklch(85.4% 0.034 228.4)",
+        "appearance": "dark",
+        "cssVar": "--room-sky",
+        "tonalRamp": [
+          "#000e16",
+          "#122832",
+          "#2e4650",
+          "#4d6571",
+          "#6e8793",
+          "#90aab6",
+          "#b3cedb",
+          "#d8f4ff"
+        ]
+      },
+      "room-floor-dark": {
+        "role": "neutral",
+        "displayName": "Room Floor (Dark)",
+        "canonical": "#a1bccb",
+        "oklch": "oklch(78.0% 0.036 232.2)",
+        "appearance": "dark",
+        "cssVar": "--room-floor",
+        "tonalRamp": [
+          "#000d18",
+          "#112834",
+          "#2e4652",
+          "#4d6573",
+          "#6d8795",
+          "#8faab8",
+          "#b3cedd",
+          "#d7f3ff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Score Numeral",
+        "purpose": "The score inside the evaluation gauge (38px); timers use the same treatment at 22px."
+      },
+      "headline": {
+        "displayName": "Page Title",
+        "purpose": "Page titles; 26px on the brief hero, 28px on onboarding."
+      },
+      "title": {
+        "displayName": "Section Title",
+        "purpose": "Panel and section titles; 15px on finding cards."
+      },
+      "card-title": {
+        "displayName": "Card Title",
+        "purpose": "Station card titles, clamped to two lines on the tint."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default UI and form text."
+      },
+      "reading": {
+        "displayName": "Reading",
+        "purpose": "Speech bubbles; examiner questions at 15.5px semibold; feedback summary at 15.5px/1.65, max 75ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field and filter labels, stepper steps, card meta; never a kicker above a heading."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Button labels; 12.5px on small buttons."
+      },
+      "pill": {
+        "displayName": "Pill",
+        "purpose": "Difficulty, result and fact pills."
+      }
+    },
+    "fonts": [
+      {
+        "family": "Plus Jakarta Sans",
+        "source": "@fontsource/plus-jakarta-sans (self-hosted, OFL)",
+        "weights": [
+          400,
+          500,
+          600,
+          700
+        ],
+        "reason": "Matches the user's reference images; the CSP blocks remote fonts."
+      }
+    ],
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 1px 2px rgb(20 28 45 / 0.06), 0 6px 18px -6px rgb(20 28 45 / 0.12)",
+        "purpose": "Panels, station cards, speech bubbles, result cards, the selected appearance segment."
+      },
+      {
+        "name": "lift",
+        "value": "0 2px 4px rgb(20 28 45 / 0.08), 0 14px 30px -10px rgb(20 28 45 / 0.22)",
+        "purpose": "Station card on hover or focus-within, with a 2px rise."
+      },
+      {
+        "name": "card-dark",
+        "value": "0 1px 2px rgb(0 0 0 / 0.3), 0 8px 20px -8px rgb(0 0 0 / 0.5)",
+        "purpose": "Card shadow in the dark appearance."
+      },
+      {
+        "name": "lift-dark",
+        "value": "0 2px 4px rgb(0 0 0 / 0.35), 0 16px 32px -10px rgb(0 0 0 / 0.6)",
+        "purpose": "Lift shadow in the dark appearance."
+      },
+      {
+        "name": "room",
+        "value": "0 1px 2px rgb(20 28 45 / 0.08), 0 6px 16px -6px rgb(20 28 45 / 0.18)",
+        "purpose": "Card shadow inside the always-light consulting room."
+      },
+      {
+        "name": "field-focus",
+        "value": "0 0 0 3px color-mix(in oklab, var(--focus) 20%, transparent)",
+        "purpose": "Field focus halo."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state",
+        "value": "140ms ease-out",
+        "purpose": "Button, chip and field colour and border transitions."
+      },
+      {
+        "name": "card-lift",
+        "value": "200ms ease-out",
+        "purpose": "Station card rise and shadow; illustration scale 300ms."
+      },
+      {
+        "name": "ease-settle",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Gauge sweep and rise-in."
+      },
+      {
+        "name": "gauge-sweep",
+        "value": "1400ms",
+        "purpose": "Score arc draws from zero once when feedback first arrives."
+      },
+      {
+        "name": "rise-in",
+        "value": "520ms, translateY(8px) to 0",
+        "purpose": "Finding cards staggered at 300/450/600/750ms; result caption at 1200ms."
+      },
+      {
+        "name": "typing",
+        "value": "1.1s ease-in-out infinite, 150ms stagger",
+        "purpose": "Typing and thinking dots."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Disables gauge sweep, rise-in and typing dots."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "short-window",
+        "value": "max-height: 700px",
+        "purpose": "Consulting-room scene drops to 128px."
+      },
+      {
+        "name": "xl",
+        "value": "1280px",
+        "purpose": "Appearance switch shows text labels."
+      },
+      {
+        "name": "card-column",
+        "value": "minmax(250px, 1fr)",
+        "purpose": "Station grid auto-fill column minimum."
+      }
+    ],
+    "appearance": {
+      "mechanism": "Light / Dark / System setting sets nativeTheme.themeSource in the main process; the stylesheet follows prefers-color-scheme.",
+      "roomScope": ".room keeps light tokens in both appearances; only room-sky and room-floor dim in dark."
+    },
+    "iconography": {
+      "style": "Line icons on a 24px grid, 1.5 stroke, round caps and joins, currentColor, rendered 14 to 18px."
+    },
+    "illustration": {
+      "style": "Hand-authored flat-outline SVG (no image generation was available); 2px round outline in ill-line, fixed friendly fills.",
+      "palette": [
+        "#e46d6b",
+        "#8db7e3",
+        "#9fc8ea",
+        "#8fd1a6",
+        "#6fbf8b",
+        "#f6c95b",
+        "#f3aaa2",
+        "#ffffff"
+      ],
+      "policy": "Sensitive-topic stations use neutral imagery, never means of self-harm."
+    },
+    "contrast": {
+      "measured": true,
+      "rule": "text and text-2 pass WCAG AA on every tint in both appearances; text-3 is for panels and the canvas only, never on tints."
+    },
+    "provenance": {
+      "world": "User-pinned reference world (four reference mock-ups), replacing the Examiner's Mark Sheet world.",
+      "finishReview": "ship",
+      "excluded": [
+        "src/renderer/src/dev/mockApi.ts (dev-only preview mock)"
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The navy pill: one per decision region (Start station, Submit answers, Try again).",
+      "html": "<button class=\"ds-btn-primary\">Start station</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:0.45rem;min-height:2.25rem;padding:0 0.95rem;border-radius:10px;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background-color 140ms ease-out,border-color 140ms ease-out,color 140ms ease-out;background:var(--accent, #1c2331);border:1px solid var(--accent, #1c2331);color:var(--on-accent, #ffffff);} .ds-btn-primary:hover{background:color-mix(in oklab, var(--accent, #1c2331) 86%, var(--focus, #3a6fd8));border-color:color-mix(in oklab, var(--accent, #1c2331) 86%, var(--focus, #3a6fd8));} .ds-btn-primary:focus-visible{outline:2px solid var(--focus, #3a6fd8);outline-offset:2px;} .ds-btn-primary:disabled{opacity:0.45;cursor:not-allowed;}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Quiet outline for every non-primary action.",
+      "html": "<button class=\"ds-btn\">Import station…</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.45rem;min-height:2.25rem;padding:0 0.95rem;border-radius:10px;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background-color 140ms ease-out,border-color 140ms ease-out,color 140ms ease-out;background:var(--surface, #ffffff);border:1px solid var(--line-strong, #cbd3de);color:var(--text, #1b2232);} .ds-btn:hover{background:var(--surface-2, #f6f8fb);border-color:color-mix(in oklab, var(--line-strong, #cbd3de) 60%, var(--text-3, #636c7e));} .ds-btn:focus-visible{outline:2px solid var(--focus, #3a6fd8);outline-offset:2px;}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Outlined destructive action with red label.",
+      "html": "<button class=\"ds-btn-danger\">Delete station</button>",
+      "css": ".ds-btn-danger{display:inline-flex;align-items:center;justify-content:center;gap:0.45rem;min-height:2.25rem;padding:0 0.95rem;border-radius:10px;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background-color 140ms ease-out,border-color 140ms ease-out,color 140ms ease-out;background:var(--surface, #ffffff);border:1px solid color-mix(in oklab, var(--bad, #c23b33) 45%, var(--line, #e2e7ee));color:var(--bad, #c23b33);} .ds-btn-danger:hover{background:color-mix(in oklab, var(--bad, #c23b33) 8%, var(--surface, #ffffff));border-color:var(--bad, #c23b33);} .ds-btn-danger:focus-visible{outline:2px solid var(--focus, #3a6fd8);outline-offset:2px;}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Inputs and answer textareas; focus-blue border and halo.",
+      "html": "<input class=\"ds-field\" placeholder=\"Type your answer here…\" />",
+      "css": ".ds-field{width:100%;border:1px solid var(--line-strong, #cbd3de);border-radius:10px;background:var(--surface, #ffffff);color:var(--text, #1b2232);padding:0.55rem 0.8rem;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;font-size:14.5px;line-height:1.5;outline:none;transition:border-color 140ms ease-out,box-shadow 140ms ease-out;} .ds-field::placeholder{color:var(--text-3, #636c7e);} .ds-field:focus{border-color:var(--focus, #3a6fd8);box-shadow:0 0 0 3px color-mix(in oklab, var(--focus, #3a6fd8) 20%, transparent);}"
+    },
+    {
+      "name": "Filter Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Single-choice filter row under a left label; selected chip fills navy.",
+      "html": "<div class=\"ds-chips\" role=\"radiogroup\" aria-label=\"Level\"><span class=\"ds-chips-label\">Level</span><button class=\"ds-chip ds-chip-on\" role=\"radio\" aria-checked=\"true\">All</button><button class=\"ds-chip\" role=\"radio\" aria-checked=\"false\">Foundation</button><button class=\"ds-chip\" role=\"radio\" aria-checked=\"false\">Advanced</button></div>",
+      "css": ".ds-chips{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;} .ds-chips-label{width:96px;font-size:12.5px;font-weight:600;color:var(--text-2, #4a5467);} .ds-chip{display:inline-flex;align-items:center;min-height:1.9rem;padding:0 0.8rem;border-radius:999px;border:1px solid var(--line-strong, #cbd3de);background:var(--surface, #ffffff);color:var(--text-2, #4a5467);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background-color 140ms ease-out,color 140ms ease-out,border-color 140ms ease-out;} .ds-chip:hover{color:var(--text, #1b2232);} .ds-chip:focus-visible{outline:2px solid var(--focus, #3a6fd8);outline-offset:2px;} .ds-chip-on,.ds-chip-on:hover{background:var(--accent, #1c2331);border-color:var(--accent, #1c2331);color:var(--on-accent, #ffffff);}"
+    },
+    {
+      "name": "Difficulty Pills",
+      "kind": "chip",
+      "refersTo": "pill-mint",
+      "description": "Foundation, Intermediate, Advanced; neutral pill for facts and the safety badge.",
+      "html": "<span class=\"ds-pill ds-pill-mint\">Foundation</span> <span class=\"ds-pill ds-pill-butter\">Intermediate</span> <span class=\"ds-pill ds-pill-rose\">Advanced</span> <span class=\"ds-pill ds-pill-neutral\">Pass mark 55%</span>",
+      "css": ".ds-pill{display:inline-flex;align-items:center;gap:0.3rem;border-radius:999px;padding:0.1rem 0.55rem;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;font-size:11.5px;font-weight:600;line-height:1.5;white-space:nowrap;} .ds-pill-mint{background:var(--pill-mint-bg, #cdebd8);color:var(--pill-mint-text, #1d6a41);} .ds-pill-butter{background:var(--pill-butter-bg, #fae4a6);color:var(--pill-butter-text, #6e4a00);} .ds-pill-rose{background:var(--pill-rose-bg, #f6cbc7);color:var(--pill-rose-text, #96271e);} .ds-pill-neutral{background:var(--surface-2, #f6f8fb);color:var(--text-2, #4a5467);border:1px solid var(--line, #e2e7ee);}"
+    },
+    {
+      "name": "Station Card",
+      "kind": "card",
+      "refersTo": "station-card",
+      "description": "Signature pastel case card: tint top with illustration, time and title; lighter band of the same hue below.",
+      "html": "<article class=\"ds-station\"><div class=\"ds-station-top\"><div class=\"ds-station-meta\"><span class=\"ds-station-badge\">Best 64%</span><span class=\"ds-station-time\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/></svg>~8 min</span></div><div class=\"ds-station-art\"><svg viewBox=\"0 0 120 100\" width=\"112\" height=\"92\" aria-hidden=\"true\"><path d=\"M60 88 C30 66 16 50 16 34 C16 22 26 14 38 14 C48 14 55 20 60 28 C65 20 72 14 82 14 C94 14 104 22 104 34 C104 50 90 66 60 88Z\" fill=\"#e46d6b\" stroke=\"var(--ill-line, #2b3346)\" stroke-width=\"2\" stroke-linejoin=\"round\"/></svg></div><h2 class=\"ds-station-title\">Chest pain</h2></div><div class=\"ds-station-band\"><p class=\"ds-station-kind\">Medicine · History</p><div class=\"ds-station-foot\"><span class=\"ds-pill-mint2\">Foundation</span><span class=\"ds-station-actions\"><button class=\"ds-icon-btn\" aria-label=\"Edit\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4\"/></svg></button><button class=\"ds-start\">Start station</button></span></div></div></article>",
+      "css": ".ds-station{width:270px;display:flex;flex-direction:column;overflow:hidden;border-radius:16px;border:1px solid var(--line, #e2e7ee);box-shadow:0 1px 2px rgb(20 28 45 / 0.06), 0 6px 18px -6px rgb(20 28 45 / 0.12);font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;transition:box-shadow 200ms ease-out,transform 200ms ease-out;} .ds-station:hover,.ds-station:focus-within{transform:translateY(-2px);box-shadow:0 2px 4px rgb(20 28 45 / 0.08), 0 14px 30px -10px rgb(20 28 45 / 0.22);} .ds-station-top{background:var(--tint-sky, #dcebf6);padding:12px 16px 14px;display:flex;flex-direction:column;min-height:192px;} .ds-station-meta{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--text-2, #4a5467);} .ds-station-time{display:inline-flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums;} .ds-station-badge{border-radius:999px;padding:0.1rem 0.55rem;font-size:11.5px;background:var(--surface, #ffffff);color:var(--text-2, #4a5467);} .ds-station-art{flex:1;display:flex;align-items:center;justify-content:center;transition:transform 300ms ease-out;} .ds-station:hover .ds-station-art{transform:scale(1.05);} .ds-station-title{margin:0;font-size:17px;font-weight:700;line-height:1.375;color:var(--text, #1b2232);} .ds-station-band{background:color-mix(in oklab, var(--tint-sky, #dcebf6) 42%, var(--surface, #ffffff));padding:12px 16px 16px;display:flex;flex-direction:column;gap:12px;} .ds-station-kind{margin:0;font-size:12.5px;font-weight:500;color:var(--text-2, #4a5467);} .ds-station-foot{display:flex;align-items:center;justify-content:space-between;} .ds-station-actions{display:flex;gap:6px;} .ds-pill-mint2{border-radius:999px;padding:0.1rem 0.55rem;font-size:11.5px;font-weight:600;background:var(--pill-mint-bg, #cdebd8);color:var(--pill-mint-text, #1d6a41);} .ds-icon-btn{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--line-strong, #cbd3de);background:var(--surface, #ffffff);color:var(--text, #1b2232);cursor:pointer;} .ds-start{min-height:1.9rem;padding:0 0.7rem;border-radius:8px;border:1px solid var(--accent, #1c2331);background:var(--accent, #1c2331);color:var(--on-accent, #ffffff);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;} .ds-start:focus-visible,.ds-icon-btn:focus-visible{outline:2px solid var(--focus, #3a6fd8);outline-offset:2px;}"
+    },
+    {
+      "name": "Speech Bubbles",
+      "kind": "custom",
+      "refersTo": "bubble-you",
+      "description": "The consultation as a conversation: doctor left in white, patient right in butter, tails pointing at the speaker.",
+      "html": "<div class=\"ds-room\"><div class=\"ds-turn\"><div class=\"ds-who\">You · 1:32</div><p class=\"ds-bubble ds-you\">I'm afraid the results aren't what we'd hoped for.</p></div><div class=\"ds-turn ds-right\"><div class=\"ds-who\">Tom · 1:53</div><p class=\"ds-bubble ds-them\">Right… go on.</p></div></div>",
+      "css": ".ds-room{background:var(--room-sky, #cfe5f0);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:16px;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;} .ds-turn{max-width:72%;} .ds-right{align-self:flex-end;text-align:right;} .ds-who{margin-bottom:4px;padding:0 4px;font-size:11.5px;font-weight:600;color:#4a5467;font-variant-numeric:tabular-nums;} .ds-bubble{position:relative;display:inline-block;margin:0;text-align:left;border-radius:16px;padding:10px 16px;font-size:15px;line-height:1.5;color:#1b2232;box-shadow:0 1px 2px rgb(20 28 45 / 0.08), 0 6px 16px -6px rgb(20 28 45 / 0.18);} .ds-you{background:#ffffff;} .ds-them{background:#faefcb;} .ds-bubble::after{content:'';position:absolute;bottom:-7px;width:14px;height:14px;background:inherit;transform:rotate(45deg);border-radius:0 0 4px 0;} .ds-you::after{left:22px;} .ds-them::after{right:22px;}"
+    },
+    {
+      "name": "Finding Card",
+      "kind": "card",
+      "refersTo": "finding-card",
+      "description": "Tinted evaluation section: mint went well, butter could be improved, rose key learning points, lilac practise next.",
+      "html": "<section class=\"ds-finding\"><h3 class=\"ds-finding-title\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"ds-good\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M8 12.5l3 3 5-6\"/></svg>What went well</h3><ul class=\"ds-finding-list\"><li>Introduces self and ensures privacy</li><li>Gives a warning shot before the news</li></ul></section>",
+      "css": ".ds-finding{background:var(--tint-mint, #d6eee0);border-radius:16px;padding:20px;font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;color:var(--text, #1b2232);animation:ds-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;} .ds-finding-title{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px;font-weight:700;line-height:1.3;} .ds-good{color:var(--good, #23875a);} .ds-finding-list{margin:0;padding-left:20px;font-size:14.5px;line-height:1.55;} @keyframes ds-rise{from{opacity:0;transform:translateY(8px);}} @media (prefers-reduced-motion: reduce){.ds-finding{animation:none;}}"
+    },
+    {
+      "name": "Sidebar Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Icon-plus-label items; current item on a soft-well pill with a hairline ring.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Sections\"><button class=\"ds-nav-item\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1.5\"/></svg>Stations</button><button class=\"ds-nav-item\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 20V10M10 20V4M16 20v-7M22 20H2\"/></svg>Progress</button></nav>",
+      "css": ".ds-nav{width:224px;display:flex;flex-direction:column;gap:4px;padding:20px 12px;background:var(--surface, #ffffff);border-right:1px solid var(--line, #e2e7ee);font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;} .ds-nav-item{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px;border:0;border-radius:12px;background:transparent;color:var(--text-2, #4a5467);font-family:inherit;font-size:14px;font-weight:600;text-align:left;cursor:pointer;transition:background-color 150ms,color 150ms;} .ds-nav-item:hover{background:var(--surface-2, #f6f8fb);color:var(--text, #1b2232);} .ds-nav-item[aria-current=\"page\"]{background:var(--surface-2, #f6f8fb);color:var(--text, #1b2232);box-shadow:inset 0 0 0 1px var(--line, #e2e7ee);} .ds-nav-item:focus-visible{outline:2px solid var(--focus, #3a6fd8);outline-offset:2px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Illustrated Case Studio",
+    "overview": "DigiPat is a friendly, calm clinical-skills studio. Every station is a pastel case card with a flat-outline illustration on its tint; the consultation happens inside an illustrated consulting room where the conversation reads as speech bubbles; feedback lands as a coloured evaluation, a zoned gauge sweeping to the score, then pass or fail and tinted cards for what went well, what to improve and what to learn. The world was pinned by the user through four reference mock-ups and replaces the earlier printed mark-sheet world entirely.\n\nDensity is relaxed but not sparse: white panels on a cool off-white canvas, generous 16px corners, soft two-layer shadows, and one navy ink colour that carries text and the primary action. Colour lives in the tints, which own card tops, question cards, finding cards and notices, never text. Light and Dark are full appearances selected by the Light / Dark / System setting (the main process sets `nativeTheme.themeSource`, and the stylesheet follows `prefers-color-scheme`); in dark the shell turns charcoal, the tints become deep muted fills and the primary becomes a light pill, while the consulting room stays a light sky scene.\n\nThe system rejects the earlier mark-sheet world (red-ink rules, condensed verdict type, paper textures), and it does not copy the references' non-product elements: no user profile, no name greeting, no notifications.",
+    "keyCharacteristics": [
+      "Cool canvas, white panels, navy ink; pastel tints carry all colour.",
+      "One family, Plus Jakarta Sans, self-hosted; tabular numerals for every figure.",
+      "Soft, rounded, shadowed: 10-16px radii on controls and panels, pills fully round.",
+      "Hand-authored flat-outline SVG illustration with an outline token that flips for dark.",
+      "Line icons at 1.5 stroke, round caps and joins.",
+      "Full light and dark appearances; the consulting room stays light in both."
+    ],
+    "rules": [
+      {
+        "name": "The Ink on Tint Rule",
+        "body": "On any tint, including the lighter lower band of a station card, text is Navy Ink or Slate Ink only. Both were measured to pass WCAG AA on every tint in both appearances. Quiet Ink is for panels and the canvas, never on a tint.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tint Owns the Surface Rule",
+        "body": "Tints fill surfaces (card tops, question and finding cards, notices, the patient bubble); they are never text colours and never borders. One tint per card; a card's lower band is a lighter step of its own hue, not a second colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Navy Voice Rule",
+        "body": "The navy accent is the only saturated action colour. One primary pill per decision region; everything else is a quiet outlined button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Room Rule",
+        "body": "The consulting room keeps its light sky scene and light tokens in both appearances; in dark only the sky and floor step down. The room is a place, not a panel.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Plus Jakarta Sans everywhere, bundled locally. Hierarchy comes from size and weight (400 to 700), not from a second family, uppercase or letter-spaced caps.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Every score, percentage, time and count uses tabular numerals so figures do not jitter as they change.",
+        "section": "typography"
+      },
+      {
+        "name": "The Soft Lift Rule",
+        "body": "Two shadows only, both diffuse and ambient. Depth answers state (hover, focus); nothing at rest floats higher than a card.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set text on any tint, including a station card's lower band, in Navy Ink or Slate Ink only.",
+      "Do give each station one tint for its whole card: the full tint on top, a 42% oklab mix with the surface below.",
+      "Do keep one navy primary pill per decision region, with outlined secondary buttons beside it.",
+      "Do use Plus Jakarta Sans from the bundled @fontsource files, weights 400 to 700, and tabular numerals for every figure.",
+      "Do use the 1.5-stroke line icon set, round caps and joins, at 16 to 18px.",
+      "Do keep the consulting room light in both appearances and let old transcript lines fade under the top mask.",
+      "Do honour reduced motion: the gauge sweep, rise-in and typing dots switch off.",
+      "Do keep the educational-simulation badge, the AI-feedback caveat and the sensitive-topic helpline footer visible."
+    ],
+    "donts": [
+      "Don't put Quiet Ink (text-3) on a tint; it is for panels and the canvas only.",
+      "Don't load fonts or images from a remote origin; the CSP forbids it and the app is offline.",
+      "Don't depict means of self-harm in any illustration; sensitive-topic stations use neutral imagery (a mind motif, a sprout).",
+      "Don't use tints as text or border colours, or mix two tints on one card.",
+      "Don't put a small uppercase or letter-spaced label above a heading; field labels label controls only.",
+      "Don't use hard offset or coloured shadows; depth is the two soft ambient shadows.",
+      "Don't add a user profile, name greeting or notifications from the references; they are not product truth.",
+      "Don't bring back the mark-sheet world: red-ink rules, condensed verdict type or paper textures."
+    ]
+  }
+}

@@ -8,7 +8,8 @@ import {
   STATION_TYPES
 } from '@shared/constants'
 import type { Navigate } from '../App'
-import { ErrorBox } from '../components/Notices'
+import { ErrorBox, NoteBox } from '../components/Notices'
+import { Choice, Icon, PageHeader, Panel } from '../components/ui'
 import { SPECIALTY_LABEL, TYPE_LABEL } from '../lib/format'
 
 /** The editor works on a loose draft; the main process validates it against the zod schema. */
@@ -99,7 +100,7 @@ export function StationEditor({
     }, 400)
   }, [draft])
 
-  if (!draft) return <div className="p-8 text-sm text-stone-500">Loading…</div>
+  if (!draft) return <div className="p-10 text-text-3">Loading…</div>
 
   const set = (path: string, value: unknown): void => setDraft((d) => setPath(d!, path.split('.'), value))
   const get = (path: string): any => path.split('.').reduce((o, k) => o?.[k], draft) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -127,25 +128,25 @@ export function StationEditor({
 
   const text = (path: string, label: string, multiline = false, placeholder = ''): React.JSX.Element => (
     <div>
-      <label className="label">{label}</label>
+      <label className="field-label mb-1 block">{label}</label>
       {multiline ? (
-        <textarea className="input min-h-20" value={get(path) ?? ''} placeholder={placeholder} onChange={(e) => set(path, e.target.value)} />
+        <textarea className="field min-h-20" value={get(path) ?? ''} placeholder={placeholder} onChange={(e) => set(path, e.target.value)} />
       ) : (
-        <input className="input" value={get(path) ?? ''} placeholder={placeholder} onChange={(e) => set(path, e.target.value)} />
+        <input className="field" value={get(path) ?? ''} placeholder={placeholder} onChange={(e) => set(path, e.target.value)} />
       )}
     </div>
   )
   const num = (path: string, label: string): React.JSX.Element => (
     <div>
-      <label className="label">{label}</label>
-      <input className="input" type="number" value={get(path) ?? 0} onChange={(e) => set(path, Number(e.target.value))} />
+      <label className="field-label mb-1 block">{label}</label>
+      <input className="field" type="number" value={get(path) ?? 0} onChange={(e) => set(path, Number(e.target.value))} />
     </div>
   )
   const select = (path: string, label: string, opts: readonly string[], labels?: Record<string, string>, allowEmpty = false): React.JSX.Element => (
     <div>
-      <label className="label">{label}</label>
+      <label className="field-label mb-1 block">{label}</label>
       <select
-        className="input"
+        className="field"
         value={get(path) ?? ''}
         onChange={(e) => set(path, e.target.value === '' ? undefined : e.target.value)}
       >
@@ -160,45 +161,41 @@ export function StationEditor({
   )
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-8">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold">Station editor</h1>
-          <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
-            Write fictional cases only. Never base a station on a real, identifiable patient.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <button className="btn-secondary" onClick={() => navigate({ name: 'editor', stationId: undefined })}>
-            New
-          </button>
-          {originalId && (
-            <button className="btn-secondary" onClick={() => window.digipat.exportStationFile(originalId)}>
-              Export JSON
+    <div className="mx-auto max-w-5xl space-y-8 px-10 pt-8 pb-16">
+      <PageHeader
+        title="Station editor"
+        description="Write fictional cases only. Never base a station on a real, identifiable patient."
+        actions={
+          <>
+            <button className="btn" onClick={() => navigate({ name: 'editor', stationId: undefined })}>
+              New
             </button>
-          )}
-          <button
-            className="btn-secondary"
-            disabled={errors.length > 0}
-            onClick={async () => (await save()) && navigate({ name: 'brief', stationId: draft.id })}
-          >
-            Save & try it
-          </button>
-          <button className="btn-primary" disabled={errors.length > 0} onClick={save}>
-            Save
-          </button>
-        </div>
-      </div>
+            {originalId && (
+              <button className="btn" onClick={() => window.digipat.exportStationFile(originalId)}>
+                Export JSON
+              </button>
+            )}
+            <button
+              className="btn"
+              disabled={errors.length > 0}
+              onClick={async () => (await save()) && navigate({ name: 'brief', stationId: draft.id })}
+            >
+              Save & try it
+            </button>
+            <button className="btn-primary" disabled={errors.length > 0} onClick={save}>
+              Save
+            </button>
+          </>
+        }
+      />
 
-      {message && (
-        <div className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-          {message}
-        </div>
-      )}
+      {message && <NoteBox message={message} />}
       {errors.length > 0 && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
-          <div className="font-medium">Fix these before saving:</div>
-          <ul className="mt-1 list-disc pl-5 text-xs">
+        <div role="alert" className="rounded-xl bg-rose px-4 py-3 text-text">
+          <div className="mb-1.5 flex items-center gap-2 font-semibold">
+            <Icon name="alert" className="h-4 w-4 text-bad" /> Fix these before saving
+          </div>
+          <ul className="space-y-0.5 font-mono text-[12.5px]">
             {errors.slice(0, 12).map((e) => (
               <li key={e}>{e}</li>
             ))}
@@ -206,11 +203,15 @@ export function StationEditor({
         </div>
       )}
 
-      <div className="flex gap-1 border-b border-stone-200 dark:border-stone-800">
+      <div role="tablist" aria-label="Editor view" className="flex w-fit rounded-xl bg-surface p-0.5 ring-1 ring-line">
         {(['form', 'json'] as const).map((t) => (
           <button
             key={t}
-            className={`-mb-px border-b-2 px-4 py-2 text-sm ${tab === t ? 'border-brand-600 font-medium' : 'border-transparent text-stone-500'}`}
+            role="tab"
+            aria-selected={tab === t}
+            className={`h-8 rounded-[10px] px-4 text-[13.5px] font-semibold transition-colors ${
+              tab === t ? 'bg-accent text-on-accent' : 'text-text-2 hover:text-text'
+            }`}
             onClick={() => switchTab(t)}
           >
             {t === 'form' ? 'Form' : 'JSON'}
@@ -221,7 +222,7 @@ export function StationEditor({
       {tab === 'json' ? (
         <div className="space-y-2">
           <textarea
-            className="input min-h-[60vh] font-mono text-xs"
+            className="field min-h-[60vh] font-mono text-[12.5px]"
             spellCheck={false}
             value={jsonText}
             onChange={(e) => {
@@ -237,7 +238,7 @@ export function StationEditor({
           {jsonError && <ErrorBox message={`JSON syntax: ${jsonError}`} />}
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-10">
           <Section title="Station">
             <div className="grid grid-cols-2 gap-4">
               {text('title', 'Title')}
@@ -354,12 +355,7 @@ export function StationEditor({
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }): React.JSX.Element {
-  return (
-    <section className="card space-y-4">
-      <h2 className="font-medium">{title}</h2>
-      {children}
-    </section>
-  )
+  return <Panel title={title}>{children}</Panel>
 }
 
 function StringList({
@@ -373,18 +369,18 @@ function StringList({
 }): React.JSX.Element {
   return (
     <div>
-      <label className="label">{label}</label>
+      <label className="field-label mb-1 block">{label}</label>
       <div className="space-y-2">
         {value.map((v, i) => (
           <div key={i} className="flex gap-2">
-            <input className="input" value={v} onChange={(e) => onChange(value.map((x, j) => (j === i ? e.target.value : x)))} />
-            <button className="btn-secondary px-2" onClick={() => onChange(value.filter((_, j) => j !== i))} aria-label="Remove">
-              ✕
+            <input className="field" value={v} onChange={(e) => onChange(value.map((x, j) => (j === i ? e.target.value : x)))} />
+            <button className="btn btn-sm min-h-[2.6rem]" onClick={() => onChange(value.filter((_, j) => j !== i))}>
+              Remove
             </button>
           </div>
         ))}
-        <button className="btn-secondary px-2.5 py-1 text-xs" onClick={() => onChange([...value, ''])}>
-          + Add
+        <button className="btn btn-sm" onClick={() => onChange([...value, ''])}>
+          <Icon name="plus" className="h-3.5 w-3.5" /> Add
         </button>
       </div>
     </div>
@@ -418,23 +414,25 @@ function ObjectList({
   const update = (i: number, key: string, v: unknown): void => onChange(value.map((x, j) => (j === i ? { ...x, [key]: v } : x)))
   return (
     <div>
-      <label className="label">{label}</label>
+      <label className="field-label mb-1 block">{label}</label>
       <div className="space-y-3">
         {value.map((item, i) => (
-          <div key={i} className="space-y-2 rounded-lg border border-stone-200 p-3 dark:border-stone-700">
+          <div key={i} className="space-y-2 rounded-xl bg-surface-2 p-4 ring-1 ring-line">
             <div className="grid grid-cols-2 gap-2">
               {fields.map((f) => (
                 <div key={f.key} className={f.multiline ? 'col-span-2' : ''}>
-                  <div className="mb-0.5 text-xs text-stone-500">{f.label}</div>
+                  <div className="field-label mb-1">{f.label}</div>
                   {f.checkbox ? (
-                    <input
+                    <Choice
                       type="checkbox"
-                      className="mt-1.5 h-4 w-4"
+                      className="mt-1.5"
                       checked={item[f.key] === true}
-                      onChange={(e) => update(i, f.key, e.target.checked)}
-                    />
+                      onChange={(on) => update(i, f.key, on)}
+                    >
+                      <span className="text-[14px] text-text">{item[f.key] === true ? 'Yes' : 'No'}</span>
+                    </Choice>
                   ) : f.options ? (
-                    <select className="input" value={item[f.key] ?? ''} onChange={(e) => update(i, f.key, e.target.value)}>
+                    <select className="field" value={item[f.key] ?? ''} onChange={(e) => update(i, f.key, e.target.value)}>
                       {f.options.map((o) => (
                         <option key={o} value={o}>
                           {f.optionLabels?.[o] ?? o}
@@ -442,10 +440,10 @@ function ObjectList({
                       ))}
                     </select>
                   ) : f.multiline ? (
-                    <textarea className="input min-h-16" value={item[f.key] ?? ''} onChange={(e) => update(i, f.key, e.target.value)} />
+                    <textarea className="field min-h-16" value={item[f.key] ?? ''} onChange={(e) => update(i, f.key, e.target.value)} />
                   ) : f.list ? (
                     <input
-                      className="input"
+                      className="field"
                       value={(item[f.key] ?? []).join(', ')}
                       onChange={(e) =>
                         update(
@@ -458,7 +456,7 @@ function ObjectList({
                     />
                   ) : (
                     <input
-                      className="input"
+                      className="field"
                       type={f.number ? 'number' : 'text'}
                       value={item[f.key] ?? ''}
                       onChange={(e) => update(i, f.key, f.number ? Number(e.target.value) : e.target.value)}
@@ -468,14 +466,14 @@ function ObjectList({
               ))}
             </div>
             <div className="flex justify-end">
-              <button className="btn-secondary px-2.5 py-1 text-xs" onClick={() => onChange(value.filter((_, j) => j !== i))}>
+              <button className="btn btn-sm" onClick={() => onChange(value.filter((_, j) => j !== i))}>
                 Remove
               </button>
             </div>
           </div>
         ))}
-        <button className="btn-secondary px-2.5 py-1 text-xs" onClick={() => onChange([...value, structuredClone(empty)])}>
-          + Add
+        <button className="btn btn-sm" onClick={() => onChange([...value, structuredClone(empty)])}>
+          <Icon name="plus" className="h-3.5 w-3.5" /> Add
         </button>
       </div>
     </div>

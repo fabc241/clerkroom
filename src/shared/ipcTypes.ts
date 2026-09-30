@@ -38,7 +38,11 @@ export interface Settings {
   skipReadingTime: boolean
   /** Optional dictation with the local Parakeet speech-to-text model. Off until the user enables it. */
   voiceInput: boolean
+  /** Light or dark appearance, or follow macOS. */
+  appearance: Appearance
 }
+
+export type Appearance = 'system' | 'light' | 'dark'
 
 export type VoicePhase = 'idle' | 'downloading' | 'loading' | 'ready' | 'error'
 

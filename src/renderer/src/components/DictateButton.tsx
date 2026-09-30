@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { MAX_RECORDING_SEC } from '@shared/voice'
 import { describeRecordingError, startRecording, type Recording } from '../lib/recorder'
 import { formatClock } from '../lib/format'
-import { ThinkingDots } from './Notices'
+import { Icon, TypingDots } from './ui'
 
 type DictationState = 'idle' | 'starting' | 'recording' | 'transcribing'
 
@@ -85,13 +85,13 @@ export function DictateButton(props: {
     return (
       <button
         type="button"
-        className={`btn border border-red-300 bg-red-50 text-red-700 hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:text-red-300 ${base}`}
+        className={`btn border-bad bg-rose text-bad ${base}`}
         onClick={() => void stop()}
         aria-label="Stop recording and transcribe"
         aria-pressed
       >
-        <span className="h-2 w-2 animate-pulse rounded-full bg-red-600" />
-        <span className="tabular-nums">{formatClock(elapsed)}</span>
+        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-bad" aria-hidden />
+        <span className="num">{formatClock(elapsed)}</span>
         Stop
       </button>
     )
@@ -101,7 +101,7 @@ export function DictateButton(props: {
   return (
     <button
       type="button"
-      className={`btn-secondary ${base}`}
+      className={`btn ${base}`}
       disabled={busy || !props.ready || props.disabled}
       onClick={() => void start()}
       aria-label="Dictate"
@@ -113,21 +113,11 @@ export function DictateButton(props: {
     >
       {state === 'transcribing' ? (
         <>
-          <ThinkingDots />
-          <span className="sr-only">Transcribing</span>
+          <TypingDots label="Transcribing" />
         </>
       ) : (
-        <MicIcon />
+        <Icon name="mic" className="h-5 w-5" />
       )}
     </button>
-  )
-}
-
-function MicIcon(): React.JSX.Element {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <rect x="9" y="3" width="6" height="11" rx="3" />
-      <path d="M5 11a7 7 0 0 0 14 0M12 18v3" strokeLinecap="round" />
-    </svg>
   )
 }
