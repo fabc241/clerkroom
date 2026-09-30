@@ -381,7 +381,7 @@ A 240px semicircle on a zoned track: fail red to 40%, borderline amber to the pa
 Error notices fill rose, confirmations fill mint, both with a status icon and navy text at 12px corners. The educational-simulation badge is always in the header; the AI-feedback caveat is a soft-well notice; stations with sensitive topics carry a persistent lilac footer with a helpline link.
 
 ### Illustration
-Hand-authored flat-outline SVG, because no image generation was available: organs, capsules and mind motifs for station cards, and the ConsultingRoom scene (doctor, patient matched to the station's sex, desk, window, plant). Fills are a fixed friendly palette (coral, soft blue, sage, sun yellow); outlines use the illustration outline token. Real artwork may replace them later.
+Hand-authored flat-outline SVG, because no image generation was available: organs, capsules and mind motifs for station cards, and the ConsultingRoom scene (the doctor in a white coat, glasses and stethoscope gesturing across the desk; the patient matched to the station's sex on a coral chair; a window, a pinned chart and a framed lungs-and-heart poster; a laptop, cup and plant on the desk). Fills are a fixed friendly palette (coral, soft blue, sage, sun yellow); outlines use the illustration outline token. Real artwork may replace them later.
 
 ## Do's and Don'ts
 

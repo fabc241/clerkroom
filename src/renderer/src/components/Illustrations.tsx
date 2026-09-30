@@ -271,9 +271,10 @@ export function StationIllustration({
 }
 
 /**
- * The consulting room: the doctor seated on the left, the patient seated on the right, a desk
- * between them, a window and a neutral picture on the wall. Drawn in light colours only; it sits
- * on the light room field in both appearances. The patient's hair follows the station's patient.
+ * The consulting room: the doctor on the left in a white coat, glasses and stethoscope, gesturing
+ * across the desk to the patient seated on the right. A window, a pinned chart and a framed anatomy
+ * poster are on the wall; a laptop, a cup and a small plant are on the desk. Drawn in light colours
+ * only; it sits on the light room field in both appearances. The patient's hair follows the station.
  */
 export function ConsultingRoom({
   patientSex,
@@ -283,90 +284,183 @@ export function ConsultingRoom({
   className?: string
 }): React.JSX.Element {
   const skin = '#f3c9a8'
+  const coat = '#ffffff'
+  const hairDoc = '#8a5431'
+  const hairPt = patientSex === 'female' ? '#9a5a33' : patientSex === 'male' ? '#3d3129' : '#6b4b35'
+  const shirt = '#6fb0dc'
   return (
     <svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMax meet" className={className} aria-hidden>
-      {/* floor */}
+      {/* floor and skirting */}
       <rect x="-200" y="238" width="1000" height="40" fill="var(--room-floor)" />
       <path d="M-200 238 H800" {...sw} strokeWidth={1.6} opacity={0.5} />
 
-      {/* window */}
-      <rect x="52" y="22" width="112" height="98" rx="4" fill="#eef8fc" {...sw} />
-      <path d="M108 22 V120 M52 70 H164" {...sw} strokeWidth={1.8} />
-      <path d="M62 30 L80 30 M62 36 L72 36" stroke="#ffffff" strokeWidth={3} strokeLinecap="round" />
-      <rect x="46" y="118" width="124" height="7" rx="2" fill="#ffffff" {...sw} strokeWidth={1.6} />
+      {/* window with the light falling in */}
+      <path d="M40 150 L118 12 H150 L78 150 Z" fill="#ffffff" opacity={0.25} />
+      <rect x="18" y="12" width="96" height="138" rx="4" fill="#eef8fc" {...sw} />
+      <rect x="26" y="20" width="80" height="122" rx="2" fill="#e2f2fa" {...sw} strokeWidth={1.4} />
+      <path d="M66 20 V142" {...sw} strokeWidth={1.8} />
+      <path d="M34 30 L52 30 M34 37 L44 37" stroke="#ffffff" strokeWidth={3} strokeLinecap="round" />
+      <rect x="12" y="148" width="108" height="7" rx="2" fill="#ffffff" {...sw} strokeWidth={1.6} />
 
-      {/* picture */}
-      <rect x="430" y="28" width="82" height="62" rx="3" fill="#ffffff" {...sw} />
-      <rect x="438" y="36" width="66" height="46" fill="#e3f1ea" />
-      <path d="M438 82 L460 58 L474 72 L486 60 L504 82 Z" fill="#9fd3b3" {...sw} strokeWidth={1.4} />
-      <circle cx="490" cy="46" r="5" fill="#f6c95b" {...sw} strokeWidth={1.4} />
+      {/* pinned chart board */}
+      <rect x="244" y="44" width="58" height="66" rx="4" fill="#ffffff" {...sw} />
+      <rect x="252" y="52" width="42" height="11" rx="2" fill="#7fb0dc" />
+      <rect x="252" y="68" width="19" height="15" rx="2" fill="#f0a27a" />
+      <rect x="275" y="68" width="19" height="15" rx="2" fill="#6cc0b4" />
+      <rect x="252" y="89" width="42" height="7" rx="2" fill="#f6d36b" />
+      <path d="M252 102 H284" {...sw} strokeWidth={1.4} opacity={0.4} />
+      <circle cx="273" cy="44" r="3" fill="#e46d6b" {...sw} strokeWidth={1.4} />
+
+      {/* framed anatomy poster: lungs and heart */}
+      <rect x="318" y="30" width="70" height="88" rx="3" fill="#35496b" {...sw} />
+      <rect x="324" y="36" width="58" height="76" rx="1.5" fill="#ffffff" />
+      <path d="M353 42 V56" stroke={LINE} strokeWidth={3.4} strokeLinecap="round" />
+      <path d="M353 42 V56" stroke="#dbe7f1" strokeWidth={1.6} strokeLinecap="round" />
+      <path d="M350 56 C343 53 336 59 334 68 C332 76 336 81 342 81 C347 81 350 78 350 72 Z" fill="#f3aaa2" {...sw} strokeWidth={1.5} />
+      <path d="M356 56 C363 53 370 59 372 68 C374 76 370 81 364 81 C359 81 356 78 356 72 Z" fill="#f3aaa2" {...sw} strokeWidth={1.5} />
+      <path d="M353 56 L346 64 M353 56 L360 64" fill="none" {...sw} strokeWidth={1.2} />
+      <path d="M340 94 C336 90 336 86 340 86 C342 86 343 88 343 89 C343 88 344 86 346 86 C350 86 350 90 346 94 L343 97 Z" fill="#e46d6b" {...sw} strokeWidth={1.2} />
+      <path d="M352 88 H374 M352 93 H370 M352 98 H374 M332 104 H374" {...sw} strokeWidth={1.2} opacity={0.45} />
 
       {/* doctor's chair */}
-      <rect x="140" y="112" width="18" height="92" rx="6" fill="#5f7fa8" {...sw} />
-      <rect x="140" y="190" width="82" height="12" rx="4" fill="#6f8fb8" {...sw} />
-      <path d="M152 202 V238 M210 202 V238" {...sw} strokeWidth={3} />
+      <rect x="124" y="116" width="18" height="90" rx="7" fill="#3f93a0" {...sw} />
+      <rect x="124" y="192" width="86" height="12" rx="4" fill="#4fa6b2" {...sw} />
+      <path d="M136 204 V238 M198 204 V238" {...sw} strokeWidth={3} />
 
-      {/* doctor */}
-      <path d="M214 192 H258 V236" fill="none" stroke={LINE} strokeWidth={17} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M214 192 H258 V236" fill="none" stroke="#44546f" strokeWidth={13} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M252 236 H272" stroke={LINE} strokeWidth={8} strokeLinecap="round" />
-      <path d="M164 196 V140 C164 124 176 116 192 116 H204 C220 116 230 126 230 142 V196 Z" fill="#ffffff" {...sw} />
-      <path d="M197 118 L191 150 L197 158 L203 150 Z" fill="#6c8fbf" {...sw} strokeWidth={1.6} />
-      <path d="M185 118 C180 134 182 150 190 156 C196 160 204 158 208 152" fill="none" {...sw} strokeWidth={1.8} />
-      <circle cx="209" cy="150" r="4.5" fill="#cfd8e3" {...sw} strokeWidth={1.6} />
-      <circle cx="197" cy="92" r="22" fill={skin} {...sw} />
-      <path d="M175 90 C173 72 186 64 199 66 C212 66 221 75 219 88 C213 81 204 78 194 80 C186 82 179 85 175 90 Z" fill="#7a4a2a" {...sw} />
-      <circle cx="189" cy="96" r="6" fill="none" {...sw} strokeWidth={1.7} />
-      <circle cx="206" cy="96" r="6" fill="none" {...sw} strokeWidth={1.7} />
-      <path d="M195 96 H200" {...sw} strokeWidth={1.7} />
-      <path d="M192 106 C195 109 199 109 202 106" fill="none" {...sw} strokeWidth={1.7} />
-      <path d="M222 146 C236 150 250 156 266 160" fill="none" stroke={LINE} strokeWidth={13} strokeLinecap="round" />
-      <path d="M222 146 C236 150 250 156 266 160" fill="none" stroke="#ffffff" strokeWidth={9} strokeLinecap="round" />
-      <circle cx="270" cy="161" r="6.5" fill={skin} {...sw} strokeWidth={1.8} />
+      {/* doctor: legs under the desk */}
+      <path d="M204 196 H262 V234" fill="none" stroke={LINE} strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M204 196 H262 V234" fill="none" stroke="#34425c" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M256 236 H280" stroke={LINE} strokeWidth={8} strokeLinecap="round" />
+
+      {/* doctor: coat, shirt, tie */}
+      <path d="M148 198 V146 C148 128 160 118 178 118 H194 C212 118 222 128 222 146 V198 Z" fill={coat} {...sw} />
+      <path d="M178 119 L186 140 L194 119 Z" fill="#b9d6f2" {...sw} strokeWidth={1.4} />
+      <path d="M184 124 L181 148 L186 154 L191 148 L188 124 Z" fill="#2f4a73" {...sw} strokeWidth={1.4} />
+      <path d="M176 119 L186 150 L196 119" fill="none" {...sw} strokeWidth={1.8} />
+      <path d="M186 150 V198" {...sw} strokeWidth={1.5} opacity={0.6} />
+      <path d="M198 160 H212 V168 H198 Z" fill="none" {...sw} strokeWidth={1.4} />
+      <path d="M202 160 V154" stroke="#3f6fb0" strokeWidth={2.4} strokeLinecap="round" />
+
+      {/* doctor: stethoscope round the neck */}
+      <Tube d="M174 120 C168 136 170 152 176 162" fill="#9aa7b8" w={3} />
+      <Tube d="M198 120 C204 136 206 150 204 160" fill="#9aa7b8" w={3} />
+      <circle cx="204" cy="164" r="5" fill="#cfd8e3" {...sw} strokeWidth={1.6} />
+      <circle cx="176" cy="164" r="2.6" fill="#9aa7b8" {...sw} strokeWidth={1.2} />
+
+      {/* doctor: arm resting forward on the desk */}
+      <path d="M160 140 C156 158 160 170 176 172 L240 170" fill="none" stroke={LINE} strokeWidth={15} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M160 140 C156 158 160 170 176 172 L240 170" fill="none" stroke={coat} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" />
+      <ellipse cx="248" cy="169" rx="8" ry="5" fill={skin} {...sw} strokeWidth={1.8} />
+
+      {/* doctor: head */}
+      <rect x="179" y="104" width="14" height="16" rx="4" fill={skin} {...sw} strokeWidth={1.8} />
+      <circle cx="186" cy="88" r="21" fill={skin} {...sw} />
+      <ellipse cx="166" cy="92" rx="4" ry="5.5" fill={skin} {...sw} strokeWidth={1.6} />
+      <path
+        d="M165 88 C162 70 172 60 186 61 C191 55 203 55 208 61 C213 66 212 74 208 79 C202 74 194 73 185 75 C176 77 170 81 165 88 Z"
+        fill={hairDoc}
+        {...sw}
+      />
+      <path d="M176 80 L186 80 M193 80 L203 80" {...sw} strokeWidth={1.8} stroke="#5b3620" />
+      <rect x="174" y="84" width="13" height="10" rx="3.5" fill="#ffffff" fillOpacity={0.3} {...sw} strokeWidth={1.8} />
+      <rect x="191" y="84" width="13" height="10" rx="3.5" fill="#ffffff" fillOpacity={0.3} {...sw} strokeWidth={1.8} />
+      <path d="M187 88 H191 M174 88 L168 87" {...sw} strokeWidth={1.8} />
+      <circle cx="181" cy="89" r="1.8" fill={LINE} />
+      <circle cx="198" cy="89" r="1.8" fill={LINE} />
+      <path d="M181 99 C185 104 193 104 197 99 Z" fill="#ffffff" {...sw} strokeWidth={1.6} />
+
+      {/* doctor: open hand gesturing toward the patient */}
+      <path d="M214 134 C222 150 230 158 244 156 L262 148" fill="none" stroke={LINE} strokeWidth={15} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M214 134 C222 150 230 158 244 156 L262 148" fill="none" stroke={coat} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M263 152 C261 146 263 141 268 139 L284 134 C287 133 289 137 286 139 L276 143 L288 142 C291 142 291 146 288 147 L278 149 C276 153 270 156 266 155 Z"
+        fill={skin}
+        {...sw}
+        strokeWidth={1.8}
+      />
+      <path d="M268 139 L271 131 C272 128 276 129 275 132 L273 140" fill={skin} {...sw} strokeWidth={1.8} />
 
       {/* patient's chair */}
-      <rect x="470" y="118" width="18" height="88" rx="6" fill="#e08b7f" {...sw} />
-      <rect x="400" y="192" width="86" height="12" rx="4" fill="#ea9d91" {...sw} />
-      <path d="M412 204 V238 M474 204 V238" {...sw} strokeWidth={3} />
+      <rect x="484" y="118" width="18" height="88" rx="7" fill="#e5847a" {...sw} />
+      <rect x="416" y="192" width="86" height="12" rx="4" fill="#ee998f" {...sw} />
+      <path d="M428 204 V238 M490 204 V238" {...sw} strokeWidth={3} />
 
-      {/* patient */}
-      <path d="M430 194 H386 V236" fill="none" stroke={LINE} strokeWidth={17} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M430 194 H386 V236" fill="none" stroke="#3f4b5e" strokeWidth={13} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M392 236 H372" stroke={LINE} strokeWidth={8} strokeLinecap="round" />
-      <path d="M416 198 V148 C416 132 428 124 444 124 H452 C468 124 478 132 478 148 V198 Z" fill="#7fb0dc" {...sw} />
-      <path d="M420 160 C414 172 414 182 420 188 H440" fill="none" stroke={LINE} strokeWidth={12} strokeLinecap="round" />
-      <path d="M420 160 C414 172 414 182 420 188 H440" fill="none" stroke="#7fb0dc" strokeWidth={8} strokeLinecap="round" />
-      <circle cx="447" cy="98" r="22" fill={skin} {...sw} />
-      {patientSex === 'female' ? (
+      {/* patient: legs */}
+      <path d="M458 196 H406 V234" fill="none" stroke={LINE} strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M458 196 H406 V234" fill="none" stroke="#3f5578" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M412 236 H390" stroke={LINE} strokeWidth={8} strokeLinecap="round" />
+
+      {/* patient: hair behind the head (long for a female patient) */}
+      {patientSex === 'female' && (
         <path
-          d="M423 102 C417 78 430 70 447 70 C466 70 477 81 473 104 C473 120 478 130 484 136 C473 138 467 130 467 117 C464 102 460 91 447 89 C436 89 430 96 428 107 C426 120 419 132 410 134 C417 125 423 117 423 102 Z"
-          fill="#8a5431"
-          {...sw}
-        />
-      ) : (
-        <path
-          d="M425 96 C423 79 434 71 447 71 C462 71 471 80 469 96 C464 89 456 85 447 85 C438 85 431 89 425 96 Z"
-          fill={patientSex === 'male' ? '#3d3129' : '#6b4b35'}
+          d="M432 98 C430 76 442 64 457 64 C473 64 484 76 482 98 C481 116 488 130 494 140 C482 144 473 136 471 126 L443 126 C439 136 429 144 418 140 C426 128 433 116 432 98 Z"
+          fill={hairPt}
           {...sw}
         />
       )}
-      <circle cx="440" cy="100" r="2.2" fill={LINE} />
-      <circle cx="455" cy="100" r="2.2" fill={LINE} />
-      <path d="M442 110 C445 112 449 112 452 110" fill="none" {...sw} strokeWidth={1.7} />
+
+      {/* patient: t-shirt */}
+      <rect x="450" y="110" width="14" height="18" rx="4" fill={skin} {...sw} strokeWidth={1.8} />
+      <path d="M426 200 V150 C426 134 438 126 454 126 H462 C478 126 488 134 488 150 V200 Z" fill={shirt} {...sw} />
+      <path d="M447 127 C451 135 461 135 466 127" fill={skin} {...sw} strokeWidth={1.8} />
+
+      {/* patient: near arm down to the hands in the lap */}
+      <Tube d="M440 138 C434 150 432 164 434 176 C436 186 442 190 452 190" fill={skin} w={9} />
+      <Tube d="M440 138 C436 146 434 154 433 160" fill={shirt} w={13} />
+      <ellipse cx="456" cy="190" rx="9" ry="6" fill={skin} {...sw} strokeWidth={1.8} />
+
+      {/* patient: head and face */}
+      <circle cx="457" cy="96" r="21" fill={skin} {...sw} />
+      {patientSex === 'female' ? (
+        <path
+          d="M434 96 C433 77 445 68 459 69 C472 70 481 80 479 96 C473 86 465 80 454 82 C446 83 439 88 434 96 Z"
+          fill={hairPt}
+          {...sw}
+        />
+      ) : (
+        <>
+          <ellipse cx="478" cy="98" rx="4" ry="5.5" fill={skin} {...sw} strokeWidth={1.6} />
+          <path
+            d="M435 94 C433 78 444 70 457 70 C472 70 481 79 479 94 C474 87 466 84 457 84 C448 84 440 87 435 94 Z"
+            fill={hairPt}
+            {...sw}
+          />
+        </>
+      )}
+      <path d="M444 92 L451 91 M461 91 L468 92" {...sw} strokeWidth={1.6} stroke="#5b3620" />
+      <circle cx="448" cy="98" r="2.2" fill={LINE} />
+      <circle cx="463" cy="98" r="2.2" fill={LINE} />
+      <ellipse cx="443" cy="104" rx="3.5" ry="2" fill="#f19a8f" opacity={0.5} />
+      <ellipse cx="468" cy="104" rx="3.5" ry="2" fill="#f19a8f" opacity={0.5} />
+      <path d="M450 106 C454 111 459 111 463 106 Z" fill="#ffffff" {...sw} strokeWidth={1.6} />
 
       {/* desk, drawn in front of both */}
-      <rect x="262" y="170" width="130" height="11" rx="3" fill="#d9a877" {...sw} />
-      <path d="M274 181 V238 M380 181 V238" {...sw} strokeWidth={4} />
-      <path d="M290 170 L298 142 H336 L330 170 Z" fill="#cfd8e3" {...sw} strokeWidth={1.8} />
-      <circle cx="315" cy="156" r="3" fill="#ffffff" />
-      <path d="M350 158 H363 V170 H350 Z" fill="#ffffff" {...sw} strokeWidth={1.6} />
-      <path d="M363 161 C368 161 368 167 363 167" fill="none" {...sw} strokeWidth={1.6} />
+      <path d="M252 180 V238 M384 180 V238" {...sw} strokeWidth={4} />
+      <rect x="284" y="180" width="90" height="44" rx="3" fill="#e3e9f0" {...sw} strokeWidth={1.8} />
+      <rect x="238" y="172" width="160" height="10" rx="3" fill="#d9a877" {...sw} />
+      <path d="M244 176 H392" stroke="#ffffff" strokeWidth={1.4} strokeLinecap="round" opacity={0.45} />
 
-      {/* plant */}
-      <path d="M534 238 L528 206 H560 L554 238 Z" fill="#f2f2f2" {...sw} />
-      <path d="M544 206 C530 186 532 168 540 156 C550 170 552 188 544 206 Z" fill="#8fd1a6" {...sw} strokeWidth={1.6} />
-      <path d="M544 206 C556 190 568 184 578 184 C574 198 562 206 544 206 Z" fill="#6fbf8b" {...sw} strokeWidth={1.6} />
-      <path d="M544 206 C530 198 520 188 516 176 C530 178 540 190 544 206 Z" fill="#6fbf8b" {...sw} strokeWidth={1.6} />
+      {/* laptop, lid toward the doctor */}
+      <path d="M296 172 L290 136 C290 134 291 133 293 133 H334 C336 133 337 134 337 136 L331 172 Z" fill="#c9d2dd" {...sw} strokeWidth={1.8} />
+      <circle cx="313.5" cy="152" r="4" fill="#ffffff" opacity={0.8} />
+      <rect x="282" y="168" width="64" height="5" rx="2" fill="#b6c1ce" {...sw} strokeWidth={1.6} />
+
+      {/* cup on a saucer */}
+      <ellipse cx="360" cy="171" rx="12" ry="2.5" fill="#ffffff" {...sw} strokeWidth={1.4} />
+      <path d="M352 156 H367 V165 C367 168 364 170 359.5 170 C355 170 352 168 352 165 Z" fill="#ffffff" {...sw} strokeWidth={1.6} />
+      <path d="M367 158 C372 158 372 165 367 165" fill="none" {...sw} strokeWidth={1.6} />
+
+      {/* small plant on the desk */}
+      <path d="M377 171 L375 156 H393 L391 171 Z" fill="#f4f6f8" {...sw} strokeWidth={1.6} />
+      <path d="M384 156 C376 146 376 136 380 128 C386 136 388 146 384 156 Z" fill="#8fd1a6" {...sw} strokeWidth={1.4} />
+      <path d="M384 156 C390 146 396 142 402 142 C400 150 394 156 384 156 Z" fill="#6fbf8b" {...sw} strokeWidth={1.4} />
+      <path d="M384 156 C378 150 372 146 366 146 C368 152 376 156 384 156 Z" fill="#6fbf8b" {...sw} strokeWidth={1.4} />
+
+      {/* floor plant in the corner */}
+      <path d="M538 238 L532 208 H564 L558 238 Z" fill="#f2f2f2" {...sw} />
+      <path d="M548 208 C534 188 536 170 544 158 C554 172 556 190 548 208 Z" fill="#8fd1a6" {...sw} strokeWidth={1.6} />
+      <path d="M548 208 C560 192 572 186 582 186 C578 200 566 208 548 208 Z" fill="#6fbf8b" {...sw} strokeWidth={1.6} />
+      <path d="M548 208 C534 200 524 190 520 178 C534 180 544 192 548 208 Z" fill="#6fbf8b" {...sw} strokeWidth={1.6} />
     </svg>
   )
 }
