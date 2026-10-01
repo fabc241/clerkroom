@@ -1,0 +1,6 @@
+build/
+*.log
+art/node_modules
+art/qvac/
+art/out/
+*.mp4

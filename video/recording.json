@@ -1,0 +1,322 @@
+{
+  "question": "Does the pain go anywhere?",
+  "record": {
+    "id": "video",
+    "stationId": "med-chest-pain",
+    "stationTitle": "Chest pain",
+    "stationVersion": 1,
+    "startedAt": 1790792028770,
+    "endedAt": 1790792288770,
+    "transcript": [
+      {
+        "kind": "candidate",
+        "text": "Hello Mr Evans, my name is Dr Rossi, I'm one of the junior doctors. Is it OK if I ask you some questions? What's brought you in today?",
+        "at": 1790792033770
+      },
+      {
+        "kind": "patient",
+        "text": "I've got this awful pain in my chest, doctor. It came on while I was carrying the shopping in.",
+        "at": 1790792041770
+      },
+      {
+        "kind": "candidate",
+        "text": "Does the pain go anywhere?",
+        "at": 1790792056770
+      },
+      {
+        "kind": "patient",
+        "text": "The pain goes into my left arm and up into my jaw, like numbness or weakness. I was carrying shopping when it started, and it's not going anywhere else. It feels like an elephant sitting on me, and it's not easing off at all. I'm really scared it's my heart.",
+        "at": 1790792064770
+      },
+      {
+        "kind": "candidate",
+        "text": "I can see this is really frightening. When exactly did it start, what does it feel like, and how bad is it out of ten?",
+        "at": 1790792079770
+      },
+      {
+        "kind": "patient",
+        "text": "It's an eight out of ten. It's the worst pain I've ever had, like an elephant sitting right on top of my chest, and it's not going away. I'm so scared it's my heart, like my dad had.",
+        "at": 1790792087770
+      },
+      {
+        "kind": "candidate",
+        "text": "Have you had any sweating, feeling sick or shortness of breath with it?",
+        "at": 1790792102770
+      },
+      {
+        "kind": "patient",
+        "text": "I've been sweating buckets and feel sick, plus a bit short of breath. It's really scary, doctor, because it feels so much like my dad's heart attack. I'm sure it's my heart now.",
+        "at": 1790792110770
+      },
+      {
+        "kind": "candidate",
+        "text": "Is it worse when you breathe in or move, is it a tearing pain going through to your back, and have you had any recent long trips or leg swelling?",
+        "at": 1790792125770
+      },
+      {
+        "kind": "patient",
+        "text": "No, it doesn't hurt more when I breathe or move, and it's not tearing anywhere. I've never felt pain like this before, and it's definitely my heart. I'm just so scared.",
+        "at": 1790792133770
+      },
+      {
+        "kind": "candidate",
+        "text": "Have you had any pain like this before, for example when walking?",
+        "at": 1790792148770
+      },
+      {
+        "kind": "patient",
+        "text": "Yeah, a few weeks ago when I went up hills, I felt some tightness, but it went away after resting for a bit. This pain's different though, it won't go away. It's the worst I've ever had.",
+        "at": 1790792156770
+      },
+      {
+        "kind": "candidate",
+        "text": "Do you smoke, and have you ever been told you have high blood pressure, high cholesterol or diabetes?",
+        "at": 1790792171770
+      },
+      {
+        "kind": "patient",
+        "text": "Yeah, I smoke about 20 a day, and I was told my blood pressure was high years ago but never got the pills. I don't think I've ever had cholesterol or diabetes problems. It's all making me so scared it's my heart.",
+        "at": 1790792179770
+      },
+      {
+        "kind": "candidate",
+        "text": "Does anyone in your family have heart problems?",
+        "at": 1790792194770
+      },
+      {
+        "kind": "patient",
+        "text": "Yes, my dad had a heart attack at 60. That's why I'm so worried now. It's all in my head, but I just can't stop thinking about it.",
+        "at": 1790792202770
+      },
+      {
+        "kind": "candidate",
+        "text": "Do you take any medications, and do you have any allergies?",
+        "at": 1790792217770
+      },
+      {
+        "kind": "patient",
+        "text": "I don't take any regular medications, and I don't have any allergies. I'm just so scared it's my heart.",
+        "at": 1790792225770
+      },
+      {
+        "kind": "exam",
+        "system": "Observations",
+        "finding": "HR 96 regular, BP 158/94 in both arms, RR 20, SpO2 96% on air, temperature 36.8°C.",
+        "at": 1790792240770
+      },
+      {
+        "kind": "investigation",
+        "test": "12-lead ECG",
+        "result": "2 mm ST elevation in leads II, III and aVF with reciprocal ST depression in I and aVL.",
+        "at": 1790792255770
+      },
+      {
+        "kind": "candidate",
+        "text": "I know you're worried because of what happened to your dad, and I'm taking this very seriously. The heart tracing shows your heart is under strain, so I'm getting my senior doctor now, we'll give you something for the pain and some aspirin, and the heart team will likely need to open up an artery. Is that OK?",
+        "at": 1790792270770
+      },
+      {
+        "kind": "patient",
+        "text": "Oh god, I'm so scared it's me, like my dad. Please tell me this isn't happening. I'll go with you to the hospital if you need me.",
+        "at": 1790792278770
+      }
+    ],
+    "disclosedTopics": [],
+    "postAnswers": [
+      {
+        "question": "What is the most likely diagnosis?",
+        "answer": "An acute inferior ST-elevation myocardial infarction (inferior STEMI)."
+      },
+      {
+        "question": "What is your immediate management?",
+        "answer": "Call for senior help and activate the primary PCI pathway. Give aspirin 300 mg, analgesia such as IV morphine with an antiemetic, oxygen only if hypoxic, GTN if not hypotensive, IV access, bloods and continuous monitoring."
+      }
+    ],
+    "feedback": {
+      "items": [
+        {
+          "itemId": "intro",
+          "domain": "interpersonal",
+          "text": "Introduces self and gains consent",
+          "weight": 1,
+          "critical": false,
+          "evidenceQuote": "Hello Mr Evans, my name is Dr Rossi, I'm one of the junior doctors. Is it OK if I ask you some questions?",
+          "evidenceTurn": 0,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "Effective self-introduction and consent obtained."
+        },
+        {
+          "itemId": "socrates",
+          "domain": "dataGathering",
+          "text": "Takes a structured pain history (site, onset, character, radiation, severity, timing, exacerbating/relieving)",
+          "weight": 3,
+          "critical": false,
+          "evidenceQuote": "Does the pain go anywhere?... How bad is it out of ten?",
+          "evidenceTurn": null,
+          "downgraded": true,
+          "met": "no",
+          "comment": "Not credited: the examiner could not point to anything you said or did for this item."
+        },
+        {
+          "itemId": "associated",
+          "domain": "dataGathering",
+          "text": "Asks about associated symptoms (sweating, nausea, breathlessness)",
+          "weight": 2,
+          "critical": false,
+          "evidenceQuote": "Have you had any sweating, feeling sick or shortness of breath with it?",
+          "evidenceTurn": 6,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "Associated symptoms clearly elicited."
+        },
+        {
+          "itemId": "differentials",
+          "domain": "dataGathering",
+          "text": "Asks questions to exclude important differentials (PE, dissection, pericarditis)",
+          "weight": 2,
+          "critical": false,
+          "evidenceQuote": "Is it worse when you breathe in or move, is it a tearing pain going through to your back, and have you had any recent long trips or leg swelling?",
+          "evidenceTurn": 8,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "Critical differentials appropriately addressed."
+        },
+        {
+          "itemId": "risk-factors",
+          "domain": "dataGathering",
+          "text": "Asks about cardiovascular risk factors",
+          "weight": 2,
+          "critical": false,
+          "evidenceQuote": "Do you smoke, and have you ever been told you have high blood pressure, high cholesterol or diabetes?",
+          "evidenceTurn": 12,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "Cardiovascular risk factors systematically assessed."
+        },
+        {
+          "itemId": "fhx",
+          "domain": "dataGathering",
+          "text": "Asks about family history",
+          "weight": 1,
+          "critical": false,
+          "evidenceQuote": "Does anyone in your family have heart problems?",
+          "evidenceTurn": 14,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "Family history thoroughly explored."
+        },
+        {
+          "itemId": "drugs",
+          "domain": "dataGathering",
+          "text": "Asks about medications and allergies",
+          "weight": 1,
+          "critical": false,
+          "evidenceQuote": "Do you take any medications, and do you have any allergies?",
+          "evidenceTurn": 16,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "You directly asked about medications and allergies as required."
+        },
+        {
+          "itemId": "ecg",
+          "domain": "clinicalManagement",
+          "text": "Requests an ECG promptly",
+          "weight": 3,
+          "critical": true,
+          "evidenceQuote": "requested 12-lead ECG",
+          "evidenceTurn": 19,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "You promptly ordered the ECG as standard for chest pain."
+        },
+        {
+          "itemId": "obs",
+          "domain": "clinicalManagement",
+          "text": "Checks observations / examines",
+          "weight": 1,
+          "critical": false,
+          "evidenceQuote": "examined Observations -> HR 96 regular, BP 158/94 in both arms, RR 20, SpO2 96% on air, temperature 36.8°C",
+          "evidenceTurn": 18,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "You completed a full vital signs assessment."
+        },
+        {
+          "itemId": "ice",
+          "domain": "interpersonal",
+          "text": "Acknowledges his fear and explains what happens next honestly",
+          "weight": 2,
+          "critical": false,
+          "evidenceQuote": "I know you're worried because of what happened to your dad, and I'm taking this very seriously. The heart tracing shows your heart is under strain, so I'm getting my senior doctor now, we'll give you something for the pain and some aspirin, and the heart team will likely need to open up an artery. Is that OK?",
+          "evidenceTurn": 20,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "You acknowledged fear while explaining next steps clearly."
+        }
+      ],
+      "answers": [
+        {
+          "question": "What is the most likely diagnosis?",
+          "answer": "An acute inferior ST-elevation myocardial infarction (inferior STEMI).",
+          "modelAnswer": "Acute inferior ST-elevation myocardial infarction.",
+          "keyPointsHit": [
+            "STEMI",
+            "Inferior territory"
+          ],
+          "keyPointsMissed": [],
+          "comment": "The student accurately identified the diagnosis as an inferior STEMI."
+        },
+        {
+          "question": "What is your immediate management?",
+          "answer": "Call for senior help and activate the primary PCI pathway. Give aspirin 300 mg, analgesia such as IV morphine with an antiemetic, oxygen only if hypoxic, GTN if not hypotensive, IV access, bloods and continuous monitoring.",
+          "modelAnswer": "Call for senior help and activate the primary PCI pathway; aspirin loading dose, analgesia (e.g. IV morphine with antiemetic), oxygen only if hypoxic, GTN if not hypotensive, continuous monitoring, IV access and bloods, second antiplatelet as per local protocol.",
+          "keyPointsHit": [
+            "Primary PCI / cath lab activation",
+            "Aspirin",
+            "Analgesia",
+            "Oxygen only if hypoxic",
+            "Senior help"
+          ],
+          "keyPointsMissed": [],
+          "comment": "The student demonstrated a thorough understanding of immediate STEMI management protocols."
+        }
+      ],
+      "domainScores": [
+        {
+          "domain": "dataGathering",
+          "earned": 8,
+          "possible": 11,
+          "percent": 73
+        },
+        {
+          "domain": "clinicalManagement",
+          "earned": 4,
+          "possible": 4,
+          "percent": 100
+        },
+        {
+          "domain": "interpersonal",
+          "earned": 3,
+          "possible": 3,
+          "percent": 100
+        }
+      ],
+      "overallPercent": 87,
+      "checklistPercent": 83,
+      "answersPercent": 100,
+      "result": "pass",
+      "resultReasons": [
+        "Your score of 87% meets the pass mark of 55% and you did every must-pass item."
+      ],
+      "globalRating": "Excellent",
+      "summary": "Your score of 87% meets the pass mark of 55% and you did every must-pass item. Review the items below.",
+      "missedPoints": [
+        "Takes a structured pain history (site, onset, character, radiation, severity, timing, exacerbating/relieving)"
+      ],
+      "practiseNext": [],
+      "generatedAt": 1790792302213,
+      "modelName": "MedPsy 4B (Q4_K_M) — recommended"
+    }
+  }
+}
