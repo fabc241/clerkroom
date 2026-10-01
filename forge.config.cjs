@@ -12,6 +12,8 @@ module.exports = {
     appCategoryType: 'public.app-category.education',
     // build/icon.icns is generated from build/icon.svg (the header mark on a macOS tile).
     icon: 'build/icon',
+    // The Touch ID / Mac password helper for the app lock (native/unlock.swift, built by npm run build:unlock).
+    extraResource: ['build/native/unlock'],
     // Shown by macOS the first time optional voice input asks for the microphone.
     extendInfo: {
       NSMicrophoneUsageDescription:
@@ -26,6 +28,7 @@ module.exports = {
       /^\/out/,
       /^\/video/,
       /^\/build/,
+      /^\/native/,
       /\.md$/,
       /^\/tsconfig/,
       /^\/\./,
@@ -48,8 +51,7 @@ module.exports = {
       resetAdHocDarwinSignature: true,
       [FuseV1Options.RunAsNode]: false,
       [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-      [FuseV1Options.EnableNodeCliInspectArguments]: false,
-      [FuseV1Options.EnableCookieEncryption]: true
+      [FuseV1Options.EnableNodeCliInspectArguments]: false
     })
   ]
 }

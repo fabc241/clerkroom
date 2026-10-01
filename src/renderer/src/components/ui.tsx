@@ -336,6 +336,7 @@ type IconName =
   | 'bulb'
   | 'list'
   | 'shield'
+  | 'lock'
 
 const PATHS: Record<IconName, ReactNode> = {
   grid: (
@@ -423,7 +424,13 @@ const PATHS: Record<IconName, ReactNode> = {
   book: <path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5zM4 19a2 2 0 0 1 2-2h13" />,
   bulb: <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" />,
   list: <path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" />,
-  shield: <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" />
+  shield: <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" />,
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4M12 15v2" />
+    </>
+  )
 }
 
 export function Icon({ name, className = 'h-4 w-4' }: { name: IconName; className?: string }): React.JSX.Element {

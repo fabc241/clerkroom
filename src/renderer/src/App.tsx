@@ -4,6 +4,7 @@ import type { SessionRecord } from '@shared/sessionTypes'
 import { DISCLAIMER_VERSION } from '@shared/constants'
 import { EducationalBadge } from './components/Notices'
 import { Icon } from './components/ui'
+import { LogoMark } from './components/LogoMark'
 import { Onboarding } from './screens/Onboarding'
 import { ModelSetup } from './screens/ModelSetup'
 import { Library } from './screens/Library'
@@ -112,6 +113,16 @@ export default function App(): React.JSX.Element {
                     : 'Model not loaded'}
           </span>
         </span>
+        {settings.appLock && (
+          <button
+            className="no-drag btn btn-sm"
+            title="Lock Clerkroom now"
+            onClick={() => void window.clerkroom.lockNow()}
+          >
+            <Icon name="lock" className="h-3.5 w-3.5" />
+            Lock
+          </button>
+        )}
         <AppearanceSwitch value={settings.appearance} onChange={(appearance) => updateSettings({ appearance })} />
       </header>
       <div className="flex min-h-0 flex-1">
@@ -176,7 +187,7 @@ export default function App(): React.JSX.Element {
           {route.name === 'editor' && (
             <StationEditor key={`${route.stationId}-${route.duplicate}`} stationId={route.stationId} duplicate={route.duplicate} navigate={navigate} />
           )}
-          {route.name === 'about' && <About settings={settings} updateSettings={updateSettings} />}
+          {route.name === 'about' && <About settings={settings} updateSettings={updateSettings} onSettings={setSettings} />}
         </main>
       </div>
     </div>
@@ -216,16 +227,6 @@ function AppearanceSwitch({
         </button>
       ))}
     </div>
-  )
-}
-
-/** Clerkroom mark: a speech bubble holding a pulse line. */
-function LogoMark(): React.JSX.Element {
-  return (
-    <svg viewBox="0 0 28 28" className="h-7 w-7" aria-hidden>
-      <path d="M6 4h16a4 4 0 0 1 4 4v9a4 4 0 0 1-4 4h-8l-6 5v-5H6a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z" fill="var(--tint-sky)" stroke="var(--text)" strokeWidth={1.8} strokeLinejoin="round" />
-      <path d="M7 13h4l2-4 3 8 2-4h3" fill="none" stroke="#e46d6b" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   )
 }
 

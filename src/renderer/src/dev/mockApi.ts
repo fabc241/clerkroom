@@ -19,7 +19,15 @@ let settings: Settings = {
   stationSecondsOverride: null,
   skipReadingTime: false,
   voiceInput: true,
-  appearance: 'system'
+  appearance: 'system',
+  appLock: new URLSearchParams(location.search).has('locked')
+}
+// ?locked opens on the lock screen; unlocking always succeeds after a short pause.
+let locked = settings.appLock
+const lockListeners = new Set<(locked: boolean) => void>()
+const setLocked = (l: boolean): void => {
+  locked = l
+  lockListeners.forEach((cb) => cb(l))
 }
 
 const model: ModelStatus = {
@@ -140,6 +148,20 @@ export function installMockApi(): void {
   const api: ClerkroomApi = {
     getSettings: async () => settings,
     updateSettings: async (patch) => (settings = { ...settings, ...patch }),
+    getLockStatus: async () => ({ enabled: settings.appLock, locked, available: true }),
+    unlock: async () => {
+      await sleep(700)
+      setLocked(false)
+      return 'unlocked'
+    },
+    lockNow: async () => {
+      if (settings.appLock) setLocked(true)
+    },
+    setLockEnabled: async (on) => ({ result: 'unlocked', settings: (settings = { ...settings, appLock: on }) }),
+    onLockChanged: (cb) => {
+      lockListeners.add(cb)
+      return () => lockListeners.delete(cb)
+    },
     getModelOptions: async () => [
       { id: 'medpsy-4b-q4', label: 'MedPsy 4B (Q4_K_M) — recommended', sizeBytes: 2.7e9, note: 'Best balance of quality and speed' },
       { id: 'medpsy-4b-q5', label: 'MedPsy 4B (Q5_K_M)', sizeBytes: 3.1e9, note: 'Slightly better quality, more memory' },

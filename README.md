@@ -35,6 +35,11 @@ formative feedback. Everything runs locally and offline on the Mac, powered by t
   downloads. Strict CSP, sandboxed renderer, and all permission requests denied except the
   microphone, which is allowed only for the app window while voice input is on. Audio stays in
   memory and is discarded after transcription.
+- **Optional app lock**: Clerkroom asks for Touch ID or the Mac's login password when it opens and
+  after the Mac sleeps or its screen locks, and saved attempts and user stations are encrypted with
+  a key kept in the macOS Keychain (Electron `safeStorage`). The main process answers no data
+  request until the user unlocks, so the lock also holds against the renderer. Off by default;
+  turning it on or off asks for Touch ID or the password. See [App lock](#app-lock).
 
 ## Requirements
 
@@ -42,6 +47,7 @@ formative feedback. Everything runs locally and offline on the Mac, powered by t
 - 8 GB RAM minimum, 16 GB recommended. Use the 1.7B model on 8 GB machines.
 - About 3 GB free disk space for the model (stored in `~/.qvac/models`).
 - Node.js ≥ 22.17 and npm ≥ 10.9 (to build from source; Node 22 LTS for packaging).
+- Xcode Command Line Tools (`xcode-select --install`), to compile the app-lock helper with `swiftc`.
 
 ## Getting started
 
@@ -73,6 +79,7 @@ automatically.
 | `npx tsx scripts/smokeModel.ts` | Download/load MedPsy and stream one completion |
 | `npx tsx scripts/smokeVoice.ts` | Download/load Parakeet Unified and transcribe a sentence spoken by macOS `say` |
 | `npm run bundle-worker` | Regenerate the dev QVAC worker in `qvac/` from `qvac.config.json` |
+| `npm run build:unlock` | Compile the Touch ID / password helper (`native/unlock.swift`); `dev`, `package` and `make` run it |
 | `npm run package` / `npm run make` | Package an arm64 `.app` / build `.zip` and `.dmg` (use Node 22, see below) |
 
 ## Packaging
@@ -89,6 +96,26 @@ an arm64 app of about 510 MB. The model is not bundled; it downloads on first ru
 (required by QVAC), and universal builds are not supported, so build x64 separately with
 `--arch=x64` if needed. The app is unsigned. For local use, right-click → Open the first time; code
 signing and notarization are needed before distributing it.
+
+## App lock
+
+Turned on under **Settings & about › App lock**. It needs no account and stores no password.
+
+- **Who it asks:** `native/unlock.swift` is a small helper that asks macOS's LocalAuthentication to
+  confirm the Mac's owner (Touch ID, or the login password as a fallback). The app only reads its
+  exit code. It ships in `Contents/Resources/unlock/`.
+- **What it blocks:** while locked, every IPC request except checking and unlocking waits in the
+  main process until the user unlocks (`src/main/appLock.ts`, `src/main/ipc.ts`). DevTools are off
+  in the packaged app.
+- **What it encrypts:** session records and user stations, with Electron `safeStorage` (a key in
+  the login Keychain that only Clerkroom can read silently). Settings stay plain so the app knows
+  to lock. Encrypted files keep the lock on even if `settings.json` is edited. Exports you save
+  are plain files.
+- **Limits:** it protects against someone else opening the app or reading its files on your Mac.
+  It does not protect against malware running as your user. The app is unsigned, so each new
+  build has a new identity and macOS may ask once for access to the "Clerkroom Safe Storage"
+  Keychain item. Allow it, or the encrypted data cannot be read. Signing the app removes this
+  prompt.
 
 ## Architecture
 

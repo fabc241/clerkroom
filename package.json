@@ -7,15 +7,16 @@
   "private": true,
   "main": "./dist/main/index.js",
   "scripts": {
-    "dev": "electron-vite dev",
+    "dev": "npm run build:unlock && electron-vite dev",
     "build": "electron-vite build",
+    "build:unlock": "mkdir -p build/native/unlock && swiftc -O native/unlock.swift -o build/native/unlock/Clerkroom",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "test": "vitest run",
     "eval": "tsx tests/llm/runScripted.ts",
     "validate-stations": "tsx scripts/validateStations.ts",
     "bundle-worker": "tsx scripts/bundleWorker.ts",
-    "package": "electron-vite build && electron-forge package --arch=arm64",
-    "make": "electron-vite build && electron-forge make --arch=arm64"
+    "package": "npm run build:unlock && electron-vite build && electron-forge package --arch=arm64",
+    "make": "npm run build:unlock && electron-vite build && electron-forge make --arch=arm64"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",

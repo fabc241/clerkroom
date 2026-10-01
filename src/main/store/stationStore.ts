@@ -79,7 +79,7 @@ export class StationStore {
 
   save(input: unknown): ImportResult {
     const result = this.validate(input)
-    if (result.ok) writeJson(join(this.userDir, `${safeFileId(result.station.id)}.json`), result.station)
+    if (result.ok) writeJson(join(this.userDir, `${safeFileId(result.station.id)}.json`), result.station, true)
     return result
   }
 

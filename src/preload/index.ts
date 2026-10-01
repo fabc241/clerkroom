@@ -11,6 +11,12 @@ const api: ClerkroomApi = {
   getSettings: () => ipcRenderer.invoke('settings:get'),
   updateSettings: (patch) => ipcRenderer.invoke('settings:update', patch),
 
+  getLockStatus: () => ipcRenderer.invoke('lock:status'),
+  unlock: () => ipcRenderer.invoke('lock:unlock'),
+  lockNow: () => ipcRenderer.invoke('lock:now'),
+  setLockEnabled: (on) => ipcRenderer.invoke('lock:setEnabled', on),
+  onLockChanged: (cb) => subscribe('lock:changed', cb),
+
   getModelOptions: () => ipcRenderer.invoke('model:options'),
   getModelStatus: () => ipcRenderer.invoke('model:status'),
   prepareModel: () => ipcRenderer.invoke('model:prepare'),
