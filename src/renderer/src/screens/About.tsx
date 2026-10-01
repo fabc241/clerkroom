@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import type { Appearance, Settings } from '@shared/ipcTypes'
-import { ChipGroup, Choice, PageHeader, Panel } from '../components/ui'
+import type { Appearance, LockStatus, Settings } from '@shared/ipcTypes'
+import { ChipGroup, Choice, Icon, PageHeader, Panel } from '../components/ui'
 import { DISCLAIMER_POINTS } from './Onboarding'
 
 const STATION_LENGTHS: [string, string][] = [
@@ -13,10 +13,12 @@ const STATION_LENGTHS: [string, string][] = [
 
 export function About({
   settings,
-  updateSettings
+  updateSettings,
+  onSettings
 }: {
   settings: Settings
   updateSettings: (p: Partial<Settings>) => Promise<void>
+  onSettings: (s: Settings) => void
 }): React.JSX.Element {
   const [info, setInfo] = useState<{ version: string; modelsDir: string; dataDir: string } | null>(null)
   useEffect(() => {
@@ -60,6 +62,8 @@ export function About({
         </Choice>
       </Panel>
 
+      <AppLockPanel settings={settings} onSettings={onSettings} />
+
       <Panel title="Intended use">
         <ol className="max-w-[72ch] space-y-2.5 text-[15px] leading-relaxed text-text">
           {DISCLAIMER_POINTS.map((p, i) => (
@@ -75,7 +79,8 @@ export function About({
         <p className="max-w-[72ch] text-[15px] leading-relaxed text-text">
           Clerkroom has no accounts, analytics or telemetry. The only network activity is the one-time model download from
           the QVAC registry. If you turn on voice input, speech is transcribed on this Mac and the audio is discarded
-          straight away; only the text you send is kept. Your stations and attempts are stored as files on this Mac:
+          straight away; only the text you send is kept. Your stations and attempts are stored as files on this Mac
+          {settings.appLock ? ', encrypted while the app lock is on' : ''}:
         </p>
         <dl className="selectable grid grid-cols-[80px_1fr] gap-y-1 font-mono text-[12.5px] text-text-2">
           <dt className="field-label pt-0.5">Data</dt>
@@ -113,5 +118,73 @@ export function About({
         </div>
       </Panel>
     </div>
+  )
+}
+
+/** Touch ID / Mac password lock. Turning it on or off asks macOS to confirm it is the Mac's owner. */
+function AppLockPanel({
+  settings,
+  onSettings
+}: {
+  settings: Settings
+  onSettings: (s: Settings) => void
+}): React.JSX.Element {
+  const [status, setStatus] = useState<LockStatus | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
+  useEffect(() => {
+    window.clerkroom.getLockStatus().then(setStatus)
+  }, [settings.appLock])
+
+  const toggle = async (on: boolean): Promise<void> => {
+    setBusy(true)
+    setMessage(null)
+    try {
+      const { result, settings: next } = await window.clerkroom.setLockEnabled(on)
+      onSettings(next)
+      if (result === 'cancelled') setMessage(`The lock is still ${on ? 'off' : 'on'}: macOS did not confirm it was you.`)
+      if (result === 'unavailable') setMessage('This Mac cannot confirm it is you. Set a login password in System Settings first.')
+    } catch (err) {
+      setMessage(`Could not change the lock: ${(err as Error).message}`)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const unavailable = status !== null && !status.available && !settings.appLock
+  return (
+    <Panel title="App lock">
+      <Choice
+        type="checkbox"
+        align="start"
+        checked={settings.appLock}
+        disabled={busy || status === null || unavailable}
+        onChange={(on) => void toggle(on)}
+      >
+        <span className="block text-[14.5px] text-text">Lock Clerkroom with Touch ID or your Mac password</span>
+        <span className="mt-1 block max-w-[64ch] text-[13.5px] leading-relaxed text-text-2">
+          Clerkroom asks for Touch ID or your Mac password when it opens and after your Mac sleeps or its screen locks.
+          Your saved attempts and stations are encrypted with a key kept in your macOS Keychain. Nothing is sent
+          anywhere and there is no account or extra password to remember.
+        </span>
+      </Choice>
+      {unavailable && (
+        <p className="text-[13.5px] text-text-2">
+          Not available on this Mac: set a login password in System Settings › Touch ID &amp; Password to use it.
+        </p>
+      )}
+      {message && (
+        <p role="alert" className="text-[13.5px] text-bad">
+          {message}
+        </p>
+      )}
+      {settings.appLock && (
+        <div>
+          <button className="btn btn-sm" onClick={() => void window.clerkroom.lockNow()}>
+            <Icon name="lock" className="h-3.5 w-3.5" /> Lock now
+          </button>
+        </div>
+      )}
+    </Panel>
   )
 }

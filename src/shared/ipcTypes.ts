@@ -40,7 +40,20 @@ export interface Settings {
   voiceInput: boolean
   /** Light or dark appearance, or follow macOS. */
   appearance: Appearance
+  /** Ask for Touch ID or the Mac password to open the app, and encrypt saved data. Changed only via setLockEnabled. */
+  appLock: boolean
 }
+
+export interface LockStatus {
+  /** The app lock is turned on in Settings. */
+  enabled: boolean
+  locked: boolean
+  /** This Mac can confirm its owner (Touch ID or a login password). */
+  available: boolean
+}
+
+/** 'unavailable' means macOS could not authenticate (e.g. no login password) or encryption is not possible. */
+export type UnlockResult = 'unlocked' | 'cancelled' | 'unavailable'
 
 export type Appearance = 'system' | 'light' | 'dark'
 
@@ -74,6 +87,15 @@ export interface ClerkroomApi {
   // Settings
   getSettings(): Promise<Settings>
   updateSettings(patch: Partial<Settings>): Promise<Settings>
+
+  // App lock
+  getLockStatus(): Promise<LockStatus>
+  /** Shows the macOS Touch ID / password prompt. */
+  unlock(): Promise<UnlockResult>
+  lockNow(): Promise<void>
+  /** Turns the lock on or off after the user authenticates; re-encrypts or decrypts saved data. */
+  setLockEnabled(on: boolean): Promise<{ result: UnlockResult; settings: Settings }>
+  onLockChanged(cb: (locked: boolean) => void): () => void
 
   // Model
   getModelOptions(): Promise<ModelOption[]>

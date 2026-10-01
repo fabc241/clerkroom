@@ -14,7 +14,7 @@ export class SessionStore {
   }
 
   save(record: SessionRecord): void {
-    writeJson(this.path(record.id), record)
+    writeJson(this.path(record.id), record, true)
   }
 
   get(id: string): SessionRecord | null {
