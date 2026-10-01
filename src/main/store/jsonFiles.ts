@@ -59,6 +59,11 @@ export function hasEncryptedFiles(dir: string): boolean {
   return jsonFiles(dir).some(isEncrypted)
 }
 
+/** Encrypts any record in `dir` that is still plain, e.g. one moved in from an older version. */
+export function encryptPlainFiles(dir: string): void {
+  for (const path of jsonFiles(dir)) if (!isEncrypted(path)) writeJson(path, readJson(path), true)
+}
+
 /** Rewrites every record in `dir` in the current form, after the app lock is turned on or off. */
 export function rewriteJsonFiles(dir: string): void {
   for (const path of jsonFiles(dir)) writeJson(path, readJson(path), true)

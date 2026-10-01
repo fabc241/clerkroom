@@ -143,7 +143,9 @@ function AppLockPanel({
       const { result, settings: next } = await window.clerkroom.setLockEnabled(on)
       onSettings(next)
       if (result === 'cancelled') setMessage(`The lock is still ${on ? 'off' : 'on'}: macOS did not confirm it was you.`)
-      if (result === 'unavailable') setMessage('This Mac cannot confirm it is you. Set a login password in System Settings first.')
+      if (result === 'unavailable') setMessage('This Mac could not confirm it is you. Check that it has a login password in System Settings.')
+      if (result === 'keychain-unavailable')
+        setMessage('macOS did not let Clerkroom use the Keychain, so your data could not be encrypted. The lock is still off.')
     } catch (err) {
       setMessage(`Could not change the lock: ${(err as Error).message}`)
     } finally {

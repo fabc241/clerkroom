@@ -1,5 +1,7 @@
 'use strict'
 
+const { execFileSync } = require('child_process')
+const path = require('path')
 const QvacForgePlugin = require('@qvac/sdk/electron-forge')
 const { FusesPlugin } = require('@electron-forge/plugin-fuses')
 const { FuseV1Options, FuseVersion } = require('@electron/fuses')
@@ -37,6 +39,17 @@ module.exports = {
     ]
   },
   rebuildConfig: {},
+  hooks: {
+    // The packager edits the bundle after the fuses plugin re-signs the binary, which leaves the
+    // signature invalid, and macOS then refuses the app Keychain access (needed by the app lock).
+    // Re-sign the whole bundle ad hoc; a Developer ID signature would replace this.
+    postPackage: async (_config, { platform, outputPaths }) => {
+      if (platform !== 'darwin') return
+      for (const dir of outputPaths) {
+        execFileSync('codesign', ['--force', '--deep', '--sign', '-', path.join(dir, 'Clerkroom.app')], { stdio: 'inherit' })
+      }
+    }
+  },
   makers: [
     { name: '@electron-forge/maker-zip', platforms: ['darwin'] },
     { name: '@electron-forge/maker-dmg', platforms: ['darwin'], config: { format: 'ULFO' } }

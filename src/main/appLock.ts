@@ -73,8 +73,9 @@ export class AppLock extends EventEmitter {
   private run(args: string[]): Promise<number> {
     return new Promise((resolve) => {
       if (!existsSync(this.helperPath)) return resolve(2)
-      this.child = execFile(this.helperPath, args, (err) => {
+      this.child = execFile(this.helperPath, args, (err, _stdout, stderr) => {
         this.child = null
+        if (err) console.error('Unlock helper failed:', { code: err.code, signal: err.signal, stderr })
         // A non-zero exit gives a numeric code; a failure to start gives a string such as 'ENOENT'.
         resolve(!err ? 0 : typeof err.code === 'number' ? err.code : 2)
       })

@@ -1,5 +1,4 @@
 import { app, BrowserWindow, nativeTheme, powerMonitor, safeStorage, session } from 'electron'
-import { existsSync, renameSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { is } from '@electron-toolkit/utils'
@@ -10,7 +9,8 @@ import { EncounterService, cleanupStaleSessionCaches } from './encounter'
 import { SessionStore } from './store/sessionStore'
 import { SettingsStore } from './store/settingsStore'
 import { StationStore } from './store/stationStore'
-import { hasEncryptedFiles, setCipher, setEncryptWrites } from './store/jsonFiles'
+import { encryptPlainFiles, hasEncryptedFiles, setCipher, setEncryptWrites } from './store/jsonFiles'
+import { migrateLegacyData } from './store/legacyData'
 import { AppLock } from './appLock'
 
 const here = fileURLToPath(new URL('.', import.meta.url))
@@ -19,17 +19,12 @@ let lock: AppLock | null = null
 
 // Lets tests and demos run against a throwaway data folder.
 if (process.env['CLERKROOM_USER_DATA']) app.setPath('userData', process.env['CLERKROOM_USER_DATA'])
-else migrateLegacyDataDir()
-
-// The app used to be called DigiPat: carry its data folder over once so progress survives the rename.
-function migrateLegacyDataDir(): void {
+else {
   const dataDir = app.getPath('userData')
-  const legacyDir = join(dirname(dataDir), 'DigiPat')
-  if (existsSync(dataDir) || !existsSync(legacyDir)) return
   try {
-    renameSync(legacyDir, dataDir)
+    migrateLegacyData(join(dirname(dataDir), 'DigiPat'), dataDir)
   } catch (err) {
-    console.error('Could not move the DigiPat data folder:', err)
+    console.error('Could not move the DigiPat data:', err)
   }
 }
 
@@ -108,6 +103,16 @@ app.whenReady().then(() => {
   // Encrypted data keeps the lock on even if settings.json was edited to turn it off.
   if (!settings.get().appLock && [sessionsDir, userStationsDir].some(hasEncryptedFiles)) settings.setAppLock(true)
   setEncryptWrites(settings.get().appLock)
+  // While the lock is on, nothing stays on disk unencrypted (e.g. attempts moved in from DigiPat).
+  if (settings.get().appLock) {
+    for (const dir of [sessionsDir, userStationsDir]) {
+      try {
+        encryptPlainFiles(dir)
+      } catch (err) {
+        console.error('Could not encrypt saved data:', err)
+      }
+    }
+  }
   const helper = app.isPackaged
     ? join(process.resourcesPath, 'unlock', 'Clerkroom')
     : join(app.getAppPath(), 'build', 'native', 'unlock', 'Clerkroom')

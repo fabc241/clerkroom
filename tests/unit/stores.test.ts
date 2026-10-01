@@ -1,10 +1,11 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { StationStore } from '../../src/main/store/stationStore'
 import { SessionStore } from '../../src/main/store/sessionStore'
 import { SettingsStore } from '../../src/main/store/settingsStore'
+import { migrateLegacyData } from '../../src/main/store/legacyData'
 import { sessionToMarkdown } from '../../src/main/exportSession'
 import type { SessionRecord } from '../../src/shared/sessionTypes'
 import { STATIONS_DIR, rawStation } from './helpers'
@@ -110,5 +111,32 @@ describe('SettingsStore', () => {
     expect(new SettingsStore(path).get().voiceInput).toBe(false)
     new SettingsStore(path).update({ voiceInput: true })
     expect(new SettingsStore(path).get().voiceInput).toBe(true)
+  })
+})
+
+describe('migrateLegacyData', () => {
+  it('moves DigiPat records into a Clerkroom folder that Electron already created', () => {
+    const legacy = join(dir, 'DigiPat')
+    const data = join(dir, 'Clerkroom')
+    mkdirSync(join(legacy, 'sessions'), { recursive: true })
+    writeFileSync(join(legacy, 'sessions', 'a.json'), '{"id":"a"}')
+    writeFileSync(join(legacy, 'sessions', 'b.json'), '{"id":"b"}')
+    writeFileSync(join(legacy, 'settings.json'), '{"appearance":"dark"}')
+    // Electron's own caches and a newer settings file already exist in the new folder.
+    mkdirSync(join(data, 'Cache'), { recursive: true })
+    writeFileSync(join(data, 'settings.json'), '{"appearance":"system"}')
+
+    expect(migrateLegacyData(legacy, data)).toBe(2)
+    expect(readdirSync(join(data, 'sessions')).sort()).toEqual(['a.json', 'b.json'])
+    expect(readdirSync(join(legacy, 'sessions'))).toEqual([])
+    // An existing file is never overwritten.
+    expect(readFileSync(join(data, 'settings.json'), 'utf8')).toBe('{"appearance":"system"}')
+    expect(existsSync(join(legacy, 'settings.json'))).toBe(true)
+
+    expect(migrateLegacyData(legacy, data)).toBe(0)
+  })
+
+  it('does nothing when there is no DigiPat folder', () => {
+    expect(migrateLegacyData(join(dir, 'missing'), join(dir, 'Clerkroom'))).toBe(0)
   })
 })
