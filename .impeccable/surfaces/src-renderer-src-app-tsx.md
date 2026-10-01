@@ -5,7 +5,7 @@ primary_target: "src/renderer/src/App.tsx"
 related_targets: ["src/renderer/src/screens"]
 ---
 
-# DigiPat app shell (all renderer screens)
+# Clerkroom app shell (all renderer screens)
 
 Scope: the whole Electron renderer (App shell, Library, Brief, Encounter, Post-station questions, Feedback, Progress, Model, Station editor, About/settings, Onboarding). Mode: Operate.
 
@@ -25,7 +25,7 @@ OWN-WORLD: Light: cool off-white canvas, white panels with soft shadow and 10-16
 
 STORY: The student filters and picks an illustrated case, reads the brief, talks to the patient in the consulting room, answers colour-coded examiner questions, then sees a gauge with pass or fail and what went well, what to improve and the key learning points, with the full detailed report one click away.
 
-FIRST VIEWPORT: Stations. Header: logo mark and DigiPat wordmark, safety pill, model status, Light / Dark / System segmented control. Left sidebar with icon + label items, active item on a soft grey pill. Main: a filter row (specialty, station type, level chips; import button at the right), then a 4-up grid (3-up narrower) of pastel case cards: illustration and time on the tint, title, difficulty pill, "Start station" navy pill.
+FIRST VIEWPORT: Stations. Header: logo mark and Clerkroom wordmark, safety pill, model status, Light / Dark / System segmented control. Left sidebar with icon + label items, active item on a soft grey pill. Main: a filter row (specialty, station type, level chips; import button at the right), then a 4-up grid (3-up narrower) of pastel case cards: illustration and time on the tint, title, difficulty pill, "Start station" navy pill.
 
 FORM: user-pinned reference world (not rolled); previous seed aa001d44 superseded by the user's brief.
 

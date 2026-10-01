@@ -20,14 +20,14 @@ export function About({
 }): React.JSX.Element {
   const [info, setInfo] = useState<{ version: string; modelsDir: string; dataDir: string } | null>(null)
   useEffect(() => {
-    window.digipat.appInfo().then(setInfo)
+    window.clerkroom.appInfo().then(setInfo)
   }, [])
 
   return (
     <div className="mx-auto max-w-4xl space-y-10 px-10 pt-8 pb-16">
       <PageHeader
         title="Settings & about"
-        description={`DigiPat ${info?.version ?? ''} · free and non-commercial`}
+        description={`Clerkroom ${info?.version ?? ''} · free and non-commercial`}
       />
 
       <Panel title="Appearance">
@@ -73,7 +73,7 @@ export function About({
 
       <Panel title="Privacy">
         <p className="max-w-[72ch] text-[15px] leading-relaxed text-text">
-          DigiPat has no accounts, analytics or telemetry. The only network activity is the one-time model download from
+          Clerkroom has no accounts, analytics or telemetry. The only network activity is the one-time model download from
           the QVAC registry. If you turn on voice input, speech is transcribed on this Mac and the audio is discarded
           straight away; only the text you send is kept. Your stations and attempts are stored as files on this Mac:
         </p>
@@ -89,14 +89,14 @@ export function About({
         <div className="max-w-[72ch] space-y-3 text-[15px] leading-relaxed text-text">
           <p>
             Local inference by the{' '}
-            <button className="link" onClick={() => window.digipat.openExternal('licence-qvac')}>
+            <button className="link" onClick={() => window.clerkroom.openExternal('licence-qvac')}>
               QVAC SDK
             </button>{' '}
             (Tether, Apache-2.0).
           </p>
           <p>
             Language model:{' '}
-            <button className="link" onClick={() => window.digipat.openExternal('licence-medpsy')}>
+            <button className="link" onClick={() => window.clerkroom.openExternal('licence-medpsy')}>
               MedPsy
             </button>{' '}
             by Tether AI Research, released under Apache-2.0 for research and educational purposes. Its synthetic training

@@ -42,7 +42,7 @@ export function ModelSetup({
   const [options, setOptions] = useState<ModelOption[]>([])
   const [confirmDelete, setConfirmDelete] = useState(false)
   useEffect(() => {
-    window.digipat.getModelOptions().then(setOptions)
+    window.clerkroom.getModelOptions().then(setOptions)
   }, [])
 
   const busy = status.phase === 'downloading' || status.phase === 'loading' || status.phase === 'checking'
@@ -53,7 +53,7 @@ export function ModelSetup({
     <div className="mx-auto max-w-4xl space-y-10 px-10 pt-8 pb-16">
       <PageHeader
         title="Local model"
-        description="The simulated patient and the examiner run entirely on this Mac, using MedPsy, a medical and psychology language model from the QVAC registry. It downloads once; after that DigiPat works offline."
+        description="The simulated patient and the examiner run entirely on this Mac, using MedPsy, a medical and psychology language model from the QVAC registry. It downloads once; after that Clerkroom works offline."
       />
 
       <Panel title="This Mac">
@@ -78,7 +78,7 @@ export function ModelSetup({
               name="model"
               align="start"
               checked={settings.model === o.id}
-              onChange={() => updateSettings({ model: o.id }).then(() => window.digipat.getModelStatus())}
+              onChange={() => updateSettings({ model: o.id }).then(() => window.clerkroom.getModelStatus())}
             >
               <span className="block text-[15.5px] font-semibold text-text">{o.label}</span>
               <span className="block text-[14px] text-text-2">
@@ -119,12 +119,12 @@ export function ModelSetup({
 
           <div className="flex flex-wrap items-center gap-2">
             {(status.phase === 'idle' || status.phase === 'error') && (
-              <button className="btn-primary" onClick={() => window.digipat.prepareModel()}>
+              <button className="btn-primary" onClick={() => window.clerkroom.prepareModel()}>
                 {status.cached ? 'Load model' : `Download (${formatBytes(selected?.sizeBytes ?? 0)}) and load`}
               </button>
             )}
             {status.phase === 'downloading' && (
-              <button className="btn" onClick={() => window.digipat.cancelDownload()}>
+              <button className="btn" onClick={() => window.clerkroom.cancelDownload()}>
                 Pause download
               </button>
             )}
@@ -139,7 +139,7 @@ export function ModelSetup({
                 <button
                   className="btn-danger"
                   onClick={async () => {
-                    await window.digipat.deleteModel(settings.model)
+                    await window.clerkroom.deleteModel(settings.model)
                     setConfirmDelete(false)
                   }}
                 >
@@ -161,7 +161,7 @@ export function ModelSetup({
         setEnabled={async (on) => {
           await updateSettings({ voiceInput: on })
           // Loading a downloaded model is automatic; a download always needs a click.
-          if (on && voice.cached) void window.digipat.prepareVoice()
+          if (on && voice.cached) void window.clerkroom.prepareVoice()
         }}
       />
 
@@ -220,12 +220,12 @@ function VoiceSetup({
 
       <div className="flex flex-wrap items-center gap-2">
         {enabled && (voice.phase === 'idle' || voice.phase === 'error') && (
-          <button className="btn-primary" onClick={() => window.digipat.prepareVoice()}>
+          <button className="btn-primary" onClick={() => window.clerkroom.prepareVoice()}>
             {voice.cached ? 'Load voice model' : `Download (${formatBytes(voice.sizeBytes)}) and load`}
           </button>
         )}
         {voice.phase === 'downloading' && (
-          <button className="btn" onClick={() => window.digipat.cancelVoiceDownload()}>
+          <button className="btn" onClick={() => window.clerkroom.cancelVoiceDownload()}>
             Pause download
           </button>
         )}
@@ -240,7 +240,7 @@ function VoiceSetup({
             <button
               className="btn-danger"
               onClick={async () => {
-                await window.digipat.deleteVoiceModel()
+                await window.clerkroom.deleteVoiceModel()
                 setConfirmDelete(false)
               }}
             >

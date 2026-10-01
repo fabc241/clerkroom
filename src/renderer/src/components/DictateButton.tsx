@@ -38,7 +38,7 @@ export function DictateButton(props: {
     latest.current.onError(null)
     setState('starting')
     try {
-      if (!(await window.digipat.requestMicrophone())) throw new DOMException('Microphone denied', 'NotAllowedError')
+      if (!(await window.clerkroom.requestMicrophone())) throw new DOMException('Microphone denied', 'NotAllowedError')
       const r = await startRecording()
       if (!alive.current) return r.cancel()
       recording.current = r
@@ -57,7 +57,7 @@ export function DictateButton(props: {
     recording.current = null
     setState('transcribing')
     try {
-      const text = await window.digipat.transcribe(await r.stop())
+      const text = await window.clerkroom.transcribe(await r.stop())
       if (!alive.current) return
       if (text) latest.current.onText(text)
       else latest.current.onError('No speech was detected. Try again, a little closer to the microphone.')

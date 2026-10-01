@@ -22,7 +22,7 @@ function wavData(wav: Buffer): Buffer {
 
 async function main(): Promise<void> {
   const sentence = process.argv[2] ?? 'Hello, I am one of the doctors. Can you tell me what brought you in today?'
-  const dir = mkdtempSync(join(tmpdir(), 'digipat-voice-'))
+  const dir = mkdtempSync(join(tmpdir(), 'clerkroom-voice-'))
   let pcm: Buffer
   try {
     const wavPath = join(dir, 'speech.wav')

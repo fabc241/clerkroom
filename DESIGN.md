@@ -1,5 +1,5 @@
 ---
-name: DigiPat
+name: Clerkroom
 description: Offline OSCE practice for medical students, as a calm, illustrated clinical-skills studio.
 colors:
   canvas: "#f4f6f9"
@@ -235,13 +235,13 @@ components:
     padding: "8px 12px"
 ---
 
-# Design System: DigiPat
+# Design System: Clerkroom
 
 ## Overview
 
 **Creative North Star: "The Illustrated Case Studio"**
 
-DigiPat is a friendly, calm clinical-skills studio. Every station is a pastel case card with a flat-outline illustration on its tint; the consultation happens inside an illustrated consulting room where the conversation reads as speech bubbles; feedback lands as a coloured evaluation, a zoned gauge sweeping to the score, then pass or fail and tinted cards for what went well, what to improve and what to learn. The world was pinned by the user through four reference mock-ups and replaces the earlier printed mark-sheet world entirely.
+Clerkroom is a friendly, calm clinical-skills studio. Every station is a pastel case card with a flat-outline illustration on its tint; the consultation happens inside an illustrated consulting room where the conversation reads as speech bubbles; feedback lands as a coloured evaluation, a zoned gauge sweeping to the score, then pass or fail and tinted cards for what went well, what to improve and what to learn. The world was pinned by the user through four reference mock-ups and replaces the earlier printed mark-sheet world entirely.
 
 Density is relaxed but not sparse: white panels on a cool off-white canvas, generous 16px corners, soft two-layer shadows, and one navy ink colour that carries text and the primary action. Colour lives in the tints, which own card tops, question cards, finding cards and notices, never text. Light and Dark are full appearances selected by the Light / Dark / System setting (the main process sets `nativeTheme.themeSource`, and the stylesheet follows `prefers-color-scheme`); in dark the shell turns charcoal, the tints become deep muted fills and the primary becomes a light pill, while the consulting room stays a light sky scene.
 
@@ -310,7 +310,7 @@ A navy-ink-on-white system where colour arrives only as soft pastel tints and se
 
 ## Layout
 
-A fixed three-part shell: a 56px header (logo mark and DigiPat wordmark, the educational-simulation pill, model status, the Light / Dark / System segmented control), a 224px left sidebar of icon-plus-label items, and a scrolling main area that resets to the top on every route change. The brief and consultation hide the sidebar so the whole window belongs to the station.
+A fixed three-part shell: a 56px header (logo mark and Clerkroom wordmark, the educational-simulation pill, model status, the Light / Dark / System segmented control), a 224px left sidebar of icon-plus-label items, and a scrolling main area that resets to the top on every route change. The brief and consultation hide the sidebar so the whole window belongs to the station.
 
 Pages are centred columns with 32px side padding, 28px top and 56px bottom, and 24px between blocks: up to 1400px for the station grid, 1024px for Progress, 896px for examiner questions. The station grid is auto-fill with a 250px minimum column and 20px gaps (four up at desktop width, three when narrower). The Stations page has no header block: a filter panel of three labelled chip rows (Specialty, Station type, Level) with the import button at the right, then the grid.
 

@@ -21,7 +21,7 @@ export function Brief({
 }): React.JSX.Element {
   const [station, setStation] = useState<Station | null>(null)
   useEffect(() => {
-    window.digipat.getStation(stationId).then((r) => setStation(r?.station ?? null))
+    window.clerkroom.getStation(stationId).then((r) => setStation(r?.station ?? null))
   }, [stationId])
 
   if (!station) return <div className="p-10 text-text-3">Loading station…</div>
@@ -48,7 +48,7 @@ function BriefInner({
     if (starting) return
     setStarting(true)
     try {
-      const session = await window.digipat.startSession(station.id)
+      const session = await window.clerkroom.startSession(station.id)
       navigate({ name: 'encounter', stationId: station.id, session })
     } catch (e) {
       setError((e as Error).message)

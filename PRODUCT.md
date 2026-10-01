@@ -18,7 +18,7 @@ sessions, often under exam pressure.
 
 ## Product Purpose
 
-DigiPat is a digital simulated patient: it lets a student practise a clinical station end to end
+Clerkroom is a digital simulated patient: it lets a student practise a clinical station end to end
 without a partner, actor or examiner, and get structured, rubric-based formative feedback with a
 clear pass or fail. Success is a student who practises more stations, understands exactly why an
 attempt passed or failed, and improves on the next attempt.
@@ -57,7 +57,7 @@ and the pass/fail result calculated in code.
 
 ## Brand Commitments
 
-- The product name is **DigiPat** (binding).
+- The product name is **Clerkroom** (binding).
 - No other visual identity is binding; the current teal is not a commitment.
 
 ## Evidence on Hand
@@ -73,7 +73,7 @@ and the pass/fail result calculated in code.
 3. Private and local: the student's practice never leaves their Mac, and the product should say so
    plainly.
 4. Formative, not judgemental: feedback explains what to do next, not just a number.
-5. Safety is non-negotiable: DigiPat is an educational simulation, not a medical device.
+5. Safety is non-negotiable: Clerkroom is an educational simulation, not a medical device.
 
 ## Accessibility & Inclusion
 

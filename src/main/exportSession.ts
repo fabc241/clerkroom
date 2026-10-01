@@ -3,7 +3,7 @@ import type { SessionRecord } from '@shared/sessionTypes'
 import { feedbackResult } from '@shared/rubric'
 
 const DISCLAIMER =
-  '_DigiPat — educational simulation only. Not a medical device; not for diagnosis or real patient care. All cases are fictional. Feedback is AI-generated and may be inaccurate._'
+  '_Clerkroom — educational simulation only. Not a medical device; not for diagnosis or real patient care. All cases are fictional. Feedback is AI-generated and may be inaccurate._'
 
 export function sessionToMarkdown(r: SessionRecord): string {
   const out: string[] = [`# ${r.stationTitle}`, '', DISCLAIMER, '', `Date: ${new Date(r.startedAt).toLocaleString()}`, '']

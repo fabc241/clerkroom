@@ -19,8 +19,8 @@ export function Library({ navigate, modelReady }: { navigate: Navigate; modelRea
   const [importMsg, setImportMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
   const refresh = (): void => {
-    window.digipat.listStations().then(setStations)
-    window.digipat.listSessions().then(setSessions)
+    window.clerkroom.listStations().then(setStations)
+    window.clerkroom.listSessions().then(setSessions)
   }
   useEffect(refresh, [])
 
@@ -42,7 +42,7 @@ export function Library({ navigate, modelReady }: { navigate: Navigate; modelRea
   )
 
   const importStation = async (): Promise<void> => {
-    const res = await window.digipat.importStationFile()
+    const res = await window.clerkroom.importStationFile()
     if (!res) return
     setImportMsg(
       res.ok

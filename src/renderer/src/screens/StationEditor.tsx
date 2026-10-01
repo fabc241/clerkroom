@@ -76,7 +76,7 @@ export function StationEditor({
 
   useEffect(() => {
     if (!stationId) return
-    window.digipat.getStation(stationId).then((r) => {
+    window.clerkroom.getStation(stationId).then((r) => {
       if (!r) return setDraft(structuredClone(TEMPLATE))
       const s: Draft = structuredClone(r.station)
       if (duplicate) {
@@ -95,7 +95,7 @@ export function StationEditor({
     if (!draft) return
     clearTimeout(timer.current)
     timer.current = setTimeout(async () => {
-      const res = await window.digipat.validateStation(draft)
+      const res = await window.clerkroom.validateStation(draft)
       setErrors(res.ok ? [] : res.errors)
     }, 400)
   }, [draft])
@@ -107,12 +107,12 @@ export function StationEditor({
 
   const save = async (): Promise<boolean> => {
     setMessage(null)
-    const res = await window.digipat.saveStation(draft)
+    const res = await window.clerkroom.saveStation(draft)
     if (!res.ok) {
       setErrors(res.errors)
       return false
     }
-    if (originalId && originalId !== res.station.id) await window.digipat.deleteStation(originalId)
+    if (originalId && originalId !== res.station.id) await window.clerkroom.deleteStation(originalId)
     setOriginalId(res.station.id)
     setMessage('Saved.')
     return true
@@ -171,7 +171,7 @@ export function StationEditor({
               New
             </button>
             {originalId && (
-              <button className="btn" onClick={() => window.digipat.exportStationFile(originalId)}>
+              <button className="btn" onClick={() => window.clerkroom.exportStationFile(originalId)}>
                 Export JSON
               </button>
             )}

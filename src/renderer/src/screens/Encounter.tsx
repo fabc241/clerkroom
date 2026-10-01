@@ -23,7 +23,7 @@ export function Encounter(props: {
 }): React.JSX.Element {
   const [station, setStation] = useState<Station | null>(null)
   useEffect(() => {
-    window.digipat.getStation(props.stationId).then((r) => setStation(r?.station ?? null))
+    window.clerkroom.getStation(props.stationId).then((r) => setStation(r?.station ?? null))
   }, [props.stationId])
   if (!station) return <div className="p-10 text-text-3">Loading…</div>
   return <EncounterInner {...props} station={station} />
@@ -61,7 +61,7 @@ function EncounterInner({
     async (reason: 'time' | 'candidate') => {
       if (ended) return
       setEnded(true)
-      await window.digipat.endEncounter(session.id, reason)
+      await window.clerkroom.endEncounter(session.id, reason)
       if (station.postEncounterQuestions.length > 0) {
         navigate({ name: 'post', stationId: station.id, sessionId: session.id })
       } else {
@@ -74,7 +74,7 @@ function EncounterInner({
   const remaining = useCountdown(initialSec, () => void finish('time'))
 
   useEffect(() => {
-    return window.digipat.onPatientStream((id, e) => {
+    return window.clerkroom.onPatientStream((id, e) => {
       if (id !== session.id) return
       if (e.type === 'thinking') setPatientState('thinking')
       else if (e.type === 'delta') {
@@ -111,7 +111,7 @@ function EncounterInner({
     setTranscript((t) => [...t, { kind: 'candidate', text, at: Date.now() }])
     setPatientState('thinking')
     try {
-      await window.digipat.sendToPatient(session.id, text)
+      await window.clerkroom.sendToPatient(session.id, text)
     } catch (e) {
       setError((e as Error).message)
       setPatientState('idle')
@@ -289,7 +289,7 @@ function EncounterInner({
                   className="btn-icon btn-sm absolute right-2 bottom-2 w-8"
                   aria-label="Stop the patient's reply"
                   title="Stop the reply"
-                  onClick={() => window.digipat.interruptPatient(session.id)}
+                  onClick={() => window.clerkroom.interruptPatient(session.id)}
                 >
                   <Icon name="stop" className="h-3.5 w-3.5" />
                 </button>
@@ -330,7 +330,7 @@ function EncounterInner({
               {actionList(
                 'exam',
                 station.examFindings.map((f) => ({ key: f.system })),
-                (k) => window.digipat.examine(session.id, k)
+                (k) => window.clerkroom.examine(session.id, k)
               )}
             </section>
           )}
@@ -342,7 +342,7 @@ function EncounterInner({
               {actionList(
                 'investigation',
                 station.investigations.map((i) => ({ key: i.test })),
-                (k) => window.digipat.investigate(session.id, k)
+                (k) => window.clerkroom.investigate(session.id, k)
               )}
             </section>
           )}
