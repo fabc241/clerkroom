@@ -161,12 +161,14 @@ export function quoteMatches(quote: string, text: string, allowShort = false): b
 
 /**
  * Finds the student turn (speech, examination or investigation) that contains the quote. The model
- * sometimes copies the transcript's "[6] STUDENT:" labels and joins several turns into one quote;
- * then every part must be found in a student turn, and the first one is returned.
+ * sometimes joins several turns into one quote, with the transcript's "[6] STUDENT:" labels or
+ * an ellipsis; then every part must be found in a student turn, and the first one is returned.
  */
 export function findEvidenceTurn(quote: string, transcript: TranscriptEntry[]): number | null {
+  const whole = findQuotedTurn(quote, transcript)
+  if (whole !== null) return whole
   const parts = quote
-    .split(/\[\d+\]\s*(?:STUDENT ACTION|STUDENT|PATIENT|NOTE):/)
+    .split(/\[\d+\]\s*(?:STUDENT ACTION|STUDENT|PATIENT|NOTE):|\.{3,}|…/)
     .map((p) => p.trim())
     .filter(Boolean)
   const turns = parts.map((p) => findQuotedTurn(p, transcript))

@@ -164,7 +164,8 @@ describe('evidence verification', () => {
     { kind: 'candidate', text: 'Have you had any thoughts of harming yourself or ending your life?', at: 2 },
     { kind: 'patient', text: 'Sometimes.', at: 3 },
     { kind: 'exam', system: 'General appearance', finding: 'Restless', at: 4 },
-    { kind: 'exam', system: 'Observations', finding: 'HR 96 regular', at: 5 }
+    { kind: 'exam', system: 'Observations', finding: 'HR 96 regular', at: 5 },
+    { kind: 'candidate', text: 'Well... how have you been sleeping lately?', at: 6 }
   ]
 
   it('finds exact and lightly trimmed quotes in candidate turns', () => {
@@ -186,6 +187,9 @@ describe('evidence verification', () => {
     expect(findEvidenceTurn(joined, transcript)).toBe(0)
     expect(findEvidenceTurn('[5] STUDENT ACTION: examined Observations -> HR 96 regular', transcript)).toBe(5)
     expect(findEvidenceTurn('[0] STUDENT: Can I confirm your name? [1] PATIENT: Jamie Clarke.', transcript)).toBeNull()
+    expect(findEvidenceTurn('Can I confirm your name?... thoughts of harming yourself', transcript)).toBe(0)
+    expect(findEvidenceTurn('Can I confirm your name? … Do you drink alcohol regularly at home', transcript)).toBeNull()
+    expect(findEvidenceTurn('Well... how have you been sleeping', transcript)).toBe(6)
   })
 
   it('rejects short quotes that only match part of a turn, and matches whole words only', () => {
