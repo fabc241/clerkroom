@@ -14,7 +14,7 @@ module.exports = {
         'DigiPat uses the microphone only when you turn on voice input and press the microphone button. Speech is transcribed on this Mac and the audio is not stored.'
     },
     // Only ship the build output, bundled stations and runtime deps.
-    ignore: [/^\/src/, /^\/tests/, /^\/scripts/, /^\/out/, /\.md$/, /^\/tsconfig/]
+    ignore: [/^\/src/, /^\/tests/, /^\/scripts/, /^\/out/, /^\/video/, /\.md$/, /^\/tsconfig/]
   },
   rebuildConfig: {},
   makers: [
