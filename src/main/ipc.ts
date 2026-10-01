@@ -1,6 +1,6 @@
 import { app, dialog, ipcMain, nativeTheme, shell, systemPreferences, type BrowserWindow } from 'electron'
 import { readFileSync, writeFileSync } from 'fs'
-import type { LockStatus, ModelChoice, Settings, UnlockResult } from '@shared/ipcTypes'
+import type { LockChangeResult, LockStatus, ModelChoice, Settings } from '@shared/ipcTypes'
 import { MODEL_OPTIONS, modelManager, modelsDir } from './qvac/modelManager'
 import { voiceManager } from './qvac/transcriber'
 import type { EncounterService } from './encounter'
@@ -55,9 +55,9 @@ export function registerIpc(deps: {
   }))
   handle('lock:unlock', () => lock.unlock())
   handle('lock:now', () => lock.lock())
-  handle('lock:setEnabled', async (_e, on: boolean): Promise<{ result: UnlockResult; settings: Settings }> => {
+  handle('lock:setEnabled', async (_e, on: boolean): Promise<{ result: LockChangeResult; settings: Settings }> => {
     if (on === settings.get().appLock) return { result: 'unlocked', settings: settings.get() }
-    if (on && !deps.encryptionAvailable()) return { result: 'unavailable', settings: settings.get() }
+    if (on && !deps.encryptionAvailable()) return { result: 'keychain-unavailable', settings: settings.get() }
     const result = await lock.authenticate(on ? 'turn on the app lock' : 'turn off the app lock')
     if (result !== 'unlocked') return { result, settings: settings.get() }
     // Rewrite the data first: if this is interrupted, encrypted files left behind keep the lock on at next launch.

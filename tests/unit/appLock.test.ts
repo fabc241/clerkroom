@@ -4,6 +4,7 @@ import { join } from 'path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { AppLock } from '../../src/main/appLock'
 import {
+  encryptPlainFiles,
   hasEncryptedFiles,
   readJson,
   rewriteJsonFiles,
@@ -66,6 +67,17 @@ describe('encrypted records', () => {
     rewriteJsonFiles(dir)
     expect(hasEncryptedFiles(dir)).toBe(false)
     expect(readJson(join(dir, 'b.json'))).toEqual({ ...record, id: 'b' })
+  })
+
+  it('encrypts only the records that are still plain', () => {
+    writeJson(join(dir, 'old.json'), record, true)
+    setEncryptWrites(true)
+    writeJson(join(dir, 'new.json'), { ...record, id: 'new' }, true)
+    const before = readFileSync(join(dir, 'new.json'))
+    encryptPlainFiles(dir)
+    expect(readFileSync(join(dir, 'old.json'), 'utf8')).not.toContain('Evans')
+    expect(readFileSync(join(dir, 'new.json')).equals(before)).toBe(true)
+    expect(readJson(join(dir, 'old.json'))).toEqual(record)
   })
 
   it('cannot read an encrypted record without the key', () => {
