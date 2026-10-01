@@ -128,6 +128,16 @@ describe('examiner prompt + JSON extraction', () => {
     expect(() => extractJsonObject('{"answers":[{"comment":"cut off mid')).toThrow()
   })
 
+  it('closes an array the model left open before the final brace', () => {
+    const expected = { summary: 'Good.', missedPoints: [], practiseNext: ['a', 'b'] }
+    expect(extractJsonObject('{"summary":"Good.","missedPoints":[],"practiseNext":["a","b"}')).toEqual(expected)
+    expect(extractJsonObject('{"summary":"Good.","missedPoints":[],"practiseNext":["a","b"}}')).toEqual(expected)
+    expect(extractJsonObject('{"summary":"A } and ] in text","missedPoints":[]}')).toEqual({
+      summary: 'A } and ] in text',
+      missedPoints: []
+    })
+  })
+
   it('throws when there is no JSON', () => {
     expect(() => extractJsonObject('no json here')).toThrow()
   })
