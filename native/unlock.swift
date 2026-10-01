@@ -12,10 +12,18 @@ let args = Array(CommandLine.arguments.dropFirst())
 let context = LAContext()
 var error: NSError?
 
-guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else { exit(2) }
+func fail(_ message: String, _ code: Int32) -> Never {
+  FileHandle.standardError.write(Data((message + "\n").utf8))
+  exit(code)
+}
+
+guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
+  fail("cannot authenticate: \(error?.localizedDescription ?? "unknown")", 2)
+}
 if args.first == "--check" { exit(0) }
 
-context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: args.first ?? "unlock Clerkroom") { ok, _ in
-  exit(ok ? 0 : 1)
+context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: args.first ?? "unlock Clerkroom") { ok, err in
+  if ok { exit(0) }
+  fail("not authenticated: \(err?.localizedDescription ?? "unknown")", 1)
 }
 dispatchMain()

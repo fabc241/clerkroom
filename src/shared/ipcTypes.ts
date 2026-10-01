@@ -52,8 +52,11 @@ export interface LockStatus {
   available: boolean
 }
 
-/** 'unavailable' means macOS could not authenticate (e.g. no login password) or encryption is not possible. */
+/** 'unavailable' means macOS could not authenticate, e.g. the Mac has no login password. */
 export type UnlockResult = 'unlocked' | 'cancelled' | 'unavailable'
+
+/** Turning the lock on can also fail because macOS will not let the app use the Keychain. */
+export type LockChangeResult = UnlockResult | 'keychain-unavailable'
 
 export type Appearance = 'system' | 'light' | 'dark'
 
@@ -94,7 +97,7 @@ export interface ClerkroomApi {
   unlock(): Promise<UnlockResult>
   lockNow(): Promise<void>
   /** Turns the lock on or off after the user authenticates; re-encrypts or decrypts saved data. */
-  setLockEnabled(on: boolean): Promise<{ result: UnlockResult; settings: Settings }>
+  setLockEnabled(on: boolean): Promise<{ result: LockChangeResult; settings: Settings }>
   onLockChanged(cb: (locked: boolean) => void): () => void
 
   // Model
