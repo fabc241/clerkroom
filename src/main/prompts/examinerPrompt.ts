@@ -153,7 +153,18 @@ export function extractJsonObject(text: string): unknown {
   let i = stripped.indexOf('{')
   while (i >= 0) {
     const end = matchBrace(stripped, i)
-    if (end < 0) break
+    if (end < 0) {
+      // MedPsy often ends a correct object without its final "]}"; close it rather than lose the marks.
+      const closed = closeUnterminated(stripped.slice(i))
+      if (closed !== null) {
+        try {
+          last = JSON.parse(closed)
+        } catch {
+          /* not JSON after all */
+        }
+      }
+      break
+    }
     try {
       last = JSON.parse(stripped.slice(i, end + 1))
       i = stripped.indexOf('{', end + 1) // skip nested objects of a parsed top-level object
@@ -183,4 +194,24 @@ function matchBrace(text: string, start: number): number {
     }
   }
   return -1
+}
+
+/** Appends the closing brackets an unfinished JSON value is missing, or null if it cannot be closed. */
+function closeUnterminated(text: string): string | null {
+  const closers: string[] = []
+  let inString = false
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
+    if (inString) {
+      if (ch === '\\') i++
+      else if (ch === '"') inString = false
+      continue
+    }
+    if (ch === '"') inString = true
+    else if (ch === '{') closers.push('}')
+    else if (ch === '[') closers.push(']')
+    else if ((ch === '}' || ch === ']') && closers.pop() !== ch) return null
+  }
+  if (inString || closers.length === 0) return null
+  return text.trimEnd().replace(/,$/, '') + closers.reverse().join('')
 }

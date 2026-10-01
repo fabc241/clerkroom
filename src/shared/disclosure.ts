@@ -2,8 +2,8 @@ import { normalizeForMatch } from './rubric'
 
 /**
  * Progressive disclosure: the simulated patient only learns a hidden fact once the candidate
- * asks about its topic. A fact is unlocked when a candidate message contains one of its ask
- * keywords (single words match as word prefixes, so "suicid" matches "suicidal").
+ * asks about its topic. A fact is unlocked when a sentence that asks something contains one of
+ * its ask keywords (single words match as word prefixes, so "suicid" matches "suicidal").
  */
 
 const STOPWORDS = new Set(
@@ -31,8 +31,34 @@ export function askKeywordsFor(fact: { trigger: string; askKeywords?: string[] }
   return fact.askKeywords?.length ? fact.askKeywords : deriveTriggerKeywords(fact.trigger)
 }
 
+/** Words that open a question or request, even without a question mark ("Tell me about…", "Any pain."). */
+const ASKING_OPENERS = new Set(
+  (
+    'what how when where who why which do does did have has had is are was were am can could would will ' +
+    "should may might any anything anyone tell describe talk walk say give rate show let let's please"
+  ).split(' ')
+)
+const FILLERS = /^((so|and|ok|okay|right|now|well|also|then|alright|great|sure|thanks|thank you)\s+)+/
+const ELICITING = [' ask ', ' tell me ', ' wonder', ' like to know ', ' want to know ', ' like to hear ', ' like to talk about ']
+
+/**
+ * A sentence the student ends with "." or "!" is a statement ("I understand your colleague
+ * suggested this tablet.") and unlocks nothing unless it opens like a question or request, or
+ * says it is asking. Questions, and sentences typed without end punctuation, always count.
+ */
+function isAsking(sentence: string): boolean {
+  if (!/[.!]\s*$/.test(sentence)) return true
+  const s = normalizeForMatch(sentence).replace(FILLERS, '')
+  return ASKING_OPENERS.has(s.split(' ')[0]) || ELICITING.some((p) => ` ${s} `.includes(p))
+}
+
+/** The parts of a candidate message that ask the patient something. */
+function askingText(message: string): string {
+  return (message.match(/[^.!?]+[.!?]*/g) ?? []).filter(isAsking).join(' ')
+}
+
 export function questionUnlocks(question: string, fact: { trigger: string; askKeywords?: string[] }): boolean {
-  const q = ` ${normalizeForMatch(question)} `
+  const q = ` ${normalizeForMatch(askingText(question))} `
   const words = q.trim().split(' ')
   return askKeywordsFor(fact).some((k) => {
     const nk = normalizeForMatch(k)

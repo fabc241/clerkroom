@@ -163,7 +163,8 @@ describe('evidence verification', () => {
     { kind: 'patient', text: 'Jamie Clarke.', at: 1 },
     { kind: 'candidate', text: 'Have you had any thoughts of harming yourself or ending your life?', at: 2 },
     { kind: 'patient', text: 'Sometimes.', at: 3 },
-    { kind: 'exam', system: 'General appearance', finding: 'Restless', at: 4 }
+    { kind: 'exam', system: 'General appearance', finding: 'Restless', at: 4 },
+    { kind: 'exam', system: 'Observations', finding: 'HR 96 regular', at: 5 }
   ]
 
   it('finds exact and lightly trimmed quotes in candidate turns', () => {
@@ -173,6 +174,18 @@ describe('evidence verification', () => {
 
   it('matches quotes from exam actions as formatted for the examiner', () => {
     expect(findEvidenceTurn('examined General appearance', transcript)).toBe(4)
+  })
+
+  it('matches an action named by a one-word label', () => {
+    expect(findEvidenceTurn('examined Observations', transcript)).toBe(5)
+    expect(findEvidenceTurn('examined Abdomen', transcript)).toBeNull()
+  })
+
+  it('accepts a quote joining several labelled student turns, but not one that includes the patient', () => {
+    const joined = '[0] STUDENT: Can I confirm your name? [2] STUDENT: Have you had any thoughts of harming yourself'
+    expect(findEvidenceTurn(joined, transcript)).toBe(0)
+    expect(findEvidenceTurn('[5] STUDENT ACTION: examined Observations -> HR 96 regular', transcript)).toBe(5)
+    expect(findEvidenceTurn('[0] STUDENT: Can I confirm your name? [1] PATIENT: Jamie Clarke.', transcript)).toBeNull()
   })
 
   it('rejects short quotes that only match part of a turn, and matches whole words only', () => {
