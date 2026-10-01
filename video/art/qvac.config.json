@@ -1,0 +1,1 @@
+{ "plugins": ["@qvac/sdk/sdcpp-generation/plugin"] }
