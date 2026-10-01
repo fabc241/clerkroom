@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, session } from 'electron'
+import { app, BrowserWindow, nativeTheme, powerMonitor, safeStorage, session } from 'electron'
 import { existsSync, renameSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
@@ -10,9 +10,12 @@ import { EncounterService, cleanupStaleSessionCaches } from './encounter'
 import { SessionStore } from './store/sessionStore'
 import { SettingsStore } from './store/settingsStore'
 import { StationStore } from './store/stationStore'
+import { hasEncryptedFiles, setCipher, setEncryptWrites } from './store/jsonFiles'
+import { AppLock } from './appLock'
 
 const here = fileURLToPath(new URL('.', import.meta.url))
 let win: BrowserWindow | null = null
+let lock: AppLock | null = null
 
 // Lets tests and demos run against a throwaway data folder.
 if (process.env['CLERKROOM_USER_DATA']) app.setPath('userData', process.env['CLERKROOM_USER_DATA'])
@@ -45,7 +48,9 @@ function createWindow(): void {
       preload: join(here, '../preload/index.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true
+      sandbox: true,
+      // DevTools could call the app's API directly, so the packaged app has none.
+      devTools: is.dev
     }
   })
   win.on('ready-to-show', () => win?.show())
@@ -91,13 +96,38 @@ app.whenReady().then(() => {
   session.defaultSession.setPermissionCheckHandler(
     (wc, perm, _origin, details) => perm === 'media' && details.mediaType === 'audio' && micAllowed(wc)
   )
-  const stations = new StationStore(join(app.getAppPath(), 'stations'), join(userData, 'stations'))
-  const sessions = new SessionStore(join(userData, 'sessions'))
+  const userStationsDir = join(userData, 'stations')
+  const sessionsDir = join(userData, 'sessions')
+  const stations = new StationStore(join(app.getAppPath(), 'stations'), userStationsDir)
+  const sessions = new SessionStore(sessionsDir)
+
+  // Optional app lock. Saved data is encrypted with a key macOS keeps in the Keychain for this app.
+  // safeStorage is only called once there is something to encrypt or decrypt, so the Keychain is
+  // never touched while the lock is off.
+  setCipher({ encrypt: (s) => safeStorage.encryptString(s), decrypt: (b) => safeStorage.decryptString(b) })
+  // Encrypted data keeps the lock on even if settings.json was edited to turn it off.
+  if (!settings.get().appLock && [sessionsDir, userStationsDir].some(hasEncryptedFiles)) settings.setAppLock(true)
+  setEncryptWrites(settings.get().appLock)
+  const helper = app.isPackaged
+    ? join(process.resourcesPath, 'unlock', 'Clerkroom')
+    : join(app.getAppPath(), 'build', 'native', 'unlock', 'Clerkroom')
+  lock = new AppLock(helper, () => settings.get().appLock, settings.get().appLock)
+  powerMonitor.on('lock-screen', () => lock?.lock())
+  powerMonitor.on('suspend', () => lock?.lock())
   const encounter = new EncounterService(stations, sessions, () => settings.get().stationSecondsOverride)
 
   if (stations.loadErrors.length) console.error('Invalid bundled stations:', stations.loadErrors)
 
-  registerIpc({ getWindow: () => win, settings, stations, sessions, encounter })
+  registerIpc({
+    getWindow: () => win,
+    settings,
+    stations,
+    sessions,
+    encounter,
+    lock,
+    dataDirs: [sessionsDir, userStationsDir],
+    encryptionAvailable: () => safeStorage.isEncryptionAvailable()
+  })
   void cleanupStaleSessionCaches()
   createWindow()
 
@@ -111,6 +141,7 @@ app.on('before-quit', (e) => {
   if (shuttingDown) return
   shuttingDown = true
   e.preventDefault()
+  lock?.dispose()
   // Unload the voice model first: modelManager.shutdown() closes the QVAC worker.
   voiceManager
     .unload()
