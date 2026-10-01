@@ -25,11 +25,16 @@ const vctx = veil.getContext('2d')
 
 const IMG = {}
 let META = null
+let CLOCK = ''
 const STATE_NAMES = ['library', 'library_hover', 'open_think', 'mic_idle', 'rec_0', 'rec_1', 'rec_2', 'rec_3', 'transcribing', 'reply_think', 'fb_top', 'fb_item']
 const pad2 = (i) => String(i).padStart(2, '0')
 
 async function loadAll() {
   META = await (await fetch('../build/states.json')).json()
+  // The menu bar clock reads a minute before the recorded station starts, matching the app's dates.
+  const { record } = await (await fetch('../recording.json')).json()
+  const at = new Date(record.startedAt - 60_000)
+  CLOCK = `${at.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}  ${at.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`
   const names = [...STATE_NAMES]
   for (let i = 1; i <= META.states.open_count; i++) names.push(`open_${pad2(i)}`)
   for (let i = 1; i <= META.states.q_count; i++) names.push(`q_${i}`)
@@ -486,7 +491,7 @@ function desktop(t, off, menuOpen, knob) {
   ctx.font = `500 14px ${SANS}`
   ;['File', 'Edit', 'View', 'Window', 'Help'].forEach((m, i) => ctx.fillText(m, 96 + i * 62, MB / 2 + 1))
   ctx.textAlign = 'right'
-  ctx.fillText('Wed 30 Sep  20:14', 1900, MB / 2 + 1)
+  ctx.fillText(CLOCK, 1900, MB / 2 + 1)
   ctx.textAlign = 'left'
   ctx.strokeStyle = TEXT_DARK
   ctx.lineWidth = 1.2

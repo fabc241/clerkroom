@@ -21,7 +21,7 @@ const summarize = (s) => ({
   bundled: true
 })
 
-const settings = { acceptedDisclaimerVersion: 1, model: 'medpsy-4b-q4', stationSecondsOverride: null, skipReadingTime: true, voiceInput: true, appearance: 'dark' }
+const settings = { acceptedDisclaimerVersion: 1, model: 'medpsy-4b-q4', stationSecondsOverride: null, skipReadingTime: true, voiceInput: true, appearance: 'dark', appLock: false }
 const model = { phase: 'ready', choice: 'medpsy-4b-q4', downloadPercent: 100, downloadedBytes: 2.7e9, totalBytes: 2.7e9, cached: true, device: 'gpu', hardware: { cpu: 'Apple Silicon', memoryGb: 16, appleSilicon: true } }
 const voice = { phase: 'ready', modelName: 'Parakeet Unified 0.6B', sizeBytes: 741e6, downloadPercent: 100, downloadedBytes: 741e6, totalBytes: 741e6, cached: true }
 
@@ -50,6 +50,11 @@ navigator.mediaDevices.getUserMedia = async () => {
 window.clerkroom = {
   getSettings: async () => settings,
   updateSettings: async (p) => Object.assign(settings, p),
+  getLockStatus: async () => ({ enabled: false, locked: false, available: true }),
+  unlock: async () => 'unlocked',
+  lockNow: async () => {},
+  setLockEnabled: async () => ({ result: 'unlocked', settings }),
+  onLockChanged: () => () => {},
   getModelOptions: async () => [],
   getModelStatus: async () => model,
   prepareModel: async () => model,

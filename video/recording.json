@@ -5,120 +5,120 @@
     "stationId": "med-chest-pain",
     "stationTitle": "Chest pain",
     "stationVersion": 1,
-    "startedAt": 1790792028770,
-    "endedAt": 1790792288770,
+    "startedAt": 1790893105171,
+    "endedAt": 1790893365171,
     "transcript": [
       {
         "kind": "candidate",
         "text": "Hello Mr Evans, my name is Dr Rossi, I'm one of the junior doctors. Is it OK if I ask you some questions? What's brought you in today?",
-        "at": 1790792033770
+        "at": 1790893110171
       },
       {
         "kind": "patient",
-        "text": "I've got this awful pain in my chest, doctor. It came on while I was carrying the shopping in.",
-        "at": 1790792041770
+        "text": "It's in the middle of my chest, feels like an elephant sitting on me, and hasn't gone away even though I've been resting. I'm really worried because my dad died of a heart attack at 60.",
+        "at": 1790893118171
       },
       {
         "kind": "candidate",
         "text": "Does the pain go anywhere?",
-        "at": 1790792056770
+        "at": 1790893133171
       },
       {
         "kind": "patient",
-        "text": "The pain goes into my left arm and up into my jaw, like numbness or weakness. I was carrying shopping when it started, and it's not going anywhere else. It feels like an elephant sitting on me, and it's not easing off at all. I'm really scared it's my heart.",
-        "at": 1790792064770
+        "text": "Yeah, it goes into my left arm and up into my jaw, too.",
+        "at": 1790893141171
       },
       {
         "kind": "candidate",
         "text": "I can see this is really frightening. When exactly did it start, what does it feel like, and how bad is it out of ten?",
-        "at": 1790792079770
+        "at": 1790893156171
       },
       {
         "kind": "patient",
-        "text": "It's an eight out of ten. It's the worst pain I've ever had, like an elephant sitting right on top of my chest, and it's not going away. I'm so scared it's my heart, like my dad had.",
-        "at": 1790792087770
+        "text": "It's an eight out of ten. Worst pain I've ever had.",
+        "at": 1790893164171
       },
       {
         "kind": "candidate",
         "text": "Have you had any sweating, feeling sick or shortness of breath with it?",
-        "at": 1790792102770
+        "at": 1790893179171
       },
       {
         "kind": "patient",
-        "text": "I've been sweating buckets and feel sick, plus a bit short of breath. It's really scary, doctor, because it feels so much like my dad's heart attack. I'm sure it's my heart now.",
-        "at": 1790792110770
+        "text": "I've been sweating buckets and I feel a bit sick. Bit short of breath too.",
+        "at": 1790893187171
       },
       {
         "kind": "candidate",
         "text": "Is it worse when you breathe in or move, is it a tearing pain going through to your back, and have you had any recent long trips or leg swelling?",
-        "at": 1790792125770
+        "at": 1790893202171
       },
       {
         "kind": "patient",
-        "text": "No, it doesn't hurt more when I breathe or move, and it's not tearing anywhere. I've never felt pain like this before, and it's definitely my heart. I'm just so scared.",
-        "at": 1790792133770
+        "text": "It doesn't hurt more when I breathe in or move around, and it's not tearing. No long flights recently, and my legs aren't swollen.",
+        "at": 1790893210171
       },
       {
         "kind": "candidate",
         "text": "Have you had any pain like this before, for example when walking?",
-        "at": 1790792148770
+        "at": 1790893225171
       },
       {
         "kind": "patient",
-        "text": "Yeah, a few weeks ago when I went up hills, I felt some tightness, but it went away after resting for a bit. This pain's different though, it won't go away. It's the worst I've ever had.",
-        "at": 1790792156770
+        "text": "Yeah, for a few weeks I'd get this tightness when walking up hills, but it would go away after I rested for a couple of minutes. I thought it was just getting old.",
+        "at": 1790893233171
       },
       {
         "kind": "candidate",
         "text": "Do you smoke, and have you ever been told you have high blood pressure, high cholesterol or diabetes?",
-        "at": 1790792171770
+        "at": 1790893248171
       },
       {
         "kind": "patient",
-        "text": "Yeah, I smoke about 20 a day, and I was told my blood pressure was high years ago but never got the pills. I don't think I've ever had cholesterol or diabetes problems. It's all making me so scared it's my heart.",
-        "at": 1790792179770
+        "text": "I smoke about 20 a day. I was told my blood pressure was high a while back but never went back for tablets. Not diabetic as far as I know.",
+        "at": 1790893256171
       },
       {
         "kind": "candidate",
         "text": "Does anyone in your family have heart problems?",
-        "at": 1790792194770
+        "at": 1790893271171
       },
       {
         "kind": "patient",
-        "text": "Yes, my dad had a heart attack at 60. That's why I'm so worried now. It's all in my head, but I just can't stop thinking about it.",
-        "at": 1790792202770
+        "text": "My dad died of a heart attack when he was 60.",
+        "at": 1790893279171
       },
       {
         "kind": "candidate",
         "text": "Do you take any medications, and do you have any allergies?",
-        "at": 1790792217770
+        "at": 1790893294171
       },
       {
         "kind": "patient",
-        "text": "I don't take any regular medications, and I don't have any allergies. I'm just so scared it's my heart.",
-        "at": 1790792225770
+        "text": "I don't take anything regularly. No allergies.",
+        "at": 1790893302171
       },
       {
         "kind": "exam",
         "system": "Observations",
         "finding": "HR 96 regular, BP 158/94 in both arms, RR 20, SpO2 96% on air, temperature 36.8°C.",
-        "at": 1790792240770
+        "at": 1790893317171
       },
       {
         "kind": "investigation",
         "test": "12-lead ECG",
         "result": "2 mm ST elevation in leads II, III and aVF with reciprocal ST depression in I and aVL.",
-        "at": 1790792255770
+        "at": 1790893332171
       },
       {
         "kind": "candidate",
         "text": "I know you're worried because of what happened to your dad, and I'm taking this very seriously. The heart tracing shows your heart is under strain, so I'm getting my senior doctor now, we'll give you something for the pain and some aspirin, and the heart team will likely need to open up an artery. Is that OK?",
-        "at": 1790792270770
+        "at": 1790893347171
       },
       {
         "kind": "patient",
-        "text": "Oh god, I'm so scared it's me, like my dad. Please tell me this isn't happening. I'll go with you to the hospital if you need me.",
-        "at": 1790792278770
+        "text": "Oh, thank you, doctor. That must be really serious, but I'm glad you're taking it seriously. Can you tell me if the pain will go away soon after the pills? I'm so worried it's my heart.",
+        "at": 1790893355171
       }
     ],
     "disclosedTopics": [],
@@ -144,7 +144,7 @@
           "evidenceTurn": 0,
           "downgraded": false,
           "met": "yes",
-          "comment": "Effective self-introduction and consent obtained."
+          "comment": "You introduced yourself clearly and obtained consent effectively."
         },
         {
           "itemId": "socrates",
@@ -152,11 +152,11 @@
           "text": "Takes a structured pain history (site, onset, character, radiation, severity, timing, exacerbating/relieving)",
           "weight": 3,
           "critical": false,
-          "evidenceQuote": "Does the pain go anywhere?... How bad is it out of ten?",
-          "evidenceTurn": null,
-          "downgraded": true,
-          "met": "no",
-          "comment": "Not credited: the examiner could not point to anything you said or did for this item."
+          "evidenceQuote": "When exactly did it start, what does it feel like, and how bad is it out of ten?",
+          "evidenceTurn": 4,
+          "downgraded": false,
+          "met": "yes",
+          "comment": "You systematically gathered all key pain characteristics including site, character, radiation, and severity."
         },
         {
           "itemId": "associated",
@@ -168,7 +168,7 @@
           "evidenceTurn": 6,
           "downgraded": false,
           "met": "yes",
-          "comment": "Associated symptoms clearly elicited."
+          "comment": "You probed for critical autonomic symptoms suggestive of cardiac ischemia."
         },
         {
           "itemId": "differentials",
@@ -180,7 +180,7 @@
           "evidenceTurn": 8,
           "downgraded": false,
           "met": "yes",
-          "comment": "Critical differentials appropriately addressed."
+          "comment": "You appropriately targeted life-threatening differentials like PE and aortic dissection."
         },
         {
           "itemId": "risk-factors",
@@ -192,7 +192,7 @@
           "evidenceTurn": 12,
           "downgraded": false,
           "met": "yes",
-          "comment": "Cardiovascular risk factors systematically assessed."
+          "comment": "You comprehensively assessed modifiable cardiovascular risk factors."
         },
         {
           "itemId": "fhx",
@@ -204,7 +204,7 @@
           "evidenceTurn": 14,
           "downgraded": false,
           "met": "yes",
-          "comment": "Family history thoroughly explored."
+          "comment": "You gathered essential family history relevant to cardiac risk assessment."
         },
         {
           "itemId": "drugs",
@@ -228,7 +228,7 @@
           "evidenceTurn": 19,
           "downgraded": false,
           "met": "yes",
-          "comment": "You promptly ordered the ECG as standard for chest pain."
+          "comment": "You promptly requested the ECG as indicated."
         },
         {
           "itemId": "obs",
@@ -240,7 +240,7 @@
           "evidenceTurn": 18,
           "downgraded": false,
           "met": "yes",
-          "comment": "You completed a full vital signs assessment."
+          "comment": "You performed the necessary observations examination."
         },
         {
           "itemId": "ice",
@@ -252,7 +252,7 @@
           "evidenceTurn": 20,
           "downgraded": false,
           "met": "yes",
-          "comment": "You acknowledged fear while explaining next steps clearly."
+          "comment": "You acknowledged the patient's fear and explained the clinical reasoning clearly."
         }
       ],
       "answers": [
@@ -265,7 +265,7 @@
             "Inferior territory"
           ],
           "keyPointsMissed": [],
-          "comment": "The student accurately identified the diagnosis as an inferior STEMI."
+          "comment": "The student accurately specified an inferior STEMI diagnosis."
         },
         {
           "question": "What is your immediate management?",
@@ -279,15 +279,15 @@
             "Senior help"
           ],
           "keyPointsMissed": [],
-          "comment": "The student demonstrated a thorough understanding of immediate STEMI management protocols."
+          "comment": "The student demonstrated appropriate immediate management steps for STEMI."
         }
       ],
       "domainScores": [
         {
           "domain": "dataGathering",
-          "earned": 8,
+          "earned": 11,
           "possible": 11,
-          "percent": 73
+          "percent": 100
         },
         {
           "domain": "clinicalManagement",
@@ -302,20 +302,20 @@
           "percent": 100
         }
       ],
-      "overallPercent": 87,
-      "checklistPercent": 83,
+      "overallPercent": 100,
+      "checklistPercent": 100,
       "answersPercent": 100,
       "result": "pass",
       "resultReasons": [
-        "Your score of 87% meets the pass mark of 55% and you did every must-pass item."
+        "Your score of 100% meets the pass mark of 55% and you did every must-pass item."
       ],
       "globalRating": "Excellent",
-      "summary": "Your score of 87% meets the pass mark of 55% and you did every must-pass item. Review the items below.",
-      "missedPoints": [
-        "Takes a structured pain history (site, onset, character, radiation, severity, timing, exacerbating/relieving)"
+      "summary": "Your consultation demonstrated exceptional clinical competence and patient-centered care, thoroughly addressing all critical elements of chest pain assessment while maintaining empathy and clear communication throughout the interaction.",
+      "missedPoints": [],
+      "practiseNext": [
+        "Continue refining your ability to efficiently triage high-risk presentations using the HEART score; Practice explaining ECG findings in lay terms to reduce patient anxiety; Rehearse differential diagnosis reasoning for atypical presentations like musculoskeletal chest pain."
       ],
-      "practiseNext": [],
-      "generatedAt": 1790792302213,
+      "generatedAt": 1790893768111,
       "modelName": "MedPsy 4B (Q4_K_M) — recommended"
     }
   }
