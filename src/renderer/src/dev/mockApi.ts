@@ -1,10 +1,10 @@
 /*
  * Development-only stand-in for the Electron preload API, so the renderer can be previewed in a
  * plain browser (`npx electron-vite dev --rendererOnly`). It is imported only when
- * import.meta.env.DEV is true and window.digipat is missing, so it never ships in the app.
+ * import.meta.env.DEV is true and window.clerkroom is missing, so it never ships in the app.
  * All data here is synthetic.
  */
-import type { DigiPatApi, FeedbackProgress, ModelStatus, PatientStreamEvent, Settings, VoiceStatus } from '@shared/ipcTypes'
+import type { ClerkroomApi, FeedbackProgress, ModelStatus, PatientStreamEvent, Settings, VoiceStatus } from '@shared/ipcTypes'
 import type { Feedback, SessionListItem, SessionRecord, TranscriptEntry } from '@shared/sessionTypes'
 import { stationSchema, summarize, type Station } from '@shared/stationSchema'
 import { feedbackResult } from '@shared/rubric'
@@ -137,7 +137,7 @@ let demoMarked = false
 const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms))
 
 export function installMockApi(): void {
-  const api: DigiPatApi = {
+  const api: ClerkroomApi = {
     getSettings: async () => settings,
     updateSettings: async (patch) => (settings = { ...settings, ...patch }),
     getModelOptions: async () => [
@@ -226,7 +226,7 @@ export function installMockApi(): void {
     deleteSession: async () => {},
     exportSession: async () => false,
     openExternal: async () => {},
-    appInfo: async () => ({ version: '0.1.0', modelsDir: '~/.qvac/models', dataDir: '~/Library/Application Support/DigiPat' })
-  } as DigiPatApi
-  Object.assign(window, { digipat: api })
+    appInfo: async () => ({ version: '0.1.0', modelsDir: '~/.qvac/models', dataDir: '~/Library/Application Support/Clerkroom' })
+  } as ClerkroomApi
+  Object.assign(window, { clerkroom: api })
 }

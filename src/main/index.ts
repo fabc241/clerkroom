@@ -1,5 +1,6 @@
 import { app, BrowserWindow, nativeTheme, session } from 'electron'
-import { join } from 'path'
+import { existsSync, renameSync } from 'fs'
+import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { is } from '@electron-toolkit/utils'
 import { registerIpc } from './ipc'
@@ -14,7 +15,20 @@ const here = fileURLToPath(new URL('.', import.meta.url))
 let win: BrowserWindow | null = null
 
 // Lets tests and demos run against a throwaway data folder.
-if (process.env['DIGIPAT_USER_DATA']) app.setPath('userData', process.env['DIGIPAT_USER_DATA'])
+if (process.env['CLERKROOM_USER_DATA']) app.setPath('userData', process.env['CLERKROOM_USER_DATA'])
+else migrateLegacyDataDir()
+
+// The app used to be called DigiPat: carry its data folder over once so progress survives the rename.
+function migrateLegacyDataDir(): void {
+  const dataDir = app.getPath('userData')
+  const legacyDir = join(dirname(dataDir), 'DigiPat')
+  if (existsSync(dataDir) || !existsSync(legacyDir)) return
+  try {
+    renameSync(legacyDir, dataDir)
+  } catch (err) {
+    console.error('Could not move the DigiPat data folder:', err)
+  }
+}
 
 function createWindow(): void {
   win = new BrowserWindow({
@@ -23,7 +37,7 @@ function createWindow(): void {
     minWidth: 900,
     minHeight: 620,
     show: false,
-    title: 'DigiPat',
+    title: 'Clerkroom',
     titleBarStyle: 'hiddenInset',
     // Matches the sheet's paper so the window never flashes the wrong appearance before first paint.
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#161618' : '#fdfdfc',

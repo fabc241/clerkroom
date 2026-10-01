@@ -1,4 +1,4 @@
-// DigiPat 30 s demo: every frame is drawn from the captured app states (../build/states, dark
+// Clerkroom 30 s demo: every frame is drawn from the captured app states (../build/states, dark
 // appearance) by renderFrame(t). 96 BPM: one beat = 0.625 s, one bar = 2.5 s, 12 bars. Cuts sit
 // on bar lines; the last stroke of each handwritten card lands on a beat. Emphasis comes from
 // spotlights (everything else dims), not arrows.
@@ -402,14 +402,14 @@ function sceneStudents(t) {
   ctx.drawImage(IMG.walkers, x, y, pw, ph)
   ctx.restore()
   speechBubble(t, 0.02, ['I don’t know', 'who to practise', 'my OSCE with…'], wm.bubbleLeft.box, wm.bubbleLeft.tip, '#ffffff')
-  speechBubble(t, 1.25, ['Do you know', 'DigiPat?'], wm.bubbleRight.box, wm.bubbleRight.tip, '#faefcb', 700)
+  speechBubble(t, 1.25, ['Do you know', 'Clerkroom?'], wm.bubbleRight.box, wm.bubbleRight.tip, '#faefcb', 700)
 }
 
 // ---------- bar 2: Wi-Fi off, then the library ----------
 
 const MB = 30 // menu bar height (desktop coords)
 const WIFI_X = 1640
-const WIN = { x: 160, y: 360 } // the DigiPat window's position on the desktop
+const WIN = { x: 160, y: 360 } // the Clerkroom window's position on the desktop
 const MENU = { x: WIFI_X - 250, y: MB + 6, w: 290, h: 112 }
 const T_OPEN = 2.5 + BEAT / 2 // clicks the Wi-Fi icon
 const T_OFF = 2.5 + BEAT // switches it off (on a beat)
@@ -482,7 +482,7 @@ function desktop(t, off, menuOpen, knob) {
   ctx.fillStyle = TEXT_DARK
   ctx.font = `700 14px ${SANS}`
   ctx.textBaseline = 'middle'
-  ctx.fillText('DigiPat', 22, MB / 2 + 1)
+  ctx.fillText('Clerkroom', 22, MB / 2 + 1)
   ctx.font = `500 14px ${SANS}`
   ;['File', 'Edit', 'View', 'Window', 'Help'].forEach((m, i) => ctx.fillText(m, 96 + i * 62, MB / 2 + 1))
   ctx.textAlign = 'right'
@@ -705,7 +705,7 @@ function sceneEnd(t) {
   ctx.fillStyle = glow
   ctx.fillRect(0, 0, W, H)
   ctx.font = `700 124px ${SANS}`
-  const word = ctx.measureText('DigiPat').width
+  const word = ctx.measureText('Clerkroom').width
   const s = 6.4
   const x0 = (W - (28 * s + 36 + word)) / 2
   const y0 = 170
@@ -725,7 +725,7 @@ function sceneEnd(t) {
   ctx.restore()
   ctx.fillStyle = TEXT_DARK
   ctx.textBaseline = 'middle'
-  ctx.fillText('DigiPat', x0 + 28 * s + 36, y0 + 14 * s)
+  ctx.fillText('Clerkroom', x0 + 28 * s + 36, y0 + 14 * s)
   ctx.textBaseline = 'alphabetic'
   write(t, 27.5, 28.125 - 0.02, 'Offline. Private. Open source.', W / 2, 640, 116, 'center')
   write(t, 28.75, 29.375 - 0.02, 'MedPsy‑4B + Parakeet 0.6B by QVAC', W / 2, 800, 86, 'center')

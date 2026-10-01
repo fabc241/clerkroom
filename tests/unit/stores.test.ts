@@ -11,7 +11,7 @@ import { STATIONS_DIR, rawStation } from './helpers'
 
 let dir: string
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'digipat-test-'))
+  dir = mkdtempSync(join(tmpdir(), 'clerkroom-test-'))
 })
 afterEach(() => rmSync(dir, { recursive: true, force: true }))
 

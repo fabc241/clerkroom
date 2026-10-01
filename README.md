@@ -1,11 +1,11 @@
-# DigiPat
+# Clerkroom
 
-**DigiPat** is a digital simulated patient for clinical education on macOS. Medical students
+**Clerkroom** is a digital simulated patient for clinical education on macOS. Medical students
 practise clinical stations by talking to an AI patient, then receive structured, rubric-based
 formative feedback. Everything runs locally and offline on the Mac, powered by the
 [QVAC SDK](https://github.com/tetherto/qvac) and the **MedPsy-4B** model from the QVAC registry.
 
-> **Educational simulation only. Not a medical device.** DigiPat does not diagnose, treat or
+> **Educational simulation only. Not a medical device.** Clerkroom does not diagnose, treat or
 > advise about real people and must not be used for real patient care. All cases are fictional.
 > AI-generated feedback may be inaccurate and is not an examiner's judgement.
 

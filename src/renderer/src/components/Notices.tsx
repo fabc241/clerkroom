@@ -20,7 +20,7 @@ export function SensitiveTopicFooter(): React.JSX.Element {
       <p>
         This is a fictional simulation. If you are personally affected or in distress, please contact local emergency
         services or a crisis line.{' '}
-        <button className="link" onClick={() => window.digipat.openExternal('crisis-info')}>
+        <button className="link" onClick={() => window.clerkroom.openExternal('crisis-info')}>
           Find a helpline
         </button>
       </p>

@@ -77,8 +77,8 @@ export function FeedbackView({
     setError(null)
     setProgress({ step: 'Starting', done: 0, total: 1 })
     try {
-      await window.digipat.generateFeedback(sessionId)
-      setRecord(await window.digipat.getSession(sessionId))
+      await window.clerkroom.generateFeedback(sessionId)
+      setRecord(await window.clerkroom.getSession(sessionId))
       setJustMarked(true)
     } catch (e) {
       setError((e as Error).message)
@@ -88,10 +88,10 @@ export function FeedbackView({
   }
 
   useEffect(() => {
-    const off = window.digipat.onFeedbackProgress((id, p) => id === sessionId && setProgress(p))
-    window.digipat.getSession(sessionId).then((r) => {
+    const off = window.clerkroom.onFeedbackProgress((id, p) => id === sessionId && setProgress(p))
+    window.clerkroom.getSession(sessionId).then((r) => {
       setRecord(r)
-      if (r) window.digipat.getStation(r.stationId).then((s) => setPatientName(s?.station.patient.name))
+      if (r) window.clerkroom.getStation(r.stationId).then((s) => setPatientName(s?.station.patient.name))
       if (r && !r.feedback && modelReady && !started.current) {
         started.current = true
         void generate()
@@ -124,7 +124,7 @@ export function FeedbackView({
         description={formatDate(record.startedAt)}
         actions={
           <>
-            <button className="btn" onClick={() => window.digipat.exportSession(record.id, 'md')}>
+            <button className="btn" onClick={() => window.clerkroom.exportSession(record.id, 'md')}>
               <Icon name="download" className="h-4 w-4" /> Export
             </button>
             <button className="btn" onClick={() => navigate({ name: 'library' })}>

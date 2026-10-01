@@ -69,8 +69,8 @@ export type ImportResult =
   | { ok: true; station: Station }
   | { ok: false; errors: string[] }
 
-/** API exposed on window.digipat by the preload script. */
-export interface DigiPatApi {
+/** API exposed on window.clerkroom by the preload script. */
+export interface ClerkroomApi {
   // Settings
   getSettings(): Promise<Settings>
   updateSettings(patch: Partial<Settings>): Promise<Settings>

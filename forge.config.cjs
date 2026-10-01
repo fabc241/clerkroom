@@ -4,14 +4,14 @@ const QvacForgePlugin = require('@qvac/sdk/electron-forge')
 
 module.exports = {
   packagerConfig: {
-    name: 'DigiPat',
-    executableName: 'DigiPat',
-    appBundleId: 'org.digipat.app',
+    name: 'Clerkroom',
+    executableName: 'Clerkroom',
+    appBundleId: 'org.clerkroom.app',
     appCategoryType: 'public.app-category.education',
     // Shown by macOS the first time optional voice input asks for the microphone.
     extendInfo: {
       NSMicrophoneUsageDescription:
-        'DigiPat uses the microphone only when you turn on voice input and press the microphone button. Speech is transcribed on this Mac and the audio is not stored.'
+        'Clerkroom uses the microphone only when you turn on voice input and press the microphone button. Speech is transcribed on this Mac and the audio is not stored.'
     },
     // Only ship the build output, bundled stations and runtime deps.
     ignore: [/^\/src/, /^\/tests/, /^\/scripts/, /^\/out/, /^\/video/, /\.md$/, /^\/tsconfig/]

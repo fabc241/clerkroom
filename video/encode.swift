@@ -1,7 +1,7 @@
 // Encodes video/build/frames/*.png (30 fps) + video/build/music.m4a into an X-ready MP4:
 // H.264 High, 1920x1080, 30 fps, AAC stereo. Uses only macOS frameworks.
 //   afconvert -f m4af -d aac -b 256000 video/build/music.wav video/build/music.m4a
-//   swift video/encode.swift video/build/frames video/build/music.m4a video/digipat-demo.mp4
+//   swift video/encode.swift video/build/frames video/build/music.m4a video/clerkroom-demo.mp4
 import AVFoundation
 import CoreImage
 import Foundation
