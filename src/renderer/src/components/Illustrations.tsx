@@ -276,7 +276,9 @@ export function StationIllustration({
 /**
  * The consulting room scene: the doctor at the desk and the patient (matched to the station's sex).
  * The artwork was generated locally with FLUX.2 [klein] through the QVAC SDK and is bundled with
- * the app. The top fades into the room's sky.
+ * the app. It is always shown at the scene's full height, centred, so the figures are never cropped:
+ * a narrow room trims the plain wall at the sides, and a wide room continues the wall, skirting and
+ * floor beyond the artwork, whose edges fade into them.
  */
 export function ConsultingRoom({
   patientSex,
@@ -286,5 +288,9 @@ export function ConsultingRoom({
   className?: string
 }): React.JSX.Element {
   const src = patientSex === 'female' ? roomFemale : patientSex === 'male' ? roomMale : roomOther
-  return <img src={src} alt="" aria-hidden draggable={false} className={`room-scene object-cover object-bottom ${className}`} />
+  return (
+    <div className={`room-scene ${className}`} aria-hidden>
+      <img src={src} alt="" draggable={false} className="room-scene-art absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2" />
+    </div>
+  )
 }
