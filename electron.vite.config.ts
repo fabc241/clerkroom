@@ -5,6 +5,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 const shared = { '@shared': resolve('src/shared') }
 
+// The dev server's hot reload needs a WebSocket; the packaged app connects nowhere, so its CSP drops it.
+const productionCsp = {
+  name: 'production-csp',
+  apply: 'build' as const,
+  transformIndexHtml: (html: string): string => html.replace(' ws://localhost:*', '')
+}
+
 export default defineConfig({
   main: {
     resolve: { alias: shared },
@@ -21,6 +28,6 @@ export default defineConfig({
   renderer: {
     resolve: { alias: { ...shared, '@renderer': resolve('src/renderer/src') } },
     build: { outDir: 'dist/renderer', minify: true },
-    plugins: [react(), tailwindcss()]
+    plugins: [react(), tailwindcss(), productionCsp]
   }
 })
