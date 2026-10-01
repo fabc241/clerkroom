@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
-import type { DigiPatApi } from '../shared/ipcTypes'
+import type { ClerkroomApi } from '../shared/ipcTypes'
 
 function subscribe<A extends unknown[]>(channel: string, cb: (...args: A) => void): () => void {
   const listener = (_e: IpcRendererEvent, ...args: unknown[]): void => cb(...(args as A))
@@ -7,7 +7,7 @@ function subscribe<A extends unknown[]>(channel: string, cb: (...args: A) => voi
   return () => ipcRenderer.removeListener(channel, listener)
 }
 
-const api: DigiPatApi = {
+const api: ClerkroomApi = {
   getSettings: () => ipcRenderer.invoke('settings:get'),
   updateSettings: (patch) => ipcRenderer.invoke('settings:update', patch),
 
@@ -54,4 +54,4 @@ const api: DigiPatApi = {
   appInfo: () => ipcRenderer.invoke('app:info')
 }
 
-contextBridge.exposeInMainWorld('digipat', api)
+contextBridge.exposeInMainWorld('clerkroom', api)

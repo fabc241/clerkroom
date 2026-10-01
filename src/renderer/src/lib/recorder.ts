@@ -54,7 +54,7 @@ export async function startRecording(): Promise<Recording> {
 export function describeRecordingError(err: unknown): string {
   const name = err instanceof DOMException ? err.name : ''
   if (name === 'NotAllowedError' || name === 'SecurityError') {
-    return 'DigiPat is not allowed to use the microphone. Allow it in System Settings → Privacy & Security → Microphone.'
+    return 'Clerkroom is not allowed to use the microphone. Allow it in System Settings → Privacy & Security → Microphone.'
   }
   if (name === 'NotFoundError' || name === 'OverconstrainedError') return 'No microphone was found.'
   if (name === 'NotReadableError') return 'The microphone is in use by another app.'

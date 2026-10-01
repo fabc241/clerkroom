@@ -25,7 +25,7 @@ export function PostEncounter({
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    window.digipat.getStation(stationId).then((r) => {
+    window.clerkroom.getStation(stationId).then((r) => {
       setStation(r?.station ?? null)
       setAnswers(r?.station.postEncounterQuestions.map(() => '') ?? [])
     })
@@ -36,7 +36,7 @@ export function PostEncounter({
   const submit = async (): Promise<void> => {
     setSaving(true)
     try {
-      await window.digipat.submitAnswers(
+      await window.clerkroom.submitAnswers(
         sessionId,
         station.postEncounterQuestions.map((q, i) => ({ question: q.q, answer: answers[i] ?? '' }))
       )

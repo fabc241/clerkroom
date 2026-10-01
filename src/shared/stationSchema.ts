@@ -88,11 +88,11 @@ export const stationSchema = z
     safety: z.object({ sensitiveTopic: z.enum(SENSITIVE_TOPICS).optional() }).default({}),
     authoring: z
       .object({
-        author: z.string().default('DigiPat'),
+        author: z.string().default('Clerkroom'),
         source: z.literal('fictional').default('fictional'),
         reviewedBy: z.string().optional()
       })
-      .default({ author: 'DigiPat', source: 'fictional' })
+      .default({ author: 'Clerkroom', source: 'fictional' })
   })
   .superRefine((s, ctx) => {
     const ids = new Set<string>()

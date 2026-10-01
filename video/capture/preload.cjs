@@ -1,4 +1,4 @@
-// Preload for the video capture: gives the real renderer a window.digipat backed by the
+// Preload for the video capture: gives the real renderer a window.clerkroom backed by the
 // recorded session (video/recording.json), with streaming driven step by step from main.cjs.
 const { readFileSync, readdirSync } = require('fs')
 const { join } = require('path')
@@ -47,7 +47,7 @@ navigator.mediaDevices.getUserMedia = async () => {
   return dst.stream
 }
 
-window.digipat = {
+window.clerkroom = {
   getSettings: async () => settings,
   updateSettings: async (p) => Object.assign(settings, p),
   getModelOptions: async () => [],

@@ -29,7 +29,7 @@ function wavData(wav: Buffer): Buffer {
 }
 
 async function heard(sentence: string): Promise<string> {
-  const dir = mkdtempSync(join(tmpdir(), 'digipat-video-'))
+  const dir = mkdtempSync(join(tmpdir(), 'clerkroom-video-'))
   let pcm: Buffer
   try {
     const wavPath = join(dir, 'q.wav')

@@ -1,8 +1,8 @@
-import type { DigiPatApi } from '../shared/ipcTypes'
+import type { ClerkroomApi } from '../shared/ipcTypes'
 
 declare global {
   interface Window {
-    digipat: DigiPatApi
+    clerkroom: ClerkroomApi
   }
 }
 

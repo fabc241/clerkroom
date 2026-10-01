@@ -12,7 +12,7 @@ const RESULT_PILL = { pass: 'pill-mint', fail: 'pill-rose', incomplete: 'pill-bu
 export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Element {
   const [sessions, setSessions] = useState<SessionListItem[]>([])
   const [confirm, setConfirm] = useState<string | null>(null)
-  const refresh = (): void => void window.digipat.listSessions().then(setSessions)
+  const refresh = (): void => void window.clerkroom.listSessions().then(setSessions)
   useEffect(refresh, [])
 
   const marked = sessions.filter((s) => s.domainScores)
@@ -150,7 +150,7 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
                         <button
                           className="btn-danger btn-sm"
                           onClick={async () => {
-                            await window.digipat.deleteSession(s.id)
+                            await window.clerkroom.deleteSession(s.id)
                             setConfirm(null)
                             refresh()
                           }}
@@ -166,7 +166,7 @@ export function Progress({ navigate }: { navigate: Navigate }): React.JSX.Elemen
                         <button className="btn btn-sm" onClick={() => navigate({ name: 'feedback', sessionId: s.id })}>
                           Open
                         </button>
-                        <button className="btn btn-sm" onClick={() => window.digipat.exportSession(s.id, 'json')}>
+                        <button className="btn btn-sm" onClick={() => window.clerkroom.exportSession(s.id, 'json')}>
                           JSON
                         </button>
                         <button className="btn btn-sm" onClick={() => setConfirm(s.id)}>

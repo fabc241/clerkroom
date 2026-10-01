@@ -98,7 +98,7 @@ app.whenReady().then(async () => {
   await shot('library_hover')
 
   // 2. Consultation: the greeting, then David's opening line streams in.
-  const session = await js(`window.digipat.startSession('med-chest-pain')`)
+  const session = await js(`window.clerkroom.startSession('med-chest-pain')`)
   await load({ name: 'encounter', stationId: 'med-chest-pain', session: { ...session, startedAt: Date.now() - 9_000 } })
   await shot('enc_empty')
   await setInput(said[0])

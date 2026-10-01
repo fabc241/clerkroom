@@ -43,18 +43,18 @@ export default function App(): React.JSX.Element {
   const [route, setRoute] = useState<Route>(() => (import.meta.env.DEV && devRoute()) || { name: 'library' })
 
   useEffect(() => {
-    Promise.all([window.digipat.getSettings(), window.digipat.getVoiceStatus()]).then(([st, v]) => {
+    Promise.all([window.clerkroom.getSettings(), window.clerkroom.getVoiceStatus()]).then(([st, v]) => {
       setSettings(st)
       setVoice(v)
-      if (st.voiceInput && v.cached && v.phase === 'idle') window.digipat.prepareVoice()
+      if (st.voiceInput && v.cached && v.phase === 'idle') window.clerkroom.prepareVoice()
     })
-    window.digipat.getModelStatus().then((s) => {
+    window.clerkroom.getModelStatus().then((s) => {
       setModel(s)
       // Load automatically only if already downloaded; a download always needs a click.
-      if (s.cached && s.phase === 'idle') window.digipat.prepareModel()
+      if (s.cached && s.phase === 'idle') window.clerkroom.prepareModel()
     })
-    const offModel = window.digipat.onModelStatus(setModel)
-    const offVoice = window.digipat.onVoiceStatus(setVoice)
+    const offModel = window.clerkroom.onModelStatus(setModel)
+    const offVoice = window.clerkroom.onVoiceStatus(setVoice)
     return () => {
       offModel()
       offVoice()
@@ -68,7 +68,7 @@ export default function App(): React.JSX.Element {
   }, [route])
 
   const updateSettings = useCallback(async (patch: Partial<Settings>) => {
-    setSettings(await window.digipat.updateSettings(patch))
+    setSettings(await window.clerkroom.updateSettings(patch))
   }, [])
 
   if (!settings || !model || !voice) {
@@ -90,7 +90,7 @@ export default function App(): React.JSX.Element {
       <header className="drag flex h-14 shrink-0 items-center gap-4 border-b border-line bg-surface pr-4 pl-[84px]">
         <span className="flex items-center gap-2">
           <LogoMark />
-          <span className="text-[17px] font-bold tracking-[-0.01em]">DigiPat</span>
+          <span className="text-[17px] font-bold tracking-[-0.01em]">Clerkroom</span>
         </span>
         <EducationalBadge />
         <span className="ml-auto flex items-center gap-2 text-[12.5px] font-semibold whitespace-nowrap">
@@ -219,7 +219,7 @@ function AppearanceSwitch({
   )
 }
 
-/** DigiPat mark: a speech bubble holding a pulse line. */
+/** Clerkroom mark: a speech bubble holding a pulse line. */
 function LogoMark(): React.JSX.Element {
   return (
     <svg viewBox="0 0 28 28" className="h-7 w-7" aria-hidden>

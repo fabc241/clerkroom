@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-09-30T16:23:54.963Z",
-  "title": "Design System: DigiPat",
+  "title": "Design System: Clerkroom",
   "extensions": {
     "colorMeta": {
       "canvas": {
@@ -1339,7 +1339,7 @@
   ],
   "narrative": {
     "northStar": "The Illustrated Case Studio",
-    "overview": "DigiPat is a friendly, calm clinical-skills studio. Every station is a pastel case card with a flat-outline illustration on its tint; the consultation happens inside an illustrated consulting room where the conversation reads as speech bubbles; feedback lands as a coloured evaluation, a zoned gauge sweeping to the score, then pass or fail and tinted cards for what went well, what to improve and what to learn. The world was pinned by the user through four reference mock-ups and replaces the earlier printed mark-sheet world entirely.\n\nDensity is relaxed but not sparse: white panels on a cool off-white canvas, generous 16px corners, soft two-layer shadows, and one navy ink colour that carries text and the primary action. Colour lives in the tints, which own card tops, question cards, finding cards and notices, never text. Light and Dark are full appearances selected by the Light / Dark / System setting (the main process sets `nativeTheme.themeSource`, and the stylesheet follows `prefers-color-scheme`); in dark the shell turns charcoal, the tints become deep muted fills and the primary becomes a light pill, while the consulting room stays a light sky scene.\n\nThe system rejects the earlier mark-sheet world (red-ink rules, condensed verdict type, paper textures), and it does not copy the references' non-product elements: no user profile, no name greeting, no notifications.",
+    "overview": "Clerkroom is a friendly, calm clinical-skills studio. Every station is a pastel case card with a flat-outline illustration on its tint; the consultation happens inside an illustrated consulting room where the conversation reads as speech bubbles; feedback lands as a coloured evaluation, a zoned gauge sweeping to the score, then pass or fail and tinted cards for what went well, what to improve and what to learn. The world was pinned by the user through four reference mock-ups and replaces the earlier printed mark-sheet world entirely.\n\nDensity is relaxed but not sparse: white panels on a cool off-white canvas, generous 16px corners, soft two-layer shadows, and one navy ink colour that carries text and the primary action. Colour lives in the tints, which own card tops, question cards, finding cards and notices, never text. Light and Dark are full appearances selected by the Light / Dark / System setting (the main process sets `nativeTheme.themeSource`, and the stylesheet follows `prefers-color-scheme`); in dark the shell turns charcoal, the tints become deep muted fills and the primary becomes a light pill, while the consulting room stays a light sky scene.\n\nThe system rejects the earlier mark-sheet world (red-ink rules, condensed verdict type, paper textures), and it does not copy the references' non-product elements: no user profile, no name greeting, no notifications.",
     "keyCharacteristics": [
       "Cool canvas, white panels, navy ink; pastel tints carry all colour.",
       "One family, Plus Jakarta Sans, self-hosted; tabular numerals for every figure.",

@@ -134,7 +134,7 @@ export function registerIpc(deps: {
     if (!r) return false
     const res = await dialog.showSaveDialog(deps.getWindow()!, {
       title: 'Export session',
-      defaultPath: `digipat-${r.stationId}-${new Date(r.startedAt).toISOString().slice(0, 10)}.${format}`
+      defaultPath: `clerkroom-${r.stationId}-${new Date(r.startedAt).toISOString().slice(0, 10)}.${format}`
     })
     if (res.canceled || !res.filePath) return false
     writeFileSync(res.filePath, format === 'json' ? JSON.stringify(r, null, 2) : sessionToMarkdown(r))
