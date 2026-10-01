@@ -94,7 +94,9 @@ PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run package
 The QVAC Forge plugin bundles the Bare worker and prunes unused addons and prebuilds, which gives
 an arm64 app of about 510 MB. The model is not bundled; it downloads on first run. ASAR is disabled
 (required by QVAC), and universal builds are not supported, so build x64 separately with
-`--arch=x64` if needed. The app is unsigned. For local use, right-click → Open the first time; code
+`--arch=x64` if needed. After packaging, a Forge hook re-signs the bundle ad hoc (`codesign --sign -`)
+so its signature is valid, which the Keychain needs for the app lock. It has no Developer ID
+signature: for local use, right-click → Open the first time; code
 signing and notarization are needed before distributing it.
 
 ## App lock
@@ -112,7 +114,7 @@ Turned on under **Settings & about › App lock**. It needs no account and store
   to lock. Encrypted files keep the lock on even if `settings.json` is edited. Exports you save
   are plain files.
 - **Limits:** it protects against someone else opening the app or reading its files on your Mac.
-  It does not protect against malware running as your user. The app is unsigned, so each new
+  It does not protect against malware running as your user. The app is only signed ad hoc, so each new
   build has a new identity and macOS may ask once for access to the "Clerkroom Safe Storage"
   Keychain item. Allow it, or the encrypted data cannot be read. Signing the app removes this
   prompt.
