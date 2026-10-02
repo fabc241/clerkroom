@@ -1,4 +1,6 @@
-# $\color{#3a6fd8}{\textsf{\textbf{Clerkroom}}}$
+<h1 align="center">
+  <img src="docs/clerkroom-title.svg" alt="Clerkroom" height="64">
+</h1>
 
 <p align="center">
   <img src="docs/clerkroom-demo.gif" width="800"
