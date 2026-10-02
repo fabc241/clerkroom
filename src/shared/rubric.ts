@@ -159,19 +159,38 @@ export function quoteMatches(quote: string, text: string, allowShort = false): b
   return hits >= 3 && hits / qWords.length >= 0.8
 }
 
-/** Finds the student turn (speech, examination or investigation) that contains the quote. */
+/**
+ * Finds the student turn (speech, examination or investigation) that contains the quote. The model
+ * sometimes joins several turns into one quote, with the transcript's "[6] STUDENT:" labels or
+ * an ellipsis; then every part must be found in a student turn, and the first one is returned.
+ */
 export function findEvidenceTurn(quote: string, transcript: TranscriptEntry[]): number | null {
+  const whole = findQuotedTurn(quote, transcript)
+  if (whole !== null) return whole
+  const parts = quote
+    .split(/\[\d+\]\s*(?:STUDENT ACTION|STUDENT|PATIENT|NOTE):|\.{3,}|…/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+  const turns = parts.map((p) => findQuotedTurn(p, transcript))
+  return turns.length > 0 && !turns.includes(null) ? turns[0] : null
+}
+
+function findQuotedTurn(quote: string, transcript: TranscriptEntry[]): number | null {
   let fuzzy: number | null = null
   for (const [idx, entry] of transcript.entries()) {
     if (entry.kind !== 'candidate' && entry.kind !== 'exam' && entry.kind !== 'investigation') continue
     // Must mirror formatTranscript() in examinerPrompt.ts, which is what the model quotes from.
+    const label =
+      entry.kind === 'candidate' ? null : entry.kind === 'exam' ? `examined ${entry.system}` : `requested ${entry.test}`
     const text =
       entry.kind === 'candidate'
         ? entry.text
         : entry.kind === 'exam'
-          ? `examined ${entry.system} ${entry.finding}`
-          : `requested ${entry.test} ${entry.result}`
-    if (!quoteMatches(quote, text)) continue
+          ? `${label} ${entry.finding}`
+          : `${label} ${entry.result}`
+    // An action is identified by its label, which can be shorter than 3 words ("examined Abdomen").
+    const namesAction = label !== null && ` ${normalizeForMatch(quote)} `.includes(` ${normalizeForMatch(label)} `)
+    if (!quoteMatches(quote, text, namesAction)) continue
     const q = normalizeForMatch(quote)
     if (` ${normalizeForMatch(text)} `.includes(` ${q} `)) return idx
     fuzzy ??= idx

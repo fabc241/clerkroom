@@ -153,13 +153,28 @@ export function extractJsonObject(text: string): unknown {
   let i = stripped.indexOf('{')
   while (i >= 0) {
     const end = matchBrace(stripped, i)
-    if (end < 0) break
-    try {
-      last = JSON.parse(stripped.slice(i, end + 1))
-      i = stripped.indexOf('{', end + 1) // skip nested objects of a parsed top-level object
-    } catch {
-      i = stripped.indexOf('{', i + 1)
+    if (end >= 0) {
+      try {
+        last = JSON.parse(stripped.slice(i, end + 1))
+        i = stripped.indexOf('{', end + 1) // skip nested objects of a parsed top-level object
+        continue
+      } catch {
+        /* try repairing the brackets */
+      }
     }
+    // MedPsy often drops a "]" before the final "}", or the final "]}"; repair rather than lose the marks.
+    const repaired = repairBrackets(stripped.slice(i))
+    if (repaired !== null) {
+      try {
+        last = JSON.parse(repaired.text)
+        i = stripped.indexOf('{', i + repaired.consumed)
+        continue
+      } catch {
+        /* not JSON after all */
+      }
+    }
+    if (end < 0) break
+    i = stripped.indexOf('{', i + 1)
   }
   if (last === undefined) throw new Error('No JSON object found in model output')
   return last
@@ -183,4 +198,42 @@ function matchBrace(text: string, start: number): number {
     }
   }
   return -1
+}
+
+/**
+ * Inserts the closing brackets a JSON value is missing: before a closer that skips past an open
+ * "[" or "{", and at the end if the text stops early. Returns the repaired value and how much of
+ * the input it used, or null if a bracket closes something that was never opened.
+ */
+function repairBrackets(text: string): { text: string; consumed: number } | null {
+  const closers: string[] = []
+  let out = ''
+  let inString = false
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
+    if (inString) {
+      if (ch === '\\') {
+        out += text.slice(i, i + 2)
+        i++
+        continue
+      }
+      if (ch === '"') inString = false
+      out += ch
+      continue
+    }
+    if (ch === '"') inString = true
+    else if (ch === '{') closers.push('}')
+    else if (ch === '[') closers.push(']')
+    else if (ch === '}' || ch === ']') {
+      if (!closers.includes(ch)) return null
+      while (closers[closers.length - 1] !== ch) out += closers.pop()
+      closers.pop()
+      out += ch
+      if (closers.length === 0) return { text: out, consumed: i + 1 }
+      continue
+    }
+    out += ch
+  }
+  if (inString || closers.length === 0) return null
+  return { text: out.trimEnd().replace(/,$/, '') + closers.reverse().join(''), consumed: text.length }
 }

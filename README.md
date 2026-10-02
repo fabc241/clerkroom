@@ -1,4 +1,11 @@
-# Clerkroom
+<h1 align="center">
+  <img src="docs/clerkroom-title.svg" alt="Clerkroom" height="64">
+</h1>
+
+<p align="center">
+  <img src="docs/clerkroom-demo.gif" width="800"
+       alt="Clerkroom demo: picking the chest pain station, asking the AI patient a question by voice, the patient answering, and the marked feedback with a 100% pass">
+</p>
 
 **Clerkroom** is a digital simulated patient for clinical education on macOS. Medical students
 practise clinical stations by talking to an AI patient, then receive structured, rubric-based

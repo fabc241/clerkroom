@@ -49,6 +49,25 @@ describe('progressive disclosure', () => {
     expect(questionUnlocks(q, f)).toBe(true)
   })
 
+  it.each([
+    ['comm-starting-ssri', "Hello Priya, I'm Dr Rossi. I understand we're here to talk about the tablet my colleague suggested. Is that right?"],
+    ['comm-starting-ssri', "Sertraline isn't addictive. If you stop it suddenly you can feel unwell, so we would come off it slowly."],
+    ['med-chest-pain', "I'm going to get my senior now and we'll give you something for the pain."]
+  ])('%s: statements unlock nothing: "%s"', (id, msg) => {
+    const unlocked = byId.get(id)!.patient.revealOnlyIfAsked.filter((f) => questionUnlocks(msg, f)).map((f) => f.topic)
+    expect(unlocked).toEqual([])
+  })
+
+  it.each([
+    ['comm-starting-ssri', 'Work stigma', 'Tell me about your work.'],
+    ['comm-starting-ssri', 'Alcohol', "OK. I'd like to ask about alcohol."],
+    ['med-chest-pain', 'Radiation', 'Thanks. Does it spread to your arm.'],
+    ['psych-alcohol-history', 'Quantity', 'how much do you drink']
+  ])('%s / %s unlocks on a request without a question mark: "%s"', (id, topic, q) => {
+    const f = byId.get(id)!.patient.revealOnlyIfAsked.find((x) => x.topic === topic)!
+    expect(questionUnlocks(q, f)).toBe(true)
+  })
+
   it('unlocks each fact only once, on the first question that asks', () => {
     const s = byId.get('psych-low-mood')!
     const facts = s.patient.revealOnlyIfAsked

@@ -221,7 +221,9 @@ export function FeedbackView({
                     </span>
                   )}
                 </div>
-                {result === 'incomplete' && (
+                {(result === 'incomplete' ||
+                  fb.items.some((i) => i.notAssessed) ||
+                  fb.answers.some((a) => a.notAssessed)) && (
                   <button className="btn" disabled={!modelReady || !!progress} onClick={generate}>
                     Evaluate again
                   </button>
