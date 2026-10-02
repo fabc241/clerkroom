@@ -12,3 +12,5 @@ tests/llm/results/
 .impeccable/review/
 .impeccable/questions/
 .impeccable/hook.cache.json
+# Demo-video pipeline: kept locally, not published.
+/video/
