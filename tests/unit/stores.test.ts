@@ -105,6 +105,26 @@ describe('SettingsStore', () => {
     expect(new SettingsStore(path).get().appearance).toBe('dark')
   })
 
+  it('drops values of the wrong shape and never changes the app lock', () => {
+    const path = join(dir, 'settings.json')
+    new SettingsStore(path).update({
+      model: 'gpt' as never,
+      stationSecondsOverride: -5,
+      voiceInput: 'yes' as never,
+      acceptedDisclaimerVersion: 1.5,
+      appLock: true
+    })
+    expect(new SettingsStore(path).get()).toMatchObject({
+      model: 'medpsy-4b-q4',
+      stationSecondsOverride: null,
+      voiceInput: false,
+      acceptedDisclaimerVersion: 0,
+      appLock: false
+    })
+    new SettingsStore(path).update({ model: 'medpsy-1.7b-q4', stationSecondsOverride: 300 })
+    expect(new SettingsStore(path).get()).toMatchObject({ model: 'medpsy-1.7b-q4', stationSecondsOverride: 300 })
+  })
+
   it('keeps voice input off until the user turns it on, including for older settings files', () => {
     const path = join(dir, 'settings.json')
     writeFileSync(path, JSON.stringify({ acceptedDisclaimerVersion: 1, model: 'medpsy-4b-q4' }))

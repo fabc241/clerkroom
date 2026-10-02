@@ -83,7 +83,10 @@ export function registerIpc(deps: {
   handle('model:status', () => modelManager.getStatus(settings.get().model))
   handle('model:prepare', () => modelManager.prepare(settings.get().model))
   handle('model:cancelDownload', () => modelManager.cancelDownload())
-  handle('model:delete', (_e, choice: ModelChoice) => modelManager.deleteModel(choice))
+  handle('model:delete', (_e, choice: ModelChoice) => {
+    if (!MODEL_OPTIONS.some((o) => o.id === choice)) throw new Error(`Unknown model: ${String(choice)}`)
+    return modelManager.deleteModel(choice)
+  })
 
   // Voice input
   const assertVoiceEnabled = (): void => {
@@ -179,8 +182,8 @@ export function registerIpc(deps: {
 
   // Misc
   handle('app:openExternal', (_e, key: keyof typeof EXTERNAL_LINKS) => {
-    const url = EXTERNAL_LINKS[key]
-    if (url) return shell.openExternal(url)
+    // Own keys only, so a key such as 'constructor' cannot reach an inherited property.
+    if (Object.hasOwn(EXTERNAL_LINKS, key)) return shell.openExternal(EXTERNAL_LINKS[key])
   })
   handle('app:info', () => ({
     version: app.getVersion(),
