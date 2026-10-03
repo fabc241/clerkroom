@@ -11,6 +11,8 @@ import { Choice, Icon, ProgressBar, TypingDots } from '../components/ui'
 import { useCountdown } from '../components/useCountdown'
 import { TranscriptView } from '../components/TranscriptView'
 import { formatClock } from '../lib/format'
+import { createPlayer, type Player } from '../lib/player'
+import { SpeakerToggle, isOn, isReady, progressText, setFeature, type VoiceKit } from '../components/VoiceOptions'
 
 type PatientState = 'idle' | 'thinking' | 'speaking'
 
@@ -18,7 +20,7 @@ export function Encounter(props: {
   stationId: string
   session: SessionRecord
   settings: Settings
-  voiceReady: boolean
+  voice: VoiceKit
   navigate: Navigate
 }): React.JSX.Element {
   const [station, setStation] = useState<Station | null>(null)
@@ -33,15 +35,16 @@ function EncounterInner({
   station,
   session,
   settings,
-  voiceReady,
+  voice,
   navigate
 }: {
   station: Station
   session: SessionRecord
   settings: Settings
-  voiceReady: boolean
+  voice: VoiceKit
   navigate: Navigate
 }): React.JSX.Element {
+  const speechReady = isReady(voice, 'replies')
   const stationSec = settings.stationSecondsOverride ?? station.timing.stationSec
   // Time already elapsed (e.g. startSession round-trip) counts against the clock.
   const initialSec = Math.max(0, stationSec - (Date.now() - session.startedAt) / 1000)
@@ -57,10 +60,46 @@ function EncounterInner({
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
+  // Spoken replies: audio for a reply is accepted only between its 'done' and its 'end', so parts of a
+  // reply the student has already stopped are never played.
+  const [voiceComing, setVoiceComing] = useState(false)
+  const [speaking, setSpeaking] = useState(false)
+  const expectAudio = useRef(false)
+  const player = useRef<Player | null>(null)
+  useEffect(() => {
+    player.current = createPlayer(setSpeaking)
+    return () => {
+      player.current?.close()
+      player.current = null
+      if (expectAudio.current) void window.clerkroom.stopSpeaking()
+    }
+  }, [])
+  const stopVoice = useCallback(() => {
+    if (expectAudio.current) void window.clerkroom.stopSpeaking()
+    expectAudio.current = false
+    setVoiceComing(false)
+    player.current?.stop()
+  }, [])
+
+  useEffect(() => {
+    return window.clerkroom.onPatientAudio((id, e) => {
+      if (id !== session.id || !expectAudio.current) return
+      if (e.type === 'audio') {
+        setVoiceComing(false)
+        player.current?.enqueue(e.pcm, e.sampleRate)
+        return
+      }
+      expectAudio.current = false
+      setVoiceComing(false)
+      if (e.type === 'error') setError(e.message)
+    })
+  }, [session.id])
+
   const finish = useCallback(
     async (reason: 'time' | 'candidate') => {
       if (ended) return
       setEnded(true)
+      stopVoice()
       await window.clerkroom.endEncounter(session.id, reason)
       if (station.postEncounterQuestions.length > 0) {
         navigate({ name: 'post', stationId: station.id, sessionId: session.id })
@@ -68,7 +107,7 @@ function EncounterInner({
         navigate({ name: 'feedback', sessionId: session.id })
       }
     },
-    [ended, navigate, session.id, station]
+    [ended, navigate, session.id, station, stopVoice]
   )
 
   const remaining = useCountdown(initialSec, () => void finish('time'))
@@ -83,6 +122,10 @@ function EncounterInner({
       } else if (e.type === 'done') {
         // The final text is authoritative (it may have been corrected by the character guard).
         if (e.text) setTranscript((t) => [...t, { kind: 'patient', text: e.text, at: Date.now() }])
+        if (e.text && settings.speakReplies) {
+          expectAudio.current = true
+          setVoiceComing(true)
+        }
         setPending('')
         setPatientState('idle')
         setTimeout(() => inputRef.current?.focus(), 0)
@@ -92,7 +135,7 @@ function EncounterInner({
         setPatientState('idle')
       }
     })
-  }, [session.id])
+  }, [session.id, settings.speakReplies])
 
   // Jump to the latest line when the station opens; glide for each new line after that.
   const scrolledOnce = useRef(false)
@@ -103,9 +146,28 @@ function EncounterInner({
 
   const busy = patientState !== 'idle'
 
+  const listen = (text: string): void => {
+    stopVoice()
+    expectAudio.current = true
+    setVoiceComing(true)
+    window.clerkroom.replayReply(session.id, text).catch((e: Error) => {
+      expectAudio.current = false
+      setVoiceComing(false)
+      setError(e.message)
+    })
+  }
+  // Download or loading progress for either voice feature, shown above the message box.
+  const voiceProgress = (
+    [
+      ['Microphone', progressText(voice, 'dictation')],
+      ['Patient’s voice', progressText(voice, 'replies')]
+    ] as const
+  ).filter(([, p]) => p)
+
   const send = async (): Promise<void> => {
     const text = input.trim()
     if (!text || busy || ended) return
+    stopVoice()
     setError(null)
     setInput('')
     setTranscript((t) => [...t, { kind: 'candidate', text, at: Date.now() }])
@@ -229,7 +291,12 @@ function EncounterInner({
                   {patientFirst} is waiting. Start by introducing yourself.
                 </p>
               )}
-              <TranscriptView transcript={transcript} startedAt={session.startedAt} patientName={station.patient.name} />
+              <TranscriptView
+                transcript={transcript}
+                startedAt={session.startedAt}
+                patientName={station.patient.name}
+                onListen={speechReady && !ended ? listen : undefined}
+              />
               {busy && (
                 <div className="mt-3 flex justify-end">
                   <div className="max-w-[72%] text-right">
@@ -243,12 +310,27 @@ function EncounterInner({
               <div ref={bottomRef} />
             </div>
           </div>
+          {(speaking || (voiceComing && speechReady)) && (
+            <div className="flex items-center gap-2.5 px-1 text-[13.5px] text-text-2" aria-live="polite">
+              <Icon name="speaker" className="h-4 w-4 shrink-0" />
+              {speaking ? `${patientFirst} is speaking` : `Preparing ${patientFirst}’s voice…`}
+              <button className="btn btn-sm" onClick={stopVoice}>
+                Stop
+              </button>
+            </div>
+          )}
+          {voiceProgress.map(([label, p]) => (
+            <p key={label} className="px-1 text-[13.5px] text-text-2" role="status">
+              {label}: {p}
+            </p>
+          ))}
           {error && <ErrorBox message={error} />}
           <div className="flex items-end gap-2">
-            {settings.voiceInput && (
+            <SpeakerToggle kit={voice} className="h-12 w-12 px-0" />
+            {isOn(voice, 'dictation') ? (
               <DictateButton
                 className="h-12 w-12 px-0"
-                ready={voiceReady}
+                ready={isReady(voice, 'dictation')}
                 disabled={ended}
                 onError={setError}
                 onText={(t) => {
@@ -256,6 +338,17 @@ function EncounterInner({
                   inputRef.current?.focus()
                 }}
               />
+            ) : (
+              <button
+                type="button"
+                className="btn h-12 w-12 px-0 text-text-3"
+                aria-label="Turn on dictation"
+                title="Dictate your questions with the microphone"
+                disabled={ended}
+                onClick={() => void setFeature(voice, 'dictation', true)}
+              >
+                <Icon name="mic" className="h-5 w-5" />
+              </button>
             )}
             <div className="relative flex-1">
               <label htmlFor="say" className="sr-only">
@@ -270,7 +363,7 @@ function EncounterInner({
                 placeholder={
                   ended
                     ? 'The station has ended.'
-                    : settings.voiceInput
+                    : isReady(voice, 'dictation')
                       ? `Type your response to ${patientFirst} or dictate…`
                       : `Type your response to ${patientFirst}…`
                 }

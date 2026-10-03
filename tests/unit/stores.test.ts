@@ -111,6 +111,7 @@ describe('SettingsStore', () => {
       model: 'gpt' as never,
       stationSecondsOverride: -5,
       voiceInput: 'yes' as never,
+      speakReplies: 1 as never,
       acceptedDisclaimerVersion: 1.5,
       appLock: true
     })
@@ -118,6 +119,7 @@ describe('SettingsStore', () => {
       model: 'medpsy-4b-q4',
       stationSecondsOverride: null,
       voiceInput: false,
+      speakReplies: false,
       acceptedDisclaimerVersion: 0,
       appLock: false
     })
@@ -125,12 +127,12 @@ describe('SettingsStore', () => {
     expect(new SettingsStore(path).get()).toMatchObject({ model: 'medpsy-1.7b-q4', stationSecondsOverride: 300 })
   })
 
-  it('keeps voice input off until the user turns it on, including for older settings files', () => {
+  it('keeps voice input and spoken replies off until the user turns them on, including for older settings files', () => {
     const path = join(dir, 'settings.json')
     writeFileSync(path, JSON.stringify({ acceptedDisclaimerVersion: 1, model: 'medpsy-4b-q4' }))
-    expect(new SettingsStore(path).get().voiceInput).toBe(false)
-    new SettingsStore(path).update({ voiceInput: true })
-    expect(new SettingsStore(path).get().voiceInput).toBe(true)
+    expect(new SettingsStore(path).get()).toMatchObject({ voiceInput: false, speakReplies: false })
+    new SettingsStore(path).update({ voiceInput: true, speakReplies: true })
+    expect(new SettingsStore(path).get()).toMatchObject({ voiceInput: true, speakReplies: true })
   })
 })
 

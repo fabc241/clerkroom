@@ -3,6 +3,8 @@ import { readFileSync, writeFileSync } from 'fs'
 import type { LockChangeResult, LockStatus, ModelChoice, Settings } from '@shared/ipcTypes'
 import { MODEL_OPTIONS, modelManager, modelsDir } from './qvac/modelManager'
 import { voiceManager } from './qvac/transcriber'
+import { speechManager } from './qvac/speaker'
+import { patientVoice } from '@shared/speech'
 import type { EncounterService } from './encounter'
 import type { SessionStore } from './store/sessionStore'
 import type { SettingsStore } from './store/settingsStore'
@@ -66,6 +68,7 @@ export function registerIpc(deps: {
     return { result, settings: settings.setAppLock(on) }
   })
   voiceManager.on('status', (s) => send('voice:status', s))
+  speechManager.on('status', (s) => send('speech:status', s))
 
   // Settings
   handle('settings:get', () => settings.get())
@@ -73,6 +76,7 @@ export function registerIpc(deps: {
     const next = settings.update(patch)
     // Turning voice input off releases the speech model's memory straight away.
     if (patch.voiceInput === false) void voiceManager.unload()
+    if (patch.speakReplies === false) void speechManager.unload()
     // The renderer follows prefers-color-scheme, which Electron derives from themeSource.
     if (patch.appearance) nativeTheme.themeSource = next.appearance
     return next
@@ -109,6 +113,29 @@ export function registerIpc(deps: {
     assertVoiceEnabled()
     return voiceManager.transcribe(pcm)
   })
+
+  // Spoken replies
+  handle('speech:status', () => speechManager.getStatus())
+  handle('speech:prepare', () => {
+    if (!settings.get().speakReplies) throw new Error('Spoken replies are turned off.')
+    return speechManager.prepare()
+  })
+  handle('speech:cancelDownload', () => speechManager.cancelDownload())
+  handle('speech:delete', () => speechManager.deleteModel())
+  handle('speech:stop', () => speechManager.stop())
+
+  /** Reads a finished patient reply aloud in the station's voice, if spoken replies are on. */
+  const speakReply = (id: string, reply: string): void => {
+    if (!settings.get().speakReplies) return
+    Promise.resolve()
+      .then(() =>
+        speechManager.speak(reply, patientVoice(encounter.stationOf(id).patient), (pcm, sampleRate) =>
+          send('patient:audio', id, { type: 'audio', pcm, sampleRate })
+        )
+      )
+      .then(() => send('patient:audio', id, { type: 'end' }))
+      .catch((err: Error) => send('patient:audio', id, { type: 'error', message: `Couldn't read the reply aloud: ${err.message}` }))
+  }
 
   // Stations
   handle('station:list', () => stations.list())
@@ -148,15 +175,30 @@ export function registerIpc(deps: {
   // Encounter
   handle('session:start', (_e, stationId: string) => encounter.start(stationId))
   handle('session:send', (_e, id: string, text: string) => {
-    // Fire-and-forget: results stream back on 'patient:stream'.
+    // The student has moved on, so stop reading out the previous reply.
+    void speechManager.stop()
+    // Fire-and-forget: results stream back on 'patient:stream', and spoken audio on 'patient:audio'.
     encounter
-      .sendToPatient(id, text, (ev) => send('patient:stream', id, ev))
+      .sendToPatient(id, text, (ev) => {
+        send('patient:stream', id, ev)
+        if (ev.type === 'done' && ev.text) speakReply(id, ev.text)
+      })
       .catch((err: Error) => send('patient:stream', id, { type: 'error', message: err.message }))
   })
-  handle('session:interrupt', (_e, id: string) => encounter.interrupt(id))
+  handle('session:replay', (_e, id: string, text: unknown) => {
+    if (!encounter.isPatientReply(id, text)) throw new Error('That is not one of the patient’s replies.')
+    speakReply(id, text as string)
+  })
+  handle('session:interrupt', (_e, id: string) => {
+    void speechManager.stop()
+    return encounter.interrupt(id)
+  })
   handle('session:examine', (_e, id: string, system: string) => encounter.examine(id, system))
   handle('session:investigate', (_e, id: string, test: string) => encounter.investigate(id, test))
-  handle('session:end', (_e, id: string, reason: 'time' | 'candidate') => encounter.end(id, reason))
+  handle('session:end', (_e, id: string, reason: 'time' | 'candidate') => {
+    void speechManager.stop()
+    return encounter.end(id, reason)
+  })
   handle('session:answers', (_e, id: string, answers: { question: string; answer: string }[]) =>
     encounter.submitAnswers(id, answers)
   )

@@ -20,6 +20,13 @@
     "openingStatement": "I've just been feeling really flat lately, and my partner said I should come and talk to someone.",
     "demeanour": "Quiet, slowed, little eye contact, sighs often, gives short answers but opens up if the doctor is warm and patient.",
     "speechStyle": "Soft and slow, short sentences, plain everyday words, sometimes trails off. Apologises for 'wasting your time'.",
+    "voice": {
+      "voice": "Jenna",
+      "pace": "slow",
+      "pitch": "low",
+      "expressivity": "monotone",
+      "emotion": "sad"
+    },
     "ice": {
       "ideas": "Thinks they are probably just burnt out from work and should be able to 'snap out of it'.",
       "concerns": "Worried about losing their job and that they are letting their partner down.",

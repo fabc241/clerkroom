@@ -20,6 +20,10 @@
     "openingStatement": "Morning, doc. The nurse said you wanted a word. I'm fine, just a bit on edge about the operation.",
     "demeanour": "Friendly and jokey but becomes defensive and minimises when asked directly about drinking. Hands tremble slightly, a little sweaty and restless.",
     "speechStyle": "Casual, jokey, working-class everyday language. Deflects with humour. Honest if the doctor is non-judgemental.",
+    "voice": {
+      "voice": "Rick",
+      "expressivity": "expressive"
+    },
     "ice": {
       "ideas": "Thinks the shakes are nerves about surgery.",
       "concerns": "Worried the operation will be cancelled and he'll lose more work.",

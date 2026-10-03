@@ -46,9 +46,23 @@ describe('character guard', () => {
     'You should consult a healthcare professional.',
     '**Symptoms:** low mood',
     '- I feel tired',
-    'It sounds like I have depression.'
+    'It sounds like I have depression.',
+    // Reasoning leaked into a reply (seen in an eval run with the reasoning cap).
+    '</think> Okay, I need to stay in character as Tom Baker. The user is asking about support.',
+    'From the patient note, I should mention my girlfriend. I need to keep it to 1-4 sentences.'
   ])('flags "%s"', (text) => {
     expect(checkPatientReply(text, ['depression']).ok).toBe(false)
+  })
+
+  it('accepts ordinary patient lines that resemble the reasoning patterns', () => {
+    for (const text of [
+      'I need to make sure I’m seeing the right person for my health.',
+      'The other doctor mentioned tablets last time.',
+      'I don’t think it’s anything, but I keep thinking about it.',
+      'I just want to feel like my usual self again.'
+    ]) {
+      expect(checkPatientReply(text, []).ok, text).toBe(true)
+    }
   })
 
   it('does not match forbidden terms inside other words', () => {

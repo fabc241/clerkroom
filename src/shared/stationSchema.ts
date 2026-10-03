@@ -5,6 +5,11 @@ import { z } from 'zod'
 import {
   DIFFICULTIES,
   DOMAINS,
+  PARLER_EMOTIONS,
+  PARLER_EXPRESSIVITIES,
+  PARLER_PACES,
+  PARLER_PITCHES,
+  PARLER_SPEAKERS,
   SENSITIVE_TOPICS,
   SPECIALTIES,
   STATION_TYPES
@@ -30,6 +35,19 @@ export const hiddenFactSchema = z.object({
     )
 })
 export type HiddenFact = z.infer<typeof hiddenFactSchema>
+
+/** How the patient sounds when replies are spoken with Parler TTS mini. Leave out for text only. */
+export const patientVoiceSchema = z
+  .object({
+    voice: z.enum(PARLER_SPEAKERS).describe('Parler speaker name; the same name keeps the voice consistent'),
+    pace: z.enum(PARLER_PACES).optional(),
+    pitch: z.enum(PARLER_PITCHES).optional(),
+    expressivity: z.enum(PARLER_EXPRESSIVITIES).optional(),
+    emotion: z.enum(PARLER_EMOTIONS).optional()
+  })
+  // A misspelt key would otherwise be dropped and the patient would quietly sound different.
+  .strict()
+export type PatientVoice = z.infer<typeof patientVoiceSchema>
 
 export const rubricItemSchema = z.object({
   id: nonEmpty,
@@ -73,7 +91,8 @@ export const stationSchema = z
       freelyShared: z.array(nonEmpty).default([]),
       revealOnlyIfAsked: z.array(hiddenFactSchema).default([]),
       cue: z.string().optional(),
-      mseObservations: z.array(nonEmpty).optional()
+      mseObservations: z.array(nonEmpty).optional(),
+      voice: patientVoiceSchema.optional()
     }),
     examFindings: z.array(z.object({ system: nonEmpty, finding: nonEmpty })).default([]),
     investigations: z.array(z.object({ test: nonEmpty, result: nonEmpty })).default([]),

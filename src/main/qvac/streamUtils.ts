@@ -7,10 +7,17 @@ export interface GenerationParams {
   top_p: number
   top_k: number
   predict: number
+  /** Caps the hidden reasoning before the reply, in tokens; omitted means no cap. */
+  reasoning_budget?: number
 }
 
-/** MedPsy model-card recommended sampling for conversation. */
-export const PATIENT_PARAMS: GenerationParams = { temp: 0.6, top_p: 0.95, top_k: 20, predict: 1536 }
+/**
+ * MedPsy model-card recommended sampling for conversation. The reasoning cap is what keeps replies
+ * quick: uncapped, MedPsy reasons for ~250-400 tokens (8-10 s on an M-series GPU) before the first
+ * word; at 64 the reply starts in ~2.5 s and stays in character. 0 is not an option: MedPsy then
+ * writes its reasoning into the reply itself.
+ */
+export const PATIENT_PARAMS: GenerationParams = { temp: 0.6, top_p: 0.95, top_k: 20, predict: 1536, reasoning_budget: 64 }
 /** Lower temperature for more consistent grading. */
 export const EXAMINER_PARAMS: GenerationParams = { temp: 0.3, top_p: 0.95, top_k: 20, predict: 4096 }
 
@@ -52,6 +59,10 @@ export async function runCompletion(opts: RunOptions): Promise<RunResult> {
 
   let thinkingChars = 0
   let firstTokenMs: number | null = null
+  // Once a reasoning tag shows up in the reply, stop showing it live: the character guard
+  // rejects such a reply and the turn is regenerated.
+  let shown = ''
+  let leaked = false
   let sawThinking = false
   let cancelled = false
   try {
@@ -64,7 +75,9 @@ export async function runCompletion(opts: RunOptions): Promise<RunResult> {
         }
       } else if (ev.type === 'contentDelta') {
         if (firstTokenMs === null) firstTokenMs = Date.now() - started
-        opts.onDelta?.(ev.text)
+        shown += ev.text
+        leaked ||= /<\/?think>/i.test(shown)
+        if (!leaked) opts.onDelta?.(ev.text)
       }
     }
     const final = await run.final

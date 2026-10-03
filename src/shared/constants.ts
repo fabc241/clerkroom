@@ -32,3 +32,34 @@ export const SENSITIVE_TOPICS = [
   'bereavement',
   'abuse'
 ] as const
+
+// Parler TTS mini v1 voice controls for the patient's spoken replies (`patient.voice`).
+
+/** The named speakers Parler mini v1 was trained on. Reusing one name keeps the voice the same across replies. */
+export const PARLER_SPEAKERS = [
+  'Laura', 'Gary', 'Jon', 'Lea', 'Karen', 'Rick', 'Brenda', 'David', 'Eileen', 'Jordan', 'Mike',
+  'Yann', 'Joy', 'James', 'Eric', 'Lauren', 'Rose', 'Will', 'Jason', 'Aaron', 'Naomie', 'Alisa',
+  'Patrick', 'Jerry', 'Tina', 'Jenna', 'Bill', 'Tom', 'Carol', 'Barbara', 'Rebecca', 'Anna',
+  'Bruce', 'Emily'
+] as const
+// The lists below mirror the QVAC tts-ggml addon, which rejects any other value at synthesis time.
+// Emotions and paces are pinned against the SDK in tests/unit/stations.test.ts. Pitch and
+// expressivity are only checked natively; the addon renders them as "with a <pitch> pitch" and
+// "in a <expressivity> manner".
+export const PARLER_PACES = ['slow', 'moderate', 'fast'] as const
+export const PARLER_PITCHES = ['low', 'moderate', 'high'] as const
+export const PARLER_EXPRESSIVITIES = ['monotone', 'slightly expressive', 'expressive'] as const
+export const PARLER_EMOTIONS = [
+  'command',
+  'anger',
+  'narration',
+  'conversation',
+  'disgust',
+  'fear',
+  'happy',
+  'neutral',
+  'proper noun',
+  'news',
+  'sad',
+  'surprise'
+] as const

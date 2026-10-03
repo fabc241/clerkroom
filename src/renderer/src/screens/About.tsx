@@ -79,7 +79,8 @@ export function About({
         <p className="max-w-[72ch] text-[15px] leading-relaxed text-text">
           Clerkroom has no accounts, analytics or telemetry. The only network activity is the one-time model download from
           the QVAC registry. If you turn on voice input, speech is transcribed on this Mac and the audio is discarded
-          straight away; only the text you send is kept. Your stations and attempts are stored as files on this Mac
+          straight away; only the text you send is kept. Spoken replies are made on this Mac and only played, never
+          saved. Your stations and attempts are stored as files on this Mac
           {settings.appLock ? ', encrypted while the app lock is on' : ''}:
         </p>
         <dl className="selectable grid grid-cols-[80px_1fr] gap-y-1 font-mono text-[12.5px] text-text-2">
@@ -109,6 +110,7 @@ export function About({
             MedPsy is not a substitute for clinical judgement.
           </p>
           <p>Optional voice input: Parakeet Unified 0.6B speech recognition, from the QVAC registry.</p>
+          <p>Optional spoken replies: Parler TTS mini v1 by Hugging Face (Apache-2.0), from the QVAC registry.</p>
           <p>Typefaces: Barlow and Barlow Condensed by Jeremy Tribby, SIL Open Font License 1.1.</p>
           <p>
             The bundled stations are fictional teaching cases written for this app, structured around common clinical

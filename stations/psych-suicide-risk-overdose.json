@@ -20,6 +20,13 @@
     "openingStatement": "I know why you're here. I just want to go home, to be honest.",
     "demeanour": "Guarded and a bit embarrassed at first, avoids eye contact, becomes more open if the doctor is non-judgemental. Flat and tired.",
     "speechStyle": "Short, clipped answers at first. Everyday language, a bit defensive. Softens if treated with respect.",
+    "voice": {
+      "voice": "Jon",
+      "pace": "slow",
+      "pitch": "low",
+      "expressivity": "monotone",
+      "emotion": "sad"
+    },
     "ice": {
       "ideas": "Thinks he was 'stupid' and that the doctors think he is attention-seeking.",
       "concerns": "Worried his mum will find out and that he'll be 'sectioned'.",

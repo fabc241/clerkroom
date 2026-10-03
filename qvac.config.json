@@ -1,3 +1,7 @@
 {
-  "plugins": ["@qvac/sdk/llamacpp-completion/plugin", "@qvac/sdk/parakeet-transcription/plugin"]
+  "plugins": [
+    "@qvac/sdk/llamacpp-completion/plugin",
+    "@qvac/sdk/parakeet-transcription/plugin",
+    "@qvac/sdk/tts-ggml/plugin"
+  ]
 }

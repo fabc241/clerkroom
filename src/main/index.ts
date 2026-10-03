@@ -5,6 +5,7 @@ import { is } from '@electron-toolkit/utils'
 import { registerIpc } from './ipc'
 import { modelManager } from './qvac/modelManager'
 import { voiceManager } from './qvac/transcriber'
+import { speechManager } from './qvac/speaker'
 import { EncounterService, cleanupStaleSessionCaches } from './encounter'
 import { SessionStore } from './store/sessionStore'
 import { SettingsStore } from './store/settingsStore'
@@ -147,9 +148,8 @@ app.on('before-quit', (e) => {
   shuttingDown = true
   e.preventDefault()
   lock?.dispose()
-  // Unload the voice model first: modelManager.shutdown() closes the QVAC worker.
-  voiceManager
-    .unload()
+  // Unload the speech models first: modelManager.shutdown() closes the QVAC worker.
+  Promise.all([voiceManager.unload(), speechManager.unload()])
     .catch(() => {})
     .then(() => modelManager.shutdown())
     .catch(() => {})

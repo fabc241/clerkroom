@@ -20,6 +20,11 @@
     "openingStatement": "I've got this really bad pain in my stomach, it's been getting worse since yesterday.",
     "demeanour": "Lying very still, winces when he moves or coughs, a bit embarrassed to be making a fuss.",
     "speechStyle": "Casual, young, uses words like 'tummy', 'properly bad', 'dunno'.",
+    "voice": {
+      "voice": "Eric",
+      "pace": "slow",
+      "expressivity": "slightly expressive"
+    },
     "ice": {
       "ideas": "Thinks it might be a dodgy kebab.",
       "concerns": "Worried he'll miss his exams next week.",

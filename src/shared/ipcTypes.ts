@@ -38,6 +38,8 @@ export interface Settings {
   skipReadingTime: boolean
   /** Optional dictation with the local Parakeet speech-to-text model. Off until the user enables it. */
   voiceInput: boolean
+  /** Optional spoken patient replies with the local Parler TTS model. Off until the user enables it. */
+  speakReplies: boolean
   /** Light or dark appearance, or follow macOS. */
   appearance: Appearance
   /** Ask for Touch ID or the Mac password to open the app, and encrypt saved data. Changed only via setLockEnabled. */
@@ -77,6 +79,12 @@ export type PatientStreamEvent =
   | { type: 'thinking' }
   | { type: 'delta'; text: string }
   | { type: 'done'; text: string; disclosedTopics: string[] }
+  | { type: 'error'; message: string }
+
+/** A spoken patient reply arrives as one or more parts of 16-bit mono PCM, then 'end'. */
+export type PatientAudioEvent =
+  | { type: 'audio'; pcm: Uint8Array; sampleRate: number }
+  | { type: 'end' }
   | { type: 'error'; message: string }
 
 export type FeedbackProgress = { step: string; done: number; total: number }
@@ -119,6 +127,13 @@ export interface ClerkroomApi {
   /** Transcribes 16 kHz mono s16le PCM. Resolves '' when no speech was detected. */
   transcribe(pcm: Uint8Array): Promise<string>
 
+  // Spoken replies (text-to-speech)
+  getSpeechStatus(): Promise<VoiceStatus>
+  prepareSpeech(): Promise<VoiceStatus>
+  cancelSpeechDownload(): Promise<void>
+  deleteSpeechModel(): Promise<void>
+  onSpeechStatus(cb: (s: VoiceStatus) => void): () => void
+
   // Stations
   listStations(): Promise<StationSummary[]>
   getStation(id: string): Promise<{ station: Station; bundled: boolean } | null>
@@ -133,6 +148,12 @@ export interface ClerkroomApi {
   sendToPatient(sessionId: string, text: string): Promise<void>
   onPatientStream(cb: (sessionId: string, e: PatientStreamEvent) => void): () => void
   interruptPatient(sessionId: string): Promise<void>
+  /** The patient's replies read aloud, when spoken replies are on and the speech model is loaded. */
+  onPatientAudio(cb: (sessionId: string, e: PatientAudioEvent) => void): () => void
+  /** Reads one of the patient's earlier replies aloud again; the audio arrives on onPatientAudio. */
+  replayReply(sessionId: string, text: string): Promise<void>
+  /** Stops synthesising the reply being read aloud. */
+  stopSpeaking(): Promise<void>
   examine(sessionId: string, system: string): Promise<TranscriptEntry>
   investigate(sessionId: string, test: string): Promise<TranscriptEntry>
   endEncounter(sessionId: string, reason: 'time' | 'candidate'): Promise<SessionRecord>

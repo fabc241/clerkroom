@@ -20,6 +20,10 @@
     "openingStatement": "I just can't seem to get my breath since this morning, and there's a sharp pain on the right side when I breathe in.",
     "demeanour": "Anxious, slightly breathless, pauses mid-sentence to breathe. Cooperative.",
     "speechStyle": "Short sentences because of breathlessness. Everyday language.",
+    "voice": {
+      "voice": "Emily",
+      "emotion": "fear"
+    },
     "ice": {
       "ideas": "Wonders if she has a chest infection.",
       "concerns": "Worried because it came on so suddenly.",

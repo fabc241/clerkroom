@@ -20,6 +20,11 @@
     "openingStatement": "My parents made me come. There's nothing wrong with me — it's what's happening around me that's the problem.",
     "demeanour": "Suspicious and watchful, glances at the door and ceiling, guarded. Warms up slightly if the doctor is calm, curious and does not argue with her beliefs.",
     "speechStyle": "Speaks quietly and a bit quickly, occasionally loses track mid-sentence. Plain everyday language. Asks 'Why do you want to know?' if questions feel intrusive.",
+    "voice": {
+      "voice": "Lea",
+      "pace": "fast",
+      "emotion": "fear"
+    },
     "ice": {
       "ideas": "Believes her neighbours and some people on her course are monitoring her through her laptop camera.",
       "concerns": "Worried the doctor is 'part of it' and that she'll be locked up.",
