@@ -36,6 +36,7 @@ describe('progressive disclosure', () => {
     ['psych-low-mood', 'Sleep', 'How have you been sleeping?'],
     ['psych-suicide-risk-overdose', 'Planning', 'Was this something you had planned?'],
     ['psych-suicide-risk-overdose', 'Precautions against discovery', 'Who found you?'],
+    ['psych-suicide-risk-overdose', 'Precautions against discovery', 'Was anyone with you at the time, and how were you found?'],
     ['psych-suicide-risk-overdose', 'Final acts / note', 'Did you leave a note?'],
     ['psych-suicide-risk-overdose', 'Intent and current feelings', 'Did you want to die when you took them?'],
     ['psych-first-episode-psychosis', 'Hearing voices', 'Do you ever hear voices when no one is around?'],
