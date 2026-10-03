@@ -1,5 +1,5 @@
 import { existsSync } from 'fs'
-import type { Appearance, Settings } from '@shared/ipcTypes'
+import type { Appearance, ModelChoice, Settings } from '@shared/ipcTypes'
 import { readJson, writeJson } from './jsonFiles'
 
 const DEFAULTS: Settings = {
@@ -13,6 +13,20 @@ const DEFAULTS: Settings = {
 }
 
 const APPEARANCES: Appearance[] = ['system', 'light', 'dark']
+const MODELS: ModelChoice[] = ['medpsy-4b-q4', 'medpsy-4b-q5', 'medpsy-1.7b-q4']
+
+const isCount = (v: unknown): boolean => Number.isInteger(v) && (v as number) >= 0
+
+// The renderer's patches are checked field by field; a value of the wrong shape is dropped.
+const VALID: { [K in keyof Settings]: (v: unknown) => boolean } = {
+  acceptedDisclaimerVersion: isCount,
+  model: (v) => MODELS.includes(v as ModelChoice),
+  stationSecondsOverride: (v) => v === null || (isCount(v) && (v as number) > 0),
+  skipReadingTime: (v) => typeof v === 'boolean',
+  voiceInput: (v) => typeof v === 'boolean',
+  appearance: (v) => APPEARANCES.includes(v as Appearance),
+  appLock: (v) => typeof v === 'boolean'
+}
 
 export class SettingsStore {
   private cache: Settings
@@ -29,9 +43,8 @@ export class SettingsStore {
     // The app lock is changed only through setAppLock, after the user has authenticated.
     const allowed: (keyof Settings)[] = (Object.keys(DEFAULTS) as (keyof Settings)[]).filter((k) => k !== 'appLock')
     const clean = Object.fromEntries(
-      Object.entries(patch).filter(([k]) => allowed.includes(k as keyof Settings))
+      Object.entries(patch).filter(([k, v]) => allowed.includes(k as keyof Settings) && VALID[k as keyof Settings](v))
     ) as Partial<Settings>
-    if (clean.appearance !== undefined && !APPEARANCES.includes(clean.appearance)) delete clean.appearance
     this.cache = { ...this.cache, ...clean }
     writeJson(this.path, this.cache)
     return this.get()
