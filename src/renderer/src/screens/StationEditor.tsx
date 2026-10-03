@@ -72,6 +72,7 @@ export function StationEditor({
   const [jsonError, setJsonError] = useState<string | null>(null)
   const [errors, setErrors] = useState<string[]>([])
   const [message, setMessage] = useState<string | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   useEffect(() => {
@@ -166,26 +167,50 @@ export function StationEditor({
         title="Station editor"
         description="Write fictional cases only. Never base a station on a real, identifiable patient."
         actions={
-          <>
-            <button className="btn" onClick={() => navigate({ name: 'editor', stationId: undefined })}>
-              New
-            </button>
-            {originalId && (
-              <button className="btn" onClick={() => window.clerkroom.exportStationFile(originalId)}>
-                Export JSON
+          confirmDelete && originalId ? (
+            <>
+              <span className="text-[13.5px] text-text">Delete this station? Your past attempts at it are kept.</span>
+              <button
+                className="btn-danger"
+                onClick={async () => {
+                  await window.clerkroom.deleteStation(originalId)
+                  navigate({ name: 'library' })
+                }}
+              >
+                Delete
               </button>
-            )}
-            <button
-              className="btn"
-              disabled={errors.length > 0}
-              onClick={async () => (await save()) && navigate({ name: 'brief', stationId: draft.id })}
-            >
-              Save & try it
-            </button>
-            <button className="btn-primary" disabled={errors.length > 0} onClick={save}>
-              Save
-            </button>
-          </>
+              <button className="btn" onClick={() => setConfirmDelete(false)}>
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn" onClick={() => navigate({ name: 'editor', stationId: undefined })}>
+                New
+              </button>
+              {originalId && (
+                <button className="btn" onClick={() => window.clerkroom.exportStationFile(originalId)}>
+                  Export JSON
+                </button>
+              )}
+              {/* Only your own stations have an id here: built-in ones are always opened as a copy. */}
+              {originalId && (
+                <button className="btn" onClick={() => setConfirmDelete(true)}>
+                  Delete…
+                </button>
+              )}
+              <button
+                className="btn"
+                disabled={errors.length > 0}
+                onClick={async () => (await save()) && navigate({ name: 'brief', stationId: draft.id })}
+              >
+                Save & try it
+              </button>
+              <button className="btn-primary" disabled={errors.length > 0} onClick={save}>
+                Save
+              </button>
+            </>
+          )
         }
       />
 
