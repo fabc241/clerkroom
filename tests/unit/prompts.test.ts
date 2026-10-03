@@ -49,9 +49,27 @@ describe('character guard', () => {
     'It sounds like I have depression.',
     // Reasoning leaked into a reply (seen in an eval run with the reasoning cap).
     '</think> Okay, I need to stay in character as Tom Baker. The user is asking about support.',
-    'From the patient note, I should mention my girlfriend. I need to keep it to 1-4 sentences.'
+    'From the patient note, I should mention my girlfriend. I need to keep it to 1-4 sentences.',
+    // Replies seen in an end-to-end run of the app: reasoning narrated as the patient's speech,
+    // and the model speaking as the doctor.
+    "Okay, Tom is sitting quietly after the doctor asked if he wants anyone else there. The doctor is being gentle, so I should match that tone. I need to keep it short and natural.",
+    "I'm really sorry, Tom. I know this is a shock. Can you tell me what the scan actually showed?",
+    "It's okay to feel this way, Tom. Many people manage it well. What's the first thing you're most worried about?",
+    "Okay. I'll check on you when you're ready to talk more. You're in safe hands here. Take care."
   ])('flags "%s"', (text) => {
-    expect(checkPatientReply(text, ['depression']).ok).toBe(false)
+    expect(checkPatientReply(text, ['depression'], 'Tom Baker').ok).toBe(false)
+  })
+
+  it("accepts the patient naming themselves, and others' names", () => {
+    for (const text of [
+      "I'm Tom. Tom Baker.",
+      "I'm just me, Tom, and I want to go home.",
+      'My name is Tom, I had a scan a few weeks ago.',
+      'Sorry, Jamie, my girlfriend, is at work today.',
+      'My mate Dave is the one who said I should come.'
+    ]) {
+      expect(checkPatientReply(text, [], 'Tom Baker').ok, text).toBe(true)
+    }
   })
 
   it('accepts ordinary patient lines that resemble the reasoning patterns', () => {
@@ -91,6 +109,9 @@ describe('reply tidying', () => {
       "It's a gift, really. No time for tests!"
     )
     expect(tidyPatientReply('I feel **awful**. (She looks away) Sorry.')).toBe('I feel awful. Sorry.')
+    expect(tidyPatientReply('I just have one thing... (voice thick with emotion) How quickly does this get worse? (nods firmly)')).toBe(
+      'I just have one thing... How quickly does this get worse?'
+    )
   })
 
   it('trims long replies at a sentence boundary but keeps the first sentence', () => {

@@ -114,7 +114,7 @@ export async function runPatientTurn(opts: {
       return { text: '', disclosed: [], cancelled: true, attempts: attempt, guardReasons, firstTokenMs, ...stats }
     }
     const content = tidyPatientReply(r.content)
-    const guard = content ? checkPatientReply(content, forbiddenTerms) : { ok: false, reasons: ['empty-reply'] }
+    const guard = content ? checkPatientReply(content, forbiddenTerms, station.patient.name) : { ok: false, reasons: ['empty-reply'] }
     if (guard.ok) {
       if (attempt === 2) await dropSessionCache(opts.cacheKey)
       return {
@@ -130,7 +130,7 @@ export async function runPatientTurn(opts: {
     guardReasons = guard.reasons
     if (attempt === 2) {
       await dropSessionCache(opts.cacheKey)
-      const text = content ? tidyPatientReply(sanitizePatientReply(content, forbiddenTerms)) : 'Sorry, doctor, could you say that again?'
+      const text = content ? tidyPatientReply(sanitizePatientReply(content, forbiddenTerms, station.patient.name)) : 'Sorry, doctor, could you say that again?'
       return {
         text,
         disclosed: detectDisclosures(text, station.patient.revealOnlyIfAsked),

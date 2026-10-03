@@ -18,17 +18,38 @@ const BREAK_PATTERNS: RegExp[] = [
   /\bthe user\b/i,
   /\bin character\b/i,
   /\bpatient note\b/i,
-  /\b(1|one) ?(-|to) ?(4|four) sentences\b/i
+  /\b(1|one) ?(-|to) ?(4|four) sentences\b/i,
+  // Reasoning about how to reply ("The doctor is being gentle, so I should match that tone").
+  /\bI should (match|mirror|keep|respond|reply|answer|stay|sound)\b/i,
+  /\bkeep(ing)? (it|this|my (reply|answer|response)s?) (short|brief|natural|simple|concise)\b/i,
+  /\bmatch (that|the|his|her|their) tone\b/i,
+  // The model speaking as the doctor.
+  /\byou('re|’re| are) in safe hands\b/i,
+  /\bI('ll|’ll| will) check (in )?on you\b/i
 ]
+
+/**
+ * Signs that the model is talking about the patient instead of as the patient: narrating them in
+ * the third person ("Tom is sitting quietly") or, as the doctor, addressing them by name ("I'm
+ * sorry, Tom."). Naming themselves ("I'm Tom", "it's just me, Tom, ...") is allowed.
+ */
+function namePatterns(patientName: string): RegExp[] {
+  const first = patientName.trim().split(/\s+/)[0]?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!first) return []
+  return [
+    new RegExp(`\\b${first}(?:'s|’s|\\s+(?:is|was|has|had|seems|looks|sits|feels|says|said|mentioned|might|would|will|wants|needs|does|doesn't))\\b`),
+    new RegExp(`(?<!\\b(?:I'm|I’m|am|me|it's|it’s|name's|name’s|is)),\\s*${first}\\s*[.,!?]|(?:^|[.!?]\\s+)${first},`)
+  ]
+}
 
 export interface GuardResult {
   ok: boolean
   reasons: string[]
 }
 
-export function checkPatientReply(text: string, forbiddenTerms: string[]): GuardResult {
+export function checkPatientReply(text: string, forbiddenTerms: string[], patientName = ''): GuardResult {
   const reasons: string[] = []
-  for (const re of BREAK_PATTERNS) if (re.test(text)) reasons.push(`pattern:${re.source}`)
+  for (const re of [...BREAK_PATTERNS, ...namePatterns(patientName)]) if (re.test(text)) reasons.push(`pattern:${re.source}`)
   const norm = ` ${normalizeForMatch(text)} `
   for (const term of forbiddenTerms) {
     const t = normalizeForMatch(term)
@@ -58,14 +79,14 @@ export function activeForbiddenTerms(
  * Last-resort cleanup when a regenerated reply still breaks character: drop offending
  * sentences, strip markdown and stage directions. Returns a neutral line if nothing survives.
  */
-export function sanitizePatientReply(text: string, forbiddenTerms: string[]): string {
+export function sanitizePatientReply(text: string, forbiddenTerms: string[], patientName = ''): string {
   const cleaned = text
     .replace(/\*[^*]{1,80}\*/g, ' ') // *sighs*
     .replace(/\([^)]{1,80}\)/g, ' ') // (looks away)
     .replace(/^\s*(#+\s|[-*]\s|\d+\.\s)/gm, '')
     .replace(/\*\*/g, '')
   const sentences = cleaned.match(/[^.!?]+[.!?]*/g) ?? []
-  const kept = sentences.filter((s) => checkPatientReply(s, forbiddenTerms).ok)
+  const kept = sentences.filter((s) => checkPatientReply(s.trim(), forbiddenTerms, patientName).ok)
   const out = kept.join(' ').replace(/\s+/g, ' ').trim()
   return out || "Sorry, I'm not sure what you mean, doctor."
 }
@@ -81,7 +102,9 @@ export function tidyPatientReply(text: string, maxWords = MAX_REPLY_WORDS): stri
     .replace(/\*\([^)]*\)\*/g, ' ') // *(He grins)*
     .replace(/\*\*|__/g, '')
     .replace(/\*[^*\n]{1,120}\*/g, (m) => (/^\*\s*[A-Z][a-z]+ (grins|sighs|laughs|pauses|looks|smiles|shrugs|nods|leans|stands|sits|paces|pulls|grabs|adjusts)/.test(m) ? ' ' : m.slice(1, -1)))
-    .replace(/(^|\s)\((?:he|she|they|pause|sighs|laughs|looks|smiles)[^)]{0,120}\)/gi, ' ')
+    // Patients speak; anything in brackets is a stage direction ("(voice cracks)"), and spoken
+    // replies would otherwise read it aloud.
+    .replace(/\([^()]{1,160}\)/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
   const sentences = cleaned.match(/[^.!?]+[.!?]+["'\u201d\u2019]?|[^.!?]+$/g) ?? [cleaned]

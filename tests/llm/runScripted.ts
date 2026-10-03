@@ -136,7 +136,7 @@ async function evaluateStation(station: Station, modelId: string, withExaminer: 
   // 3. Final replies never break character or say a forbidden term the candidate hasn't said.
   logs.forEach((log, i) => {
     const said = script.slice(0, i + 1).map((c) => ({ role: 'user', content: c }))
-    const guard = checkPatientReply(log.patient, activeForbiddenTerms(station.forbiddenTerms, said))
+    const guard = checkPatientReply(log.patient, activeForbiddenTerms(station.forbiddenTerms, said), station.patient.name)
     if (!guard.ok) report.failures.push(`turn ${i + 1}: final reply breaks rules (${guard.reasons.join(', ')})`)
     if (log.words > MAX_WORDS) report.failures.push(`turn ${i + 1}: reply too long (${log.words} words)`)
     if (!log.patient.trim()) report.failures.push(`turn ${i + 1}: empty reply`)
