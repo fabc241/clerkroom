@@ -258,10 +258,41 @@ export function verifyVerdict(
   })
 }
 
+const KEY_POINT_STOPWORDS = new Set(
+  'and the for with from his her their its any are was has have had into use using via all can may per this that then than'.split(' ')
+)
+const NEGATORS = new Set(['not', 'no', 'never', 'without', 'avoid', 'nor', "don't", "wouldn't", "shouldn't", "won't", "isn't"])
+const stem = (w: string): string => (w.length > 3 && w.endsWith('s') ? w.slice(0, -1) : w)
+
+/**
+ * True when one sentence of the answer contains every content word of the key point, e.g.
+ * "consider capacity and the legal framework if he tries to leave" for "Consider capacity/legal
+ * framework if he tries to leave". Acronyms such as "CT" count as content words. A sentence with a
+ * negation the key point does not have ("I would not give nimodipine") is left to the examiner.
+ */
+export function keyPointInAnswer(keyPoint: string, answer: string): boolean {
+  const words = keyPoint
+    .split(/[^A-Za-z0-9']+/)
+    .filter((w) => /^[A-Z]{2,}$/.test(w) || (w.length >= 3 && !KEY_POINT_STOPWORDS.has(w.toLowerCase())))
+    .map((w) => stem(normalizeForMatch(w)))
+    .filter((w) => w && !NEGATORS.has(w))
+  if (words.length === 0) return false
+  const keyNegated = normalizeForMatch(keyPoint).split(' ').some((w) => NEGATORS.has(w))
+  return answer
+    .split(/(?<=[.!?;])\s+|\n+/)
+    .map((s) => normalizeForMatch(s).split(' '))
+    .some((sentence) => {
+      if (!keyNegated && sentence.some((w) => NEGATORS.has(w))) return false
+      const have = new Set(sentence.map(stem))
+      return words.every((w) => have.has(w))
+    })
+}
+
 /**
  * Turns the examiner model's marking of one post-station answer into a scored result. A key point
- * counts only if it is one of the station's key points and the model quoted the student's answer
- * to show it, so blank answers and invented credit score nothing.
+ * counts if the answer states it almost word for word (decided in code, so the same answer always
+ * earns it), or if the model credited it with a quote found in the answer. Blank answers and
+ * invented credit score nothing.
  */
 export function verifyAnswer(
   expected: { modelAnswer: string; keyPoints: string[] } | undefined,
@@ -271,20 +302,31 @@ export function verifyAnswer(
   const keyPoints = expected?.keyPoints ?? []
   const base = { question: answer.question, answer: answer.answer, modelAnswer: expected?.modelAnswer ?? '' }
   if (!answer.answer.trim()) return { ...base, keyPointsHit: [], keyPointsMissed: keyPoints, comment: 'No answer given.' }
+  const literal = keyPoints.filter((k) => keyPointInAnswer(k, answer.answer))
   if (!verdict) {
+    const missed = keyPoints.filter((k) => !literal.includes(k))
     return {
       ...base,
-      keyPointsHit: [],
-      keyPointsMissed: keyPoints,
-      comment: 'Could not be assessed automatically — mark this attempt again.',
-      notAssessed: keyPoints.length > 0
+      keyPointsHit: literal,
+      keyPointsMissed: missed,
+      comment: missed.length ? 'Could not be assessed automatically — mark this attempt again.' : 'You covered every key point.',
+      notAssessed: missed.length > 0
     }
   }
   const same = (a: string, b: string): boolean => normalizeForMatch(a) === normalizeForMatch(b)
-  const hit = keyPoints.filter((k) =>
+  const byModel = keyPoints.filter((k) =>
     verdict.keyPointsHit.some((h) => same(h.keyPoint, k) && quoteMatches(h.quote, answer.answer, true))
   )
-  return { ...base, keyPointsHit: hit, keyPointsMissed: keyPoints.filter((k) => !hit.includes(k)), comment: verdict.comment }
+  const hit = keyPoints.filter((k) => literal.includes(k) || byModel.includes(k))
+  const missed = keyPoints.filter((k) => !hit.includes(k))
+  // The model's comment was written about its own marks; if code credited more, it may call a covered point missing.
+  const comment =
+    hit.length === byModel.length
+      ? verdict.comment
+      : missed.length
+        ? `You covered ${hit.length} of ${keyPoints.length} key points. Not covered: ${missed.join('; ')}.`
+        : 'You covered every key point.'
+  return { ...base, keyPointsHit: hit, keyPointsMissed: missed, comment }
 }
 
 /** Detects which hidden facts the patient has disclosed, by keyword match on patient replies. */

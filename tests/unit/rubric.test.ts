@@ -12,7 +12,8 @@ import {
   overallPercent,
   quoteMatches,
   ratingFor,
-  verifyAnswer
+  verifyAnswer,
+  keyPointInAnswer
 } from '../../src/shared/rubric'
 import type { AnswerResult, ItemResult, TranscriptEntry } from '../../src/shared/sessionTypes'
 
@@ -151,9 +152,53 @@ describe('examiner answer verification', () => {
   })
 
   it('flags an answer the model could not mark', () => {
-    const r = verifyAnswer(expected, { question: 'q', answer: 'SPIKES' }, undefined)
+    const r = verifyAnswer(expected, { question: 'q', answer: 'I would arrange a meeting.' }, undefined)
     expect(r.notAssessed).toBe(true)
     expect(r.keyPointsHit).toEqual([])
+  })
+
+  // Seen in an end-to-end run: the model left this key point out although the answer states it.
+  const overdose = {
+    modelAnswer: '...',
+    keyPoints: ['Not safe for discharge', 'Liaison psychiatry referral', 'Consider capacity/legal framework if he tries to leave']
+  }
+  const overdoseAnswer =
+    'He is not safe for discharge. Refer to the liaison psychiatry team for a full assessment, and consider capacity and the legal framework if he tries to leave.'
+
+  it('credits a key point the answer states word for word, even when the model misses it', () => {
+    const r = verifyAnswer(overdose, { question: 'q', answer: overdoseAnswer }, verdict([{ keyPoint: 'Not safe for discharge', quote: 'He is not safe for discharge' }]))
+    expect(r.keyPointsHit).toEqual(['Not safe for discharge', 'Consider capacity/legal framework if he tries to leave'])
+    expect(r.keyPointsMissed).toEqual(['Liaison psychiatry referral'])
+    // The model's comment described its own marks, so it is replaced.
+    expect(r.comment).toBe('You covered 2 of 3 key points. Not covered: Liaison psychiatry referral.')
+  })
+
+  it('keeps the model comment when it agrees with the marks', () => {
+    const r = verifyAnswer(expected, { question: 'q', answer: 'SPIKES' }, verdict([{ keyPoint: 'SPIKES', quote: 'SPIKES' }]))
+    expect(r.keyPointsHit).toEqual(['SPIKES'])
+    expect(r.comment).toBe('ok')
+  })
+
+  it('still credits word-for-word key points when the model output could not be read', () => {
+    const r = verifyAnswer(expected, { question: 'q', answer: 'SPIKES: setting, perception.' }, undefined)
+    expect(r.keyPointsHit).toEqual(['SPIKES', 'Setting', 'Perception'])
+    expect(r.notAssessed).toBe(false)
+  })
+
+  it.each([
+    ['Nimodipine', 'Start nimodipine and neuro observations.', true],
+    ['Neuro observations', 'Start nimodipine and neuro observations.', true],
+    ['Lumbar puncture if CT negative', 'If the CT had been negative after 6 hours I would do a lumbar puncture.', true],
+    ['Risk factors: smoking, hypertension, family history', 'Risk factors are smoking, hypertension and a family history of a bleed.', true],
+    ['Follow-up appointment', 'Arrange a follow up appointment with the consultant.', true],
+    ['Not safe for discharge', 'He is not safe for discharge.', true],
+    // Words spread over different sentences, a negation, or a paraphrase are left to the examiner.
+    ['Lumbar puncture if CT negative', 'I would do a lumbar puncture. The CT was negative.', false],
+    ['Nimodipine', 'I would not give nimodipine.', false],
+    ['Neurosurgical referral', 'Refer to the neurosurgeons.', false],
+    ['Lumbar puncture if CT negative', 'Lumbar puncture if negative.', false]
+  ])('key point "%s" in "%s": %s', (keyPoint, answer, found) => {
+    expect(keyPointInAnswer(keyPoint, answer)).toBe(found)
   })
 })
 
