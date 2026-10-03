@@ -137,7 +137,12 @@
           "end your life",
           "kill yourself",
           "self-harm",
-          "safe"
+          "safe",
+          "harming yourself",
+          "hurting yourself",
+          "ending your life",
+          "own life",
+          "take your life"
         ]
       },
       {
@@ -310,7 +315,11 @@
         "text": "Assesses risk to self and to others",
         "weight": 3,
         "critical": true,
-        "evidenceHint": "harm yourself, harm others"
+        "evidenceHint": "harm yourself, harm others",
+        "requires": [
+          "Risk to self",
+          "Risk to others"
+        ]
       },
       {
         "id": "background",

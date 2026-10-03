@@ -1,4 +1,6 @@
 import { normalizeForMatch } from './rubric'
+import type { Station } from './stationSchema'
+import type { TranscriptEntry } from './sessionTypes'
 
 /**
  * Progressive disclosure: the simulated patient only learns a hidden fact once the candidate
@@ -86,4 +88,16 @@ export function unlockSchedule<F extends { trigger: string; askKeywords?: string
     })
     return now
   })
+}
+
+/** Hidden-fact topics the student's questions unlocked, plus the examinations and investigations they did. */
+export function askedOrDone(station: Station, transcript: TranscriptEntry[]): Set<string> {
+  const facts = station.patient.revealOnlyIfAsked
+  const questions = transcript.flatMap((e) => (e.kind === 'candidate' ? [e.text] : []))
+  const done = new Set(unlockSchedule(questions, facts).flat().map((i) => facts[i].topic))
+  for (const e of transcript) {
+    if (e.kind === 'exam') done.add(e.system)
+    if (e.kind === 'investigation') done.add(e.test)
+  }
+  return done
 }

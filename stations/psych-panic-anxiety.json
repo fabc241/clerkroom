@@ -267,7 +267,10 @@
         "text": "Screens for cardiac red flags (exertional symptoms, syncope, family history)",
         "weight": 2,
         "critical": true,
-        "evidenceHint": "faint, exercise, family"
+        "evidenceHint": "faint, exercise, family",
+        "requires": [
+          "Physical red flags"
+        ]
       },
       {
         "id": "thyroid-caffeine",

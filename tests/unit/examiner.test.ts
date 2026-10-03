@@ -239,6 +239,55 @@ describe('asking again about rejected evidence', () => {
   })
 })
 
+describe('items tied to a hidden fact', () => {
+  beforeEach(() => {
+    runCompletion.mockReset()
+  })
+
+  const overdose = loadBundledStations().find((s) => s.id === 'psych-suicide-risk-overdose')!
+  const SAID = 'Who do you have for support, and what keeps you going?'
+
+  /** Credits every item with the student's first line, as the model did in an end-to-end run. */
+  function creditsEverything(): void {
+    runCompletion.mockImplementation(async ({ history }: { history: { content: string }[] }) => {
+      const prompt = history[1].content
+      const ids = [...prompt.matchAll(/- id "([^"]+)"/g)].map((m) => m[1])
+      const json = ids.length
+        ? { results: ids.map((id) => ({ itemId: id, met: 'yes', evidenceQuote: SAID, comment: 'Done.' })) }
+        : prompt.includes('post-station questions')
+          ? { answers: [] }
+          : { summary: 'Fine.', practiseNext: [] }
+      return { content: JSON.stringify(json), cancelled: false, thinkingChars: 0 }
+    })
+  }
+  const markOverdose = (lines: string[]) =>
+    generateFeedback({
+      modelId: 'm',
+      modelName: 'stub',
+      station: overdose,
+      record: { ...record(lines.map((text, at) => ({ kind: 'candidate' as const, text, at }))), stationId: overdose.id, postAnswers: [] },
+      key: 'k',
+      onProgress: () => {}
+    })
+
+  it('never credits the must-pass item when the student did not ask about it', async () => {
+    creditsEverything()
+    const fb = await markOverdose([SAID])
+    const intent = fb.items.find((i) => i.itemId === 'intent-now')!
+    expect(intent.met).toBe('no')
+    expect(intent.comment).toBe('Not done: nothing you asked or did covered intent and current feelings.')
+    expect(fb.result).toBe('fail')
+    // Items not tied to a fact keep the model's mark.
+    expect(fb.items.find((i) => i.itemId === 'protective')!.met).toBe('yes')
+  })
+
+  it('leaves the mark to the examiner once the student has asked', async () => {
+    creditsEverything()
+    const fb = await markOverdose([SAID, 'Did you want to die when you took them?'])
+    expect(fb.items.find((i) => i.itemId === 'intent-now')!.met).toBe('yes')
+  })
+})
+
 describe('feedback tidying', () => {
   const item = (text: string, met: 'yes' | 'partial' | 'no', weight = 1, critical = false) =>
     ({ itemId: text, domain: 'dataGathering', text, weight, critical, met, evidenceQuote: '', evidenceTurn: null, downgraded: false, comment: '' }) as const

@@ -55,7 +55,15 @@
           "onset",
           "build up",
           "instant",
-          "seconds"
+          "seconds",
+          "all at once",
+          "out of the blue",
+          "how long did it take",
+          "reach its",
+          "peak",
+          "began",
+          "begin",
+          "doing when"
         ]
       },
       {
@@ -253,7 +261,10 @@
         "text": "Establishes speed of onset (thunderclap) and activity at onset",
         "weight": 3,
         "critical": true,
-        "evidenceHint": "how quickly, what were you doing"
+        "evidenceHint": "how quickly, what were you doing",
+        "requires": [
+          "Onset speed"
+        ]
       },
       {
         "id": "character",

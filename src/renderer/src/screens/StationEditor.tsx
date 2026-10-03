@@ -350,9 +350,16 @@ export function StationEditor({
                 { key: 'text', label: 'What the candidate should do' },
                 { key: 'weight', label: 'Weight (1–3)', number: true },
                 { key: 'critical', label: 'Must-pass (failing it fails the station)', checkbox: true },
-                { key: 'evidenceHint', label: 'Evidence hint for the examiner' }
+                { key: 'evidenceHint', label: 'Evidence hint for the examiner' },
+                {
+                  key: 'requires',
+                  label:
+                    'Only credit if the student asked about or did one of (optional; hidden-fact topics, examinations or investigations, separated by ;)',
+                  list: true,
+                  separator: ';'
+                }
               ]}
-              empty={{ id: '', domain: 'dataGathering', text: '', weight: 1, critical: false, evidenceHint: '' }}
+              empty={{ id: '', domain: 'dataGathering', text: '', weight: 1, critical: false, evidenceHint: '', requires: [] }}
             />
             <ObjectList
               label="Post-station examiner questions"
@@ -417,6 +424,8 @@ interface FieldDef {
   label: string
   multiline?: boolean
   list?: boolean
+  /** Separator for a list field; ";" for names that can contain commas. */
+  separator?: ',' | ';'
   number?: boolean
   checkbox?: boolean
   options?: readonly string[]
@@ -469,15 +478,18 @@ function ObjectList({
                   ) : f.list ? (
                     <input
                       className="field"
-                      value={(item[f.key] ?? []).join(', ')}
+                      value={(item[f.key] ?? []).join(`${f.separator ?? ','} `)}
                       onChange={(e) =>
                         update(
                           i,
                           f.key,
-                          e.target.value.split(',').map((s) => s.trimStart()).filter((s, idx, arr) => s || idx === arr.length - 1)
+                          e.target.value
+                            .split(f.separator ?? ',')
+                            .map((s) => s.trimStart())
+                            .filter((s, idx, arr) => s || idx === arr.length - 1)
                         )
                       }
-                      onBlur={(e) => update(i, f.key, e.target.value.split(',').map((s) => s.trim()).filter(Boolean))}
+                      onBlur={(e) => update(i, f.key, e.target.value.split(f.separator ?? ',').map((s) => s.trim()).filter(Boolean))}
                     />
                   ) : (
                     <input

@@ -53,6 +53,27 @@ describe('station schema', () => {
     expect(stationSchema.safeParse(s).success).toBe(false)
   })
 
+  it('accepts a rubric item tied to a hidden fact or an investigation, and rejects an unknown name', () => {
+    const s = rawStation('med-chest-pain') as { rubric: { items: { critical?: boolean; requires?: string[] }[] } }
+    const item = s.rubric.items.find((i) => i.critical)!
+    item.requires = ['Radiation', '12-lead ECG']
+    expect(stationSchema.safeParse(s).success).toBe(true)
+    item.requires = ['ECG please']
+    const r = stationSchema.safeParse(s)
+    expect(r.success).toBe(false)
+    expect(formatIssues(r.error!)[0]).toContain('"ECG please" is not a hidden fact topic, examination or investigation')
+  })
+
+  it('ties every bundled must-pass item that can be asked about or done to a fact or action', () => {
+    for (const st of stations) {
+      for (const item of st.rubric.items.filter((i) => i.critical)) {
+        // Explaining the diagnosis is something the doctor says, so there is nothing to tie it to.
+        if (st.id === 'comm-breaking-bad-news-ms') expect(item.requires).toEqual([])
+        else expect(item.requires.length, `${st.id}/${item.id}`).toBeGreaterThan(0)
+      }
+    }
+  })
+
   it('rejects invalid ids and missing brief', () => {
     const s = rawStation('med-chest-pain')
     expect(stationSchema.safeParse({ ...s, id: 'Bad Id!' }).success).toBe(false)

@@ -178,6 +178,10 @@ result is calculated in code (`src/shared/rubric.ts`), so the same marks always 
   it. The model judges paraphrases.
 - **Must-pass items get a second look.** A must-pass item the model credits is marked again on its
   own, and keeps the lower of the two marks.
+- **Items can be tied to what the student asked or did.** A rubric item with `requires` (hidden-fact
+  topics, examinations or investigations) can only be credited if the student's questions unlocked
+  one of those facts or they did one of those actions, whatever the model says. Every bundled
+  must-pass item that can be asked about or done is tied this way.
 - **Score** = checklist (weighted by item weight) × 80% + examiner questions × 20%. Each question
   counts equally, by the share of its key points covered. Stations without questions use the
   checklist alone.
@@ -206,6 +210,11 @@ Stations are JSON files validated by `src/shared/stationSchema.ts`. Tips:
 - Mark safety-critical checklist items `"critical": true` (for example asking about suicidal intent
   in a risk assessment). Missing one fails the station whatever the score, so keep it to one or two
   items per station.
+- Tie a must-pass item to what the student has to ask or do with `"requires"`, for example
+  `"requires": ["Intent and current feelings"]` (a hidden fact's topic) or `["12-lead ECG"]` (an
+  investigation). The examiner model then cannot credit it for a question on another topic. Because
+  the item now depends on that fact's ask keywords, add a test that natural ways of asking unlock it
+  (see `tests/unit/disclosure.test.ts`).
 - List the diagnosis and related jargon in `forbiddenTerms`. The patient won't say them until the
   candidate does.
 - Keep cases fictional. Never base a station on a real, identifiable person.

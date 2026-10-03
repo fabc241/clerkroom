@@ -129,7 +129,30 @@
           "still feel",
           "again",
           "right now",
-          "woke up"
+          "woke up",
+          "suicid",
+          "kill yourself",
+          "kill you",
+          "end your life",
+          "ending your life",
+          "take your own life",
+          "own life",
+          "die",
+          "dead",
+          "trying to end",
+          "trying to kill",
+          "trying to die",
+          "hope would happen",
+          "hoped would happen",
+          "hoping would happen",
+          "wanted to happen",
+          "harm yourself",
+          "harming yourself",
+          "hurt yourself",
+          "hurting yourself",
+          "glad you were found",
+          "glad to be alive",
+          "glad you survived"
         ]
       },
       {
@@ -321,7 +344,10 @@
         "text": "Assesses intent at the time and current suicidal thoughts, including feelings about surviving",
         "weight": 3,
         "critical": true,
-        "evidenceHint": "wanted to die, how do you feel now"
+        "evidenceHint": "wanted to die, how do you feel now",
+        "requires": [
+          "Intent and current feelings"
+        ]
       },
       {
         "id": "history-sh",

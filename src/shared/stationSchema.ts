@@ -56,7 +56,13 @@ export const rubricItemSchema = z.object({
   weight: z.number().int().min(1).max(3).default(1),
   /** Must-pass item: not doing it fails the station whatever the score. */
   critical: z.boolean().default(false),
-  evidenceHint: z.string().default('')
+  evidenceHint: z.string().default(''),
+  /**
+   * Hidden-fact topics, examinations or investigations. When set, the item can only be credited if
+   * the student asked about (unlocked) at least one of these facts or did one of these actions, so
+   * the examiner model cannot credit it for a question on another topic.
+   */
+  requires: z.array(nonEmpty).default([])
 })
 export type RubricItem = z.infer<typeof rubricItemSchema>
 
@@ -124,6 +130,20 @@ export const stationSchema = z
         })
       }
       ids.add(item.id)
+      const known = new Set([
+        ...s.patient.revealOnlyIfAsked.map((f) => f.topic),
+        ...s.examFindings.map((f) => f.system),
+        ...s.investigations.map((i) => i.test)
+      ])
+      item.requires.forEach((name, j) => {
+        if (!known.has(name)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['rubric', 'items', i, 'requires', j],
+            message: `"${name}" is not a hidden fact topic, examination or investigation in this station`
+          })
+        }
+      })
     })
   })
 

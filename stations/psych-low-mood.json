@@ -115,7 +115,12 @@
           "better off",
           "death",
           "dead",
-          "die"
+          "die",
+          "harming yourself",
+          "hurting yourself",
+          "own life",
+          "not wake up",
+          "take your life"
         ]
       },
       {
@@ -278,7 +283,10 @@
         "text": "Asks directly and sensitively about suicidal thoughts, plans and protective factors",
         "weight": 3,
         "critical": true,
-        "evidenceHint": "harm yourself, end your life, what keeps you going"
+        "evidenceHint": "harm yourself, end your life, what keeps you going",
+        "requires": [
+          "Thoughts of death"
+        ]
       },
       {
         "id": "mania",

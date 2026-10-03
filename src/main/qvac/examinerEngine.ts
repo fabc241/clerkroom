@@ -27,6 +27,7 @@ import {
   summaryResponseSchema
 } from '../prompts/examinerPrompt'
 import { EXAMINER_PARAMS, runCompletion } from './streamUtils'
+import { askedOrDone } from '@shared/disclosure'
 
 const BATCH_SIZE = 6
 
@@ -66,6 +67,14 @@ export async function gradeChecklist(
     onProgress({ step: `Marking checklist items ${i + 1}–${i + batch.length}`, done: i / BATCH_SIZE, total: totalSteps })
     results.push(...(await markItems(ask, station, record, batch)))
   }
+  // An item tied to hidden facts or actions can't be done without asking about one or doing one,
+  // whatever the model says. This also settles such an item when the model's reply couldn't be read.
+  const asked = askedOrDone(station, record.transcript)
+  items.forEach((item, idx) => {
+    if (item.requires.length > 0 && !item.requires.some((r) => asked.has(r))) {
+      results[idx] = unmetItem(item, `Not done: nothing you asked or did covered ${orList(item.requires)}.`)
+    }
+  })
   // A must-pass item decides the result on its own, and the model sometimes credits one with a
   // student line on another topic. So each one credited is marked again on its own, and keeps the
   // lower of the two marks. If the second marking can't be read, the first one stands.
@@ -101,6 +110,12 @@ async function markItems(ask: Ask, station: Station, record: SessionRecord, item
     if (!again[j].notAssessed) results[items.indexOf(item)] = again[j]
   })
   return results
+}
+
+/** "a", "a or b", "a, b or c", in lower case unless a word is an acronym. */
+function orList(names: string[]): string {
+  const lower = names.map((n) => n.replace(/\b(?![A-Z]{2,}\b)\w+/g, (w) => w.toLowerCase()))
+  return lower.length < 2 ? lower.join('') : `${lower.slice(0, -1).join(', ')} or ${lower[lower.length - 1]}`
 }
 
 /** Progress steps for checklist marking: one per batch, plus one to double-check must-pass items. */

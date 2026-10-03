@@ -297,7 +297,11 @@
         "text": "Assesses risk: spending, driving, disinhibition, harm to self or others",
         "weight": 3,
         "critical": true,
-        "evidenceHint": "money, driving, harm"
+        "evidenceHint": "money, driving, harm",
+        "requires": [
+          "Risk",
+          "Spending"
+        ]
       },
       {
         "id": "cognition",

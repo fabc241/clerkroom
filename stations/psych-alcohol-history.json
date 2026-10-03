@@ -278,7 +278,10 @@
         "text": "Asks about previous withdrawal seizures or DTs",
         "weight": 3,
         "critical": true,
-        "evidenceHint": "fits, seeing things"
+        "evidenceHint": "fits, seeing things",
+        "requires": [
+          "When he stops drinking"
+        ]
       },
       {
         "id": "consequences",
