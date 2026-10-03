@@ -28,14 +28,28 @@ export function formatTranscript(transcript: TranscriptEntry[]): string {
     .join('\n')
 }
 
+/**
+ * Asks the examiner to mark checklist items. `rejected` holds quotes from an earlier marking of these
+ * items that were not the student's words (usually the patient's answer instead of the student's
+ * question), so the model is asked to point to what the student said, or answer "no".
+ */
 export function buildChecklistPrompt(
   station: Station,
   transcript: TranscriptEntry[],
-  items: RubricItem[]
+  items: RubricItem[],
+  rejected: { itemId: string; quote: string }[] = []
 ): string {
   const itemLines = items
     .map((it) => `- id "${it.id}": ${it.text}${it.evidenceHint ? ` (look for: ${it.evidenceHint})` : ''}`)
     .join('\n')
+  const retry = rejected.length
+    ? [
+        '',
+        'You marked these items before, but your evidence was not something the STUDENT said or did (a PATIENT line is never evidence):',
+        ...rejected.map((r) => `- "${r.itemId}": you quoted "${r.quote}"`),
+        'Mark them again. If the student did the item, quote the STUDENT line that shows it, such as the question they asked. If no STUDENT line shows it, the verdict is "no".'
+      ]
+    : []
   return [
     `Station: ${station.title}`,
     `Task given to the student: ${station.candidateBrief}`,
@@ -45,6 +59,7 @@ export function buildChecklistPrompt(
     '',
     'Mark each checklist item below:',
     itemLines,
+    ...retry,
     '',
     'For each item decide "yes" (clearly done), "partial" (attempted but incomplete) or "no" (not done).',
     'evidenceQuote must be copied word-for-word from a STUDENT line or STUDENT ACTION line in the transcript, or be an empty string if the verdict is "no".',

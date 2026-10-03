@@ -79,7 +79,11 @@ function failReasons(items: ItemResult[], answers: AnswerResult[]): string[] {
   const reasons: string[] = []
   const percent = finalPercent(items, answers)
   if (percent < PASS_MARK) reasons.push(`Your score of ${percent}% is below the pass mark of ${PASS_MARK}%.`)
-  for (const i of items) if (i.critical && i.met === 'no') reasons.push(`Must-pass item not done: ${i.text}`)
+  // A must-pass item has to be done in full: half-asking about suicidal intent is not enough.
+  for (const i of items) {
+    if (i.critical && i.met === 'no') reasons.push(`Must-pass item not done: ${i.text}`)
+    else if (i.critical && i.met === 'partial') reasons.push(`Must-pass item only partly done: ${i.text}`)
+  }
   return reasons
 }
 

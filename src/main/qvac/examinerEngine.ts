@@ -1,5 +1,5 @@
 import type { z } from 'zod'
-import type { Station } from '@shared/stationSchema'
+import type { RubricItem, Station } from '@shared/stationSchema'
 import { DOMAIN_LABELS } from '@shared/stationSchema'
 import type { AnswerResult, Feedback, ItemResult, SessionRecord } from '@shared/sessionTypes'
 import type { FeedbackProgress } from '@shared/ipcTypes'
@@ -64,12 +64,48 @@ export async function gradeChecklist(
   for (let i = 0; i < items.length; i += BATCH_SIZE) {
     const batch = items.slice(i, i + BATCH_SIZE)
     onProgress({ step: `Marking checklist items ${i + 1}–${i + batch.length}`, done: i / BATCH_SIZE, total: totalSteps })
-    const parsed = await askJson(ask, buildChecklistPrompt(station, record.transcript, batch), checklistResponseSchema)
-    for (const item of batch) {
-      results.push(verifyVerdict(item, parsed?.results.find((x) => x.itemId === item.id), record.transcript))
+    results.push(...(await markItems(ask, station, record, batch)))
+  }
+  // A must-pass item decides the result on its own, and the model sometimes credits one with a
+  // student line on another topic. So each one credited is marked again on its own, and keeps the
+  // lower of the two marks. If the second marking can't be read, the first one stands.
+  const credited = items.flatMap((item, idx) => (item.critical && results[idx].met === 'yes' ? [idx] : []))
+  if (credited.length > 0) {
+    onProgress({ step: 'Double-checking must-pass items', done: Math.ceil(items.length / BATCH_SIZE), total: totalSteps })
+    for (const idx of credited) {
+      const [second] = await markItems(ask, station, record, [items[idx]])
+      if (!second.notAssessed && second.met !== 'yes') results[idx] = second
     }
   }
   return results
+}
+
+/**
+ * Marks a group of items. The model often quotes the patient's answer instead of the student's
+ * question, so a done item loses its credit; those items are asked about once more, told why.
+ */
+async function markItems(ask: Ask, station: Station, record: SessionRecord, items: RubricItem[]): Promise<ItemResult[]> {
+  const mark = async (group: RubricItem[], rejected: { itemId: string; quote: string }[] = []) => {
+    const parsed = await askJson(ask, buildChecklistPrompt(station, record.transcript, group, rejected), checklistResponseSchema)
+    return group.map((item) => verifyVerdict(item, parsed?.results.find((x) => x.itemId === item.id), record.transcript))
+  }
+  const results = await mark(items)
+  const retry = items.filter((_, i) => results[i].downgraded)
+  if (retry.length === 0) return results
+  const again = await mark(
+    retry,
+    retry.map((item) => ({ itemId: item.id, quote: results[items.indexOf(item)].evidenceQuote }))
+  )
+  retry.forEach((item, j) => {
+    // If the second answer can't be read, the first (uncredited) mark stands.
+    if (!again[j].notAssessed) results[items.indexOf(item)] = again[j]
+  })
+  return results
+}
+
+/** Progress steps for checklist marking: one per batch, plus one to double-check must-pass items. */
+function checklistStepCount(station: Station): number {
+  return Math.ceil(station.rubric.items.length / BATCH_SIZE) + (station.rubric.items.some((i) => i.critical) ? 1 : 0)
 }
 
 export async function gradeAnswers(ask: Ask, station: Station, record: SessionRecord): Promise<AnswerResult[]> {
@@ -109,7 +145,7 @@ export async function generateFeedback(opts: {
     return r.content
   }
 
-  const checklistSteps = Math.ceil(station.rubric.items.length / BATCH_SIZE)
+  const checklistSteps = checklistStepCount(station)
   const totalSteps = checklistSteps + 2
 
   const items = await gradeChecklist(ask, station, record, onProgress, totalSteps)

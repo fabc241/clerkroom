@@ -101,7 +101,17 @@ describe('final score and result', () => {
     const r = decideResult(items, [], true)
     expect(r.result).toBe('fail')
     expect(r.reasons).toEqual(['Must-pass item not done: Asks about suicide'])
-    expect(decideResult([...items.slice(0, 2), { ...items[2], met: 'partial' }], [], true).result).toBe('pass')
+  })
+
+  it('fails when a must-pass item is only partly done', () => {
+    const items = [
+      item({ itemId: 'a', met: 'yes', weight: 3 }),
+      item({ itemId: 'b', met: 'yes', weight: 3 }),
+      item({ itemId: 'risk', text: 'Asks about suicide', met: 'partial', critical: true })
+    ]
+    const r = decideResult(items, [], true)
+    expect(r.result).toBe('fail')
+    expect(r.reasons).toEqual(['Must-pass item only partly done: Asks about suicide'])
   })
 
   it('is incomplete only when unmarked items could change the result', () => {

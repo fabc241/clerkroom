@@ -141,6 +141,104 @@ describe('examiner feedback', () => {
   })
 })
 
+describe('must-pass double-check', () => {
+  beforeEach(() => {
+    runCompletion.mockReset()
+  })
+
+  /** Credits every item; the second, single-item look at a must-pass item answers `second`. */
+  function secondLook(second: 'yes' | 'partial' | 'no' | 'unreadable'): void {
+    runCompletion.mockImplementation(async ({ history }: { history: { content: string }[] }) => {
+      const prompt = history[1].content
+      const ids = [...prompt.matchAll(/- id "([^"]+)"/g)].map((m) => m[1])
+      let json: unknown = { summary: 'Fine.', practiseNext: [] }
+      if (ids.length === 1) {
+        if (second === 'unreadable') return { content: 'Hmm.', cancelled: false, thinkingChars: 0 }
+        json = { results: [{ itemId: ids[0], met: second, evidenceQuote: second === 'no' ? '' : QUOTE, comment: 'Second look.' }] }
+      } else if (ids.length > 1) {
+        json = { results: ids.map((id) => ({ itemId: id, met: 'yes', evidenceQuote: QUOTE, comment: 'Done.' })) }
+      } else if (prompt.includes('post-station questions')) {
+        json = { answers: [] }
+      }
+      return { content: JSON.stringify(json), cancelled: false, thinkingChars: 0 }
+    })
+  }
+  const critical = (fb: Awaited<ReturnType<typeof feedbackFor>>) => fb.items.find((i) => i.critical)!
+
+  it('keeps the credit when the second look agrees, asking again only about the must-pass item', async () => {
+    secondLook('yes')
+    const fb = await feedbackFor(record(spoke))
+    expect(critical(fb).met).toBe('yes')
+    expect(fb.result).toBe('pass')
+    const singleItemCalls = runCompletion.mock.calls.filter(([o]) => [...o.history[1].content.matchAll(/- id "/g)].length === 1)
+    expect(singleItemCalls).toHaveLength(1)
+  })
+
+  it('fails the station when the second look finds the must-pass item not done', async () => {
+    secondLook('no')
+    const fb = await feedbackFor(record(spoke))
+    expect(critical(fb).met).toBe('no')
+    expect(critical(fb).comment).toBe('Second look.')
+    expect(fb.result).toBe('fail')
+  })
+
+  it('fails the station when the second look finds it only partly done', async () => {
+    secondLook('partial')
+    const fb = await feedbackFor(record(spoke))
+    expect(critical(fb).met).toBe('partial')
+    expect(fb.result).toBe('fail')
+    expect(fb.resultReasons).toEqual([expect.stringContaining('Must-pass item only partly done')])
+  })
+
+  it('keeps the first mark when the second look cannot be read', async () => {
+    secondLook('unreadable')
+    const fb = await feedbackFor(record(spoke))
+    expect(critical(fb).met).toBe('yes')
+    expect(fb.result).toBe('pass')
+  })
+})
+
+describe('asking again about rejected evidence', () => {
+  beforeEach(() => {
+    runCompletion.mockReset()
+  })
+
+  const consultation: TranscriptEntry[] = [
+    { kind: 'candidate', text: `${QUOTE}.`, at: 1 },
+    { kind: 'patient', text: 'Hi. I am here for my scan results.', at: 2 }
+  ]
+
+  /** First marking quotes the patient for every item; a re-ask quotes `secondQuote`. */
+  function patientQuoter(secondQuote: string): void {
+    runCompletion.mockImplementation(async ({ history }: { history: { content: string }[] }) => {
+      const prompt = history[1].content
+      const ids = [...prompt.matchAll(/- id "([^"]+)"/g)].map((m) => m[1])
+      const retry = prompt.includes('a PATIENT line is never evidence')
+      const json = ids.length
+        ? { results: ids.map((id) => ({ itemId: id, met: 'yes', evidenceQuote: retry ? secondQuote : 'I am here for my scan results', comment: 'Done.' })) }
+        : prompt.includes('post-station questions')
+          ? { answers: [] }
+          : { summary: 'Fine.', practiseNext: [] }
+      return { content: JSON.stringify(json), cancelled: false, thinkingChars: 0 }
+    })
+  }
+
+  it('credits an item once the model points to the student instead of the patient', async () => {
+    patientQuoter(QUOTE)
+    const fb = await feedbackFor(record(consultation))
+    expect(fb.items.every((i) => i.met === 'yes' && i.evidenceTurn === 0)).toBe(true)
+    const retries = runCompletion.mock.calls.map(([o]) => o.history[1].content).filter((p: string) => p.includes('never evidence'))
+    expect(retries[0]).toContain('you quoted "I am here for my scan results"')
+  })
+
+  it('gives no credit when the second answer still has no student evidence', async () => {
+    patientQuoter('I am here for my scan results')
+    const fb = await feedbackFor(record(consultation))
+    expect(fb.items.every((i) => i.met === 'no' && i.downgraded)).toBe(true)
+    expect(fb.result).toBe('fail')
+  })
+})
+
 describe('feedback tidying', () => {
   const item = (text: string, met: 'yes' | 'partial' | 'no', weight = 1, critical = false) =>
     ({ itemId: text, domain: 'dataGathering', text, weight, critical, met, evidenceQuote: '', evidenceTurn: null, downgraded: false, comment: '' }) as const

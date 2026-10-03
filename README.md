@@ -171,13 +171,19 @@ result is calculated in code (`src/shared/rubric.ts`), so the same marks always 
 - **Evidence is required.** A checklist item earns credit ("done" = full, "partly" = half) only if
   the model quotes something the student actually said or did, and the quote is found in the
   transcript. Examiner-answer key points need a quote from the student's written answer. Invented or
-  unverifiable credit scores 0.
+  unverifiable credit scores 0. When the model quotes the patient's answer instead of the student's
+  question, it is asked once more about those items, told why.
+- **Key points written out are credited in code.** If one sentence of an answer contains every
+  content word of a key point, it counts whatever the model says, so the same answer always earns
+  it. The model judges paraphrases.
+- **Must-pass items get a second look.** A must-pass item the model credits is marked again on its
+  own, and keeps the lower of the two marks.
 - **Score** = checklist (weighted by item weight) × 80% + examiner questions × 20%. Each question
   counts equally, by the share of its key points covered. Stations without questions use the
   checklist alone.
 - **Result**:
   - **Failed** if the student said and did nothing, if the score is below the **55% pass mark**, or
-    if any **must-pass** item (`"critical": true`) is not done.
+    if any **must-pass** item (`"critical": true`) is not fully done ("partly" is not enough).
   - **Passed** otherwise.
   - **Incomplete** if the model's reply could not be read for some items *and* the result depends on
     them. The student can mark the attempt again.
