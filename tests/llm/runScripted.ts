@@ -4,6 +4,7 @@
 //   npm run eval -- psych-low-mood    # one station
 //   npm run eval -- --examiner-all    # examiner check on every station (slow)
 //   npm run eval -- --no-examiner     # patient role-play checks only
+//   npm run eval -- --reasoning-budget=none   # patient without the reasoning cap (or =<tokens>)
 //
 // Plays a scripted candidate against each station and checks that the simulated patient
 // stays in character, does not leak hidden facts or the diagnosis, keeps replies short, and
@@ -15,6 +16,7 @@ import type { SessionRecord, TranscriptEntry } from '@shared/sessionTypes'
 import { detectDisclosures, normalizeForMatch } from '@shared/rubric'
 import { modelManager } from '../../src/main/qvac/modelManager'
 import { dropSessionCache, runPatientTurn, toPatientHistory } from '../../src/main/qvac/patientEngine'
+import { PATIENT_PARAMS } from '../../src/main/qvac/streamUtils'
 import { generateFeedback } from '../../src/main/qvac/examinerEngine'
 import { activeForbiddenTerms, checkPatientReply } from '../../src/main/prompts/safety'
 import { loadBundledStations } from '../unit/helpers'
@@ -23,6 +25,9 @@ const args = process.argv.slice(2)
 const only = args.filter((a) => !a.startsWith('--'))
 const examinerAll = args.includes('--examiner-all')
 const noExaminer = args.includes('--no-examiner')
+const budgetArg = args.find((a) => a.startsWith('--reasoning-budget='))?.split('=')[1]
+// undefined: the app's own cap; null: no cap.
+const reasoningBudget = budgetArg === undefined ? undefined : budgetArg === 'none' ? null : Number(budgetArg)
 const EXAMINER_DEFAULT = ['psych-low-mood', 'med-chest-pain']
 const MAX_WORDS = 80
 
@@ -65,7 +70,7 @@ async function patientTurns(station: Station, modelId: string, script: string[])
     transcript.push({ kind: 'candidate', text: line, at: Date.now() })
     const history = toPatientHistory(station, transcript)
     const t0 = Date.now()
-    const r = await runPatientTurn({ modelId, station, history, key: 'eval', cacheKey, onThinking: () => {}, onDelta: () => {} })
+    const r = await runPatientTurn({ modelId, station, history, key: 'eval', cacheKey, onThinking: () => {}, onDelta: () => {}, reasoningBudget })
     transcript.push({ kind: 'patient', text: r.text, at: Date.now() })
     logs.push({
       candidate: line,
@@ -197,6 +202,7 @@ async function main(): Promise<void> {
   const allTurns = reports.flatMap((r) => r.turns)
   const ttft = allTurns.map((t) => t.firstTokenMs ?? t.totalMs).sort((a, b) => a - b)
   const summary = {
+    reasoningBudget: reasoningBudget === undefined ? PATIENT_PARAMS.reasoning_budget ?? 'none' : (reasoningBudget ?? 'none'),
     stations: reports.length,
     stationsPassing: reports.filter((r) => r.failures.length === 0).length,
     turns: allTurns.length,

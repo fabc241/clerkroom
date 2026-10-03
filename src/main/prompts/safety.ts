@@ -11,7 +11,14 @@ const BREAK_PATTERNS: RegExp[] = [
   /\b(consult|see|speak to) (a|your) (healthcare|medical) (professional|provider)\b/i,
   /\bthis is (a|an) (simulation|role-?play)\b/i,
   /^\s*(\*\*|#+\s|[-*]\s|\d+\.\s)/m, // markdown structure: patients don't talk in lists/headings
-  /\b(differential diagnosis|management plan|recommend(ed)? (investigations|tests))\b/i
+  /\b(differential diagnosis|management plan|recommend(ed)? (investigations|tests))\b/i,
+  // The model's own reasoning written into the reply, which can happen when the reasoning cap
+  // stops it mid-thought ("</think> Okay, I need to stay in character… The user is asking…").
+  /<\/?think>/i,
+  /\bthe user\b/i,
+  /\bin character\b/i,
+  /\bpatient note\b/i,
+  /\b(1|one) ?(-|to) ?(4|four) sentences\b/i
 ]
 
 export interface GuardResult {

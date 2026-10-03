@@ -5,7 +5,7 @@ import { detectDisclosures } from '@shared/rubric'
 import { unlockSchedule } from '@shared/disclosure'
 import { CHARACTER_REMINDER, buildCandidateTurn, buildPatientSystemPrompt } from '../prompts/patientPrompt'
 import { activeForbiddenTerms, checkPatientReply, sanitizePatientReply, tidyPatientReply } from '../prompts/safety'
-import { PATIENT_PARAMS, runCompletion, type ChatMessage, type RunResult } from './streamUtils'
+import { PATIENT_PARAMS, runCompletion, type ChatMessage, type GenerationParams, type RunResult } from './streamUtils'
 
 export interface PatientTurnResult {
   text: string
@@ -66,11 +66,16 @@ export async function runPatientTurn(opts: {
   cacheKey: string
   onThinking: () => void
   onDelta: (t: string) => void
+  /** Overrides PATIENT_PARAMS' reasoning cap, for evaluation; null removes the cap. */
+  reasoningBudget?: number | null
 }): Promise<PatientTurnResult> {
   const { station } = opts
   const forbiddenTerms = activeForbiddenTerms(station.forbiddenTerms, opts.history)
   let guardReasons: string[] = []
   let firstTokenMs: number | null = null
+  const base: GenerationParams = { ...PATIENT_PARAMS }
+  if (opts.reasoningBudget === null) delete base.reasoning_budget
+  else if (opts.reasoningBudget !== undefined) base.reasoning_budget = opts.reasoningBudget
 
   const attemptOnce = async (attempt: 1 | 2): Promise<RunResult> => {
     let history = opts.history
@@ -83,7 +88,7 @@ export async function runPatientTurn(opts: {
       runCompletion({
         modelId: opts.modelId,
         history,
-        params: attempt === 1 ? PATIENT_PARAMS : { ...PATIENT_PARAMS, predict: PATIENT_PARAMS.predict * 2 },
+        params: attempt === 1 ? base : { ...base, predict: base.predict * 2 },
         kvCache,
         key: opts.key,
         onThinking: opts.onThinking,
