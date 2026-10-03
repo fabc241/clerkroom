@@ -7,7 +7,7 @@ import { loadBundledStations } from './helpers'
 const { runCompletion } = vi.hoisted(() => ({ runCompletion: vi.fn() }))
 vi.mock('../../src/main/qvac/streamUtils', () => ({ EXAMINER_PARAMS: {}, runCompletion }))
 
-const { generateFeedback } = await import('../../src/main/qvac/examinerEngine')
+const { generateFeedback, partlyDone, tidySuggestions } = await import('../../src/main/qvac/examinerEngine')
 
 const station = loadBundledStations().find((s) => s.id === 'comm-breaking-bad-news-ms')!
 
@@ -36,7 +36,7 @@ function hallucinatingModel(met: 'yes' | 'partial', opts: { skip?: string[]; ans
         }))
       }
     } else {
-      json = { summary: 'Great job.', missedPoints: [], practiseNext: [] }
+      json = { summary: 'Great job.', missedPoints: ['An invented weakness'], practiseNext: [] }
     }
     return { content: JSON.stringify(json), cancelled: false, thinkingChars: 0 }
   })
@@ -128,5 +128,37 @@ describe('examiner feedback', () => {
     const fb = await feedbackFor(record(spoke, 'SPIKES'))
     expect(fb.result).toBe('incomplete')
     expect(fb.items.every((i) => i.notAssessed)).toBe(true)
+  })
+
+  it('lists only partly done items as things to improve, never what the model invents', async () => {
+    hallucinatingModel('yes')
+    const all = await feedbackFor(record(spoke))
+    expect(all.missedPoints).toEqual([])
+    hallucinatingModel('partial')
+    const partial = await feedbackFor(record(spoke))
+    // Must-pass first, then by weight.
+    expect(partial.missedPoints).toEqual(['Explains the diagnosis clearly and simply, without jargon', 'Allows silence and responds to emotion with empathy', 'Establishes what he knows and understands so far'])
+  })
+})
+
+describe('feedback tidying', () => {
+  const item = (text: string, met: 'yes' | 'partial' | 'no', weight = 1, critical = false) =>
+    ({ itemId: text, domain: 'dataGathering', text, weight, critical, met, evidenceQuote: '', evidenceTurn: null, downgraded: false, comment: '' }) as const
+
+  it('orders partly done items must-pass first, then by weight, and leaves out the rest', () => {
+    expect(partlyDone([item('a', 'partial'), item('b', 'no', 3), item('c', 'partial', 2), item('d', 'partial', 1, true), item('e', 'yes')])).toEqual(['d', 'c', 'a'])
+  })
+
+  it('splits suggestions the model ran together, and keeps quoted phrases intact', () => {
+    expect(
+      tidySuggestions([
+        "Role-play asking 'How do you feel about being here alive?','Review suicide risk assessment protocols",
+        "Practise phrases like 'take your time', 'I can see this is hard'"
+      ])
+    ).toEqual([
+      "Role-play asking 'How do you feel about being here alive?'",
+      'Review suicide risk assessment protocols',
+      "Practise phrases like 'take your time', 'I can see this is hard'"
+    ])
   })
 })

@@ -100,11 +100,10 @@ export function buildSummaryPrompt(
     '',
     'Write formative feedback for the student:',
     '- summary: 2-3 sentences on overall performance, addressed to the student.',
-    '- missedPoints: up to 3 most important things to improve, chosen from the items not achieved.',
-    '- practiseNext: up to 3 concrete suggestions for what to practise next.',
+    '- practiseNext: up to 3 concrete suggestions for what to practise next, each a separate string, based on the items not achieved.',
     '',
     'After thinking, reply with ONLY a JSON object of this exact shape and nothing else:',
-    '{"summary":"...","missedPoints":["..."],"practiseNext":["..."]}'
+    '{"summary":"...","practiseNext":["..."]}'
   ].join('\n')
 }
 
@@ -139,7 +138,6 @@ export const answersResponseSchema = z.object({
 
 export const summaryResponseSchema = z.object({
   summary: z.string(),
-  missedPoints: z.array(z.string()).default([]),
   practiseNext: z.array(z.string()).default([])
 })
 

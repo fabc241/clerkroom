@@ -136,6 +136,9 @@ export async function generateFeedback(opts: {
   }
   const achieved = items.filter((i) => i.met === 'yes').map((i) => i.text)
   const missed = items.filter((i) => i.met !== 'yes').map((i) => i.text)
+  // Chosen in code from the marks, so the feedback never calls a credited item a weakness.
+  // Items not done at all are listed separately, as key learning points.
+  const missedPoints = partlyDone(items)
 
   onProgress({ step: 'Writing summary', done: checklistSteps + 1, total: totalSteps })
   if (!studentActed) {
@@ -145,7 +148,7 @@ export async function generateFeedback(opts: {
       answers,
       ...scores,
       summary: 'You ended the station without speaking to the patient or taking any action, so no checklist items could be credited.',
-      missedPoints: missed.slice(0, 3),
+      missedPoints,
       practiseNext: ['Start with an introduction and an open question, then work through the task in the brief.'],
       generatedAt: Date.now(),
       modelName: opts.modelName
@@ -169,9 +172,37 @@ export async function generateFeedback(opts: {
     answers,
     ...scores,
     summary: summary?.summary ?? `${reasons.join(' ')} Review the items below.`,
-    missedPoints: (summary?.missedPoints ?? missed).slice(0, 3),
-    practiseNext: (summary?.practiseNext ?? []).slice(0, 3),
+    missedPoints,
+    practiseNext: tidySuggestions(summary?.practiseNext ?? []),
     generatedAt: Date.now(),
     modelName: opts.modelName
   }
+}
+
+/** The most important items done only in part: must-pass first, then by weight. */
+export function partlyDone(items: ItemResult[]): string[] {
+  return items
+    .filter((i) => i.met === 'partial')
+    .sort((a, b) => Number(!!b.critical) - Number(!!a.critical) || b.weight - a.weight)
+    .slice(0, 3)
+    .map((i) => i.text)
+}
+
+/**
+ * Up to three practice suggestions. The model sometimes runs two into one string
+ * ("...alive?','Review the protocols..."), so those are split apart again. An ordinary list of
+ * quoted phrases ("'X', 'Y'") has a space after the comma and is left alone.
+ */
+export function tidySuggestions(suggestions: string[]): string[] {
+  const unpaired = (s: string, q: string): boolean => s.split(q).length % 2 === 0
+  return suggestions
+    .flatMap((s) => s.split(/(?<=['"]),(?=['"])/))
+    .map((s) => {
+      let t = s.trim()
+      if (/^['"]/.test(t) && unpaired(t, t[0])) t = t.slice(1)
+      if (/['"]$/.test(t) && unpaired(t, t[t.length - 1])) t = t.slice(0, -1)
+      return t.trim()
+    })
+    .filter(Boolean)
+    .slice(0, 3)
 }
