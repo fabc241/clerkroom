@@ -8,6 +8,7 @@ const DEFAULTS: Settings = {
   stationSecondsOverride: null,
   skipReadingTime: false,
   voiceInput: false,
+  speakReplies: false,
   appearance: 'system',
   appLock: false
 }
@@ -24,6 +25,7 @@ const VALID: { [K in keyof Settings]: (v: unknown) => boolean } = {
   stationSecondsOverride: (v) => v === null || (isCount(v) && (v as number) > 0),
   skipReadingTime: (v) => typeof v === 'boolean',
   voiceInput: (v) => typeof v === 'boolean',
+  speakReplies: (v) => typeof v === 'boolean',
   appearance: (v) => APPEARANCES.includes(v as Appearance),
   appLock: (v) => typeof v === 'boolean'
 }

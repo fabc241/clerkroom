@@ -32,6 +32,12 @@ const api: ClerkroomApi = {
   requestMicrophone: () => ipcRenderer.invoke('voice:requestMicrophone'),
   transcribe: (pcm) => ipcRenderer.invoke('voice:transcribe', pcm),
 
+  getSpeechStatus: () => ipcRenderer.invoke('speech:status'),
+  prepareSpeech: () => ipcRenderer.invoke('speech:prepare'),
+  cancelSpeechDownload: () => ipcRenderer.invoke('speech:cancelDownload'),
+  deleteSpeechModel: () => ipcRenderer.invoke('speech:delete'),
+  onSpeechStatus: (cb) => subscribe('speech:status', cb),
+
   listStations: () => ipcRenderer.invoke('station:list'),
   getStation: (id) => ipcRenderer.invoke('station:get', id),
   saveStation: (s) => ipcRenderer.invoke('station:save', s),
@@ -44,6 +50,9 @@ const api: ClerkroomApi = {
   sendToPatient: (id, text) => ipcRenderer.invoke('session:send', id, text),
   onPatientStream: (cb) => subscribe('patient:stream', cb),
   interruptPatient: (id) => ipcRenderer.invoke('session:interrupt', id),
+  onPatientAudio: (cb) => subscribe('patient:audio', cb),
+  replayReply: (id, text) => ipcRenderer.invoke('session:replay', id, text),
+  stopSpeaking: () => ipcRenderer.invoke('speech:stop'),
   examine: (id, system) => ipcRenderer.invoke('session:examine', id, system),
   investigate: (id, test) => ipcRenderer.invoke('session:investigate', id, test),
   endEncounter: (id, reason) => ipcRenderer.invoke('session:end', id, reason),

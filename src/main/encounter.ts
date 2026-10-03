@@ -65,6 +65,16 @@ export class EncounterService {
     return record
   }
 
+  /** The station a session is running. */
+  stationOf(id: string): Station {
+    return this.getLive(id).station
+  }
+
+  /** True if the patient said exactly this in the session, so only real replies can be read aloud again. */
+  isPatientReply(id: string, text: unknown): boolean {
+    return typeof text === 'string' && this.getLive(id).record.transcript.some((e) => e.kind === 'patient' && e.text === text)
+  }
+
   private getLive(id: string): LiveSession {
     const s = this.live.get(id) ?? this.rehydrate(id)
     if (!s) throw new Error('Session is not active.')

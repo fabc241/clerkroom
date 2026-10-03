@@ -7,15 +7,18 @@ import { StationIllustration, TINT_BG, stationArt } from '../components/Illustra
 import { Icon, ProgressBar, Stepper } from '../components/ui'
 import { useCountdown } from '../components/useCountdown'
 import { formatClock } from '../lib/format'
+import { VoiceSwitches, type VoiceKit } from '../components/VoiceOptions'
 
 export function Brief({
   stationId,
   settings,
+  voice,
   modelReady,
   navigate
 }: {
   stationId: string
   settings: Settings
+  voice: VoiceKit
   modelReady: boolean
   navigate: Navigate
 }): React.JSX.Element {
@@ -25,17 +28,19 @@ export function Brief({
   }, [stationId])
 
   if (!station) return <div className="p-10 text-text-3">Loading station…</div>
-  return <BriefInner station={station} settings={settings} modelReady={modelReady} navigate={navigate} />
+  return <BriefInner station={station} settings={settings} voice={voice} modelReady={modelReady} navigate={navigate} />
 }
 
 function BriefInner({
   station,
   settings,
+  voice,
   modelReady,
   navigate
 }: {
   station: Station
   settings: Settings
+  voice: VoiceKit
   modelReady: boolean
   navigate: Navigate
 }): React.JSX.Element {
@@ -61,7 +66,7 @@ function BriefInner({
   const minutes = Math.round(stationSec / 60)
   const { tint } = stationArt(station)
   const bullets = [
-    `You have ${minutes} minutes with the patient. Type what you would say, as you would say it.`,
+    `You have ${minutes} minutes with the patient. Type or dictate what you would say, as you would say it.`,
     ...(station.examFindings.length > 0 || station.investigations.length > 0
       ? ['Examine the patient or request investigations from the side panel. Results are written by the station author.']
       : []),
@@ -107,6 +112,10 @@ function BriefInner({
                 </li>
               ))}
             </ul>
+            <section>
+              <h2 className="section-title mb-2">Voice</h2>
+              <VoiceSwitches kit={voice} />
+            </section>
             {!modelReady && <ErrorBox message="The model is not loaded. Go back and open Model to load it first." />}
             {error && <ErrorBox message={error} />}
           </div>

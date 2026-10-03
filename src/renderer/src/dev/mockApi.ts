@@ -19,6 +19,7 @@ let settings: Settings = {
   stationSecondsOverride: null,
   skipReadingTime: false,
   voiceInput: true,
+  speakReplies: false,
   appearance: 'system',
   appLock: new URLSearchParams(location.search).has('locked')
 }
@@ -48,6 +49,16 @@ const voice: VoiceStatus = {
   downloadedBytes: 741e6,
   totalBytes: 741e6,
   cached: true
+}
+
+const speech: VoiceStatus = {
+  phase: 'idle',
+  modelName: 'Parler TTS mini v1',
+  sizeBytes: 1.16e9,
+  downloadPercent: 0,
+  downloadedBytes: 0,
+  totalBytes: 1.16e9,
+  cached: false
 }
 
 const t0 = Date.now() - 3 * 86400_000
@@ -179,6 +190,11 @@ export function installMockApi(): void {
     onVoiceStatus: () => () => {},
     requestMicrophone: async () => false,
     transcribe: async () => '',
+    getSpeechStatus: async () => speech,
+    prepareSpeech: async () => speech,
+    cancelSpeechDownload: async () => {},
+    deleteSpeechModel: async () => {},
+    onSpeechStatus: () => () => {},
     listStations: async () => stations.map((s) => summarize(s, true)),
     getStation: async (id) => ({ station: byId(id), bundled: true }),
     saveStation: async (s) => ({ ok: true, station: s as Station }),
@@ -212,6 +228,10 @@ export function installMockApi(): void {
       return () => listeners.patient.delete(cb)
     },
     interruptPatient: async () => {},
+    // The browser preview has no speech model, so replies stay text only.
+    onPatientAudio: () => () => {},
+    replayReply: async () => {},
+    stopSpeaking: async () => {},
     examine: async (_id, system) => ({ kind: 'exam', system, finding: byId('med-chest-pain').examFindings[0]?.finding ?? 'Normal.', at: Date.now() }),
     investigate: async (_id, test) => ({ kind: 'investigation', test, result: 'Sinus rhythm, rate 88. No acute changes.', at: Date.now() }),
     endEncounter: async () => record,

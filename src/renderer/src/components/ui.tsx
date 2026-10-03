@@ -315,6 +315,8 @@ type IconName =
   | 'settings'
   | 'mic'
   | 'send'
+  | 'speaker'
+  | 'speaker-off'
   | 'stop'
   | 'chevron-down'
   | 'chevron-up'
@@ -368,6 +370,18 @@ const PATHS: Record<IconName, ReactNode> = {
     </>
   ),
   send: <path d="M4 12l16-8-6 16-2.5-6.5L4 12z" />,
+  speaker: (
+    <>
+      <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z" />
+      <path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />
+    </>
+  ),
+  'speaker-off': (
+    <>
+      <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z" />
+      <path d="M16 9.5l5 5M21 9.5l-5 5" />
+    </>
+  ),
   stop: <rect x="6" y="6" width="12" height="12" rx="2" />,
   'chevron-down': <path d="M6 9l6 6 6-6" />,
   'chevron-up': <path d="M6 15l6-6 6 6" />,

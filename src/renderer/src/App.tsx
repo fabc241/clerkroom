@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Appearance, ModelStatus, Settings, VoiceStatus } from '@shared/ipcTypes'
 import type { SessionRecord } from '@shared/sessionTypes'
+import type { VoiceKit } from './components/VoiceOptions'
 import { DISCLAIMER_VERSION } from '@shared/constants'
 import { EducationalBadge } from './components/Notices'
 import { Icon } from './components/ui'
@@ -41,13 +42,20 @@ export default function App(): React.JSX.Element {
   const [settings, setSettings] = useState<Settings | null>(null)
   const [model, setModel] = useState<ModelStatus | null>(null)
   const [voice, setVoice] = useState<VoiceStatus | null>(null)
+  const [speech, setSpeech] = useState<VoiceStatus | null>(null)
   const [route, setRoute] = useState<Route>(() => (import.meta.env.DEV && devRoute()) || { name: 'library' })
 
   useEffect(() => {
-    Promise.all([window.clerkroom.getSettings(), window.clerkroom.getVoiceStatus()]).then(([st, v]) => {
+    Promise.all([
+      window.clerkroom.getSettings(),
+      window.clerkroom.getVoiceStatus(),
+      window.clerkroom.getSpeechStatus()
+    ]).then(([st, v, sp]) => {
       setSettings(st)
       setVoice(v)
+      setSpeech(sp)
       if (st.voiceInput && v.cached && v.phase === 'idle') window.clerkroom.prepareVoice()
+      if (st.speakReplies && sp.cached && sp.phase === 'idle') window.clerkroom.prepareSpeech()
     })
     window.clerkroom.getModelStatus().then((s) => {
       setModel(s)
@@ -56,9 +64,11 @@ export default function App(): React.JSX.Element {
     })
     const offModel = window.clerkroom.onModelStatus(setModel)
     const offVoice = window.clerkroom.onVoiceStatus(setVoice)
+    const offSpeech = window.clerkroom.onSpeechStatus(setSpeech)
     return () => {
       offModel()
       offVoice()
+      offSpeech()
     }
   }, [])
 
@@ -72,7 +82,7 @@ export default function App(): React.JSX.Element {
     setSettings(await window.clerkroom.updateSettings(patch))
   }, [])
 
-  if (!settings || !model || !voice) {
+  if (!settings || !model || !voice || !speech) {
     return <div className="p-8 text-text-3">Starting…</div>
   }
 
@@ -84,6 +94,7 @@ export default function App(): React.JSX.Element {
   const fullscreen = route.name === 'encounter' || route.name === 'brief'
   const navigate: Navigate = setRoute
   const voiceReady = settings.voiceInput && voice.phase === 'ready'
+  const voiceKit: VoiceKit = { settings, voice, speech, updateSettings }
   const active = route.name === 'feedback' ? 'progress' : route.name === 'post' ? 'library' : route.name
 
   return (
@@ -152,12 +163,19 @@ export default function App(): React.JSX.Element {
         <main ref={mainRef} className="min-w-0 flex-1 overflow-y-auto">
           {route.name === 'library' && <Library navigate={navigate} modelReady={model.phase === 'ready'} />}
           {route.name === 'model' && (
-            <ModelSetup status={model} voice={voice} settings={settings} updateSettings={updateSettings} />
+            <ModelSetup
+              status={model}
+              voice={voice}
+              speech={speech}
+              settings={settings}
+              updateSettings={updateSettings}
+            />
           )}
           {route.name === 'brief' && (
             <Brief
               stationId={route.stationId}
               settings={settings}
+              voice={voiceKit}
               modelReady={model.phase === 'ready'}
               navigate={navigate}
             />
@@ -167,7 +185,7 @@ export default function App(): React.JSX.Element {
               stationId={route.stationId}
               session={route.session}
               settings={settings}
-              voiceReady={voiceReady}
+              voice={voiceKit}
               navigate={navigate}
             />
           )}

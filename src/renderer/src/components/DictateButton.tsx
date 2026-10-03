@@ -108,7 +108,7 @@ export function DictateButton(props: {
       title={
         props.ready
           ? `Dictate (up to ${MAX_RECORDING_SEC} seconds). Speech is transcribed on this Mac; you can edit the text before sending.`
-          : 'The voice model is not loaded yet — see Model.'
+          : 'The voice model is still loading.'
       }
     >
       {state === 'transcribing' ? (

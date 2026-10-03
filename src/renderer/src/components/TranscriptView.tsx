@@ -10,12 +10,15 @@ export function TranscriptView({
   transcript,
   highlight,
   startedAt,
-  patientName = 'Patient'
+  patientName = 'Patient',
+  onListen
 }: {
   transcript: TranscriptEntry[]
   highlight?: number | null
   startedAt?: number
   patientName?: string
+  /** When set, each patient reply has a Listen button that reads it aloud. */
+  onListen?: (text: string) => void
 }): React.JSX.Element {
   const origin = startedAt ?? transcript[0]?.at ?? 0
   const patient = patientName.split(' ')[0]
@@ -52,8 +55,24 @@ export function TranscriptView({
         return (
           <li key={i} id={`turn-${i}`} className={`flex ${you ? 'justify-start' : 'justify-end'}`}>
             <div className={`max-w-[72%] ${you ? '' : 'text-right'}`}>
-              <div className="mb-1 px-1 text-[11.5px] font-semibold text-text-2">
-                {you ? 'You' : patient} · <span className="num">{time(e.at)}</span>
+              <div
+                className={`mb-1 flex items-center gap-2 px-1 text-[11.5px] font-semibold text-text-2 ${
+                  you ? 'justify-start' : 'justify-end'
+                }`}
+              >
+                {!you && onListen && (
+                  <button
+                    type="button"
+                    className="flex items-center gap-1 rounded-full px-1.5 py-0.5 text-text-2 hover:bg-surface/70 hover:text-text"
+                    aria-label={`Listen to ${patient}’s reply`}
+                    onClick={() => onListen(e.text)}
+                  >
+                    <Icon name="speaker" className="h-3.5 w-3.5" /> Listen
+                  </button>
+                )}
+                <span>
+                  {you ? 'You' : patient} · <span className="num">{time(e.at)}</span>
+                </span>
               </div>
               <p
                 className={`inline-block rounded-2xl px-4 py-2.5 text-left text-[15px] leading-[1.5] text-text shadow-card ${

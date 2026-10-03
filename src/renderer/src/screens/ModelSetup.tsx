@@ -31,11 +31,13 @@ function Download({
 export function ModelSetup({
   status,
   voice,
+  speech,
   settings,
   updateSettings
 }: {
   status: ModelStatus
   voice: VoiceStatus
+  speech: VoiceStatus
   settings: Settings
   updateSettings: (p: Partial<Settings>) => Promise<void>
 }): React.JSX.Element {
@@ -154,8 +156,13 @@ export function ModelSetup({
         </div>
       </Panel>
 
-      <VoiceSetup
-        voice={voice}
+      <OptionalModelPanel
+        title="Voice input · optional"
+        heading="Dictate instead of typing"
+        description={`Dictate what you say to the patient and your answers to the examiner questions. Speech is transcribed on this Mac by ${voice.modelName}; the audio is never stored, and you can edit the text before sending it. English only.`}
+        noun="voice model"
+        readyText="Voice input ready. Use the microphone button next to a text box to dictate."
+        status={voice}
         enabled={settings.voiceInput}
         lowMemory={lowMemory}
         setEnabled={async (on) => {
@@ -163,6 +170,27 @@ export function ModelSetup({
           // Loading a downloaded model is automatic; a download always needs a click.
           if (on && voice.cached) void window.clerkroom.prepareVoice()
         }}
+        prepare={() => window.clerkroom.prepareVoice()}
+        cancelDownload={() => window.clerkroom.cancelVoiceDownload()}
+        deleteModel={() => window.clerkroom.deleteVoiceModel()}
+      />
+
+      <OptionalModelPanel
+        title="Spoken replies · optional"
+        heading="Hear the patient’s replies"
+        description={`Each reply is read aloud on this Mac by ${speech.modelName}, in the voice the station sets for the patient, and stays on screen as text. Nothing is recorded. English only.`}
+        noun="speech model"
+        readyText="Spoken replies ready. The patient’s replies are read aloud during a station."
+        status={speech}
+        enabled={settings.speakReplies}
+        lowMemory={lowMemory}
+        setEnabled={async (on) => {
+          await updateSettings({ speakReplies: on })
+          if (on && speech.cached) void window.clerkroom.prepareSpeech()
+        }}
+        prepare={() => window.clerkroom.prepareSpeech()}
+        cancelDownload={() => window.clerkroom.cancelSpeechDownload()}
+        deleteModel={() => window.clerkroom.deleteSpeechModel()}
       />
 
       <p className="text-[13px] text-text-3">
@@ -173,74 +201,89 @@ export function ModelSetup({
   )
 }
 
-function VoiceSetup({
-  voice,
+/** An optional speech model (dictation or spoken replies) that the student can turn on, download and delete. */
+function OptionalModelPanel({
+  title,
+  heading,
+  description,
+  noun,
+  readyText,
+  status,
   enabled,
   lowMemory,
-  setEnabled
+  setEnabled,
+  prepare,
+  cancelDownload,
+  deleteModel
 }: {
-  voice: VoiceStatus
+  title: string
+  heading: string
+  description: string
+  /** Lower-case name for buttons and progress, e.g. "voice model". */
+  noun: string
+  readyText: string
+  status: VoiceStatus
   enabled: boolean
   lowMemory: boolean
   setEnabled: (on: boolean) => Promise<void>
+  prepare: () => Promise<VoiceStatus>
+  cancelDownload: () => Promise<void>
+  deleteModel: () => Promise<void>
 }): React.JSX.Element {
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const busy = voice.phase === 'downloading' || voice.phase === 'loading'
+  const busy = status.phase === 'downloading' || status.phase === 'loading'
 
   return (
-    <Panel title="Voice input · optional">
+    <Panel title={title}>
       <Choice type="checkbox" align="start" checked={enabled} onChange={(on) => void setEnabled(on)}>
-        <span className="block text-[15.5px] font-semibold text-text">Dictate instead of typing</span>
+        <span className="block text-[15.5px] font-semibold text-text">{heading}</span>
         <span className="block max-w-[68ch] text-[14.5px] text-text-2">
-          Dictate what you say to the patient and your answers to the examiner questions. Speech is transcribed on this
-          Mac by {voice.modelName}; the audio is never stored, and you can edit the text before sending it. English only.
-          Uses about {formatBytes(voice.sizeBytes)} of extra memory while turned on.
+          {description} Uses about {formatBytes(status.sizeBytes)} of extra memory while turned on.
         </span>
       </Choice>
 
       {enabled && lowMemory && (
-        <p className="text-[14px] text-warn">This Mac has less than 12 GB of memory. Voice input may make replies slower.</p>
+        <p className="text-[14px] text-warn">This Mac has less than 12 GB of memory. The {noun} may make replies slower.</p>
       )}
-      {enabled && voice.phase === 'error' && voice.error && <ErrorBox message={voice.error} />}
-      {enabled && voice.phase === 'downloading' && (
+      {enabled && status.phase === 'error' && status.error && <ErrorBox message={status.error} />}
+      {enabled && status.phase === 'downloading' && (
         <Download
-          label="Downloading voice model"
-          percent={voice.downloadPercent}
-          done={voice.downloadedBytes}
-          total={voice.totalBytes}
+          label={`Downloading ${noun}`}
+          percent={status.downloadPercent}
+          done={status.downloadedBytes}
+          total={status.totalBytes}
         />
       )}
-      {enabled && voice.phase === 'loading' && <p className="text-[15px] text-text">Loading the voice model…</p>}
-      {enabled && voice.phase === 'ready' && (
+      {enabled && status.phase === 'loading' && <p className="text-[15px] text-text">Loading the {noun}…</p>}
+      {enabled && status.phase === 'ready' && (
         <p className="flex items-center gap-2.5 text-[15px] text-good">
-          <span className="h-2.5 w-2.5 bg-good" aria-hidden /> Voice input ready. Use the microphone button next to a text
-          box to dictate.
+          <span className="h-2.5 w-2.5 bg-good" aria-hidden /> {readyText}
         </p>
       )}
 
       <div className="flex flex-wrap items-center gap-2">
-        {enabled && (voice.phase === 'idle' || voice.phase === 'error') && (
-          <button className="btn-primary" onClick={() => window.clerkroom.prepareVoice()}>
-            {voice.cached ? 'Load voice model' : `Download (${formatBytes(voice.sizeBytes)}) and load`}
+        {enabled && (status.phase === 'idle' || status.phase === 'error') && (
+          <button className="btn-primary" onClick={() => void prepare()}>
+            {status.cached ? `Load ${noun}` : `Download (${formatBytes(status.sizeBytes)}) and load`}
           </button>
         )}
-        {voice.phase === 'downloading' && (
-          <button className="btn" onClick={() => window.clerkroom.cancelVoiceDownload()}>
+        {status.phase === 'downloading' && (
+          <button className="btn" onClick={() => void cancelDownload()}>
             Pause download
           </button>
         )}
-        {voice.cached && !busy && !confirmDelete && (
+        {status.cached && !busy && !confirmDelete && (
           <button className="btn-danger" onClick={() => setConfirmDelete(true)}>
-            Delete voice model…
+            Delete {noun}…
           </button>
         )}
         {confirmDelete && (
           <>
-            <span className="text-[14.5px] text-text">Remove {formatBytes(voice.sizeBytes)} from disk?</span>
+            <span className="text-[14.5px] text-text">Remove {formatBytes(status.sizeBytes)} from disk?</span>
             <button
               className="btn-danger"
               onClick={async () => {
-                await window.clerkroom.deleteVoiceModel()
+                await deleteModel()
                 setConfirmDelete(false)
               }}
             >
