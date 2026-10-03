@@ -20,6 +20,12 @@
     "openingStatement": "I keep having these horrible attacks where my heart goes crazy and I think I'm going to die. I'm scared there's something wrong with my heart.",
     "demeanour": "Anxious, fidgety, talks quickly, seeks reassurance repeatedly. Relieved if taken seriously.",
     "speechStyle": "Fast, worried, lots of 'what if' questions. Everyday language.",
+    "voice": {
+      "voice": "Lauren",
+      "pace": "fast",
+      "pitch": "high",
+      "emotion": "fear"
+    },
     "ice": {
       "ideas": "Believes she might have a heart problem that the ECG missed.",
       "concerns": "Scared of having a heart attack or collapsing on the train.",

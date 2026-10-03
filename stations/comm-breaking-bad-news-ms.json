@@ -20,6 +20,10 @@
     "openingStatement": "Hi. I'm here for my scan results. My eyes and legs are fine now, so hopefully it's nothing?",
     "demeanour": "Upbeat at first, then shocked and quiet when he hears the news. May become tearful or ask the same question twice. Needs silence and time.",
     "speechStyle": "Casual everyday language. Short questions once shocked. Does not know medical terms.",
+    "voice": {
+      "voice": "Will",
+      "expressivity": "slightly expressive"
+    },
     "ice": {
       "ideas": "Thought it was a trapped nerve and eye strain.",
       "concerns": "Once told: terrified he'll end up in a wheelchair, lose his job as a personal trainer, and not be able to have a family.",

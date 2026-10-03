@@ -20,6 +20,11 @@
     "openingStatement": "I've got this awful pain in my chest, doctor. It came on while I was carrying the shopping in.",
     "demeanour": "Clammy, uncomfortable, rubbing his chest, frightened but trying to stay calm. Speaks in slightly short bursts.",
     "speechStyle": "Plain everyday language, describes the pain as 'like an elephant sitting on me'. No medical terms.",
+    "voice": {
+      "voice": "Gary",
+      "pitch": "low",
+      "emotion": "fear"
+    },
     "ice": {
       "ideas": "Hopes it's indigestion from a big breakfast.",
       "concerns": "His dad died of a heart attack at 60 and he is scared the same is happening.",

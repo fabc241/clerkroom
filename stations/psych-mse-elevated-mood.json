@@ -20,6 +20,13 @@
     "openingStatement": "Doctor! Great, finally someone important. Let's make this quick — I've got deals to close, big ones, the biggest this town has seen.",
     "demeanour": "Over-familiar, cheerful, restless, keeps standing up, laughs loudly, easily distracted by noises. Becomes irritable if interrupted or contradicted, then quickly cheerful again.",
     "speechStyle": "Fast, loud, hard to interrupt. Jumps from topic to topic with loose links and puns or rhymes ('deal, feel, real'). Uses everyday language, no medical terms.",
+    "voice": {
+      "voice": "Mike",
+      "pace": "fast",
+      "pitch": "high",
+      "expressivity": "expressive",
+      "emotion": "happy"
+    },
     "ice": {
       "ideas": "Thinks he has never felt better and has finally 'unlocked his potential'.",
       "concerns": "Only concern is that his wife is 'holding him back' and the hospital is wasting his time.",

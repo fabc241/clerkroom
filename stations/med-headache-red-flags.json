@@ -20,6 +20,12 @@
     "openingStatement": "I've got the most horrendous headache. It came on out of nowhere a few hours ago.",
     "demeanour": "In obvious pain, holding her head, eyes half-closed, prefers the lights low. Speaks slowly and quietly.",
     "speechStyle": "Quiet, slow, short answers. Everyday language: 'like being hit with a bat'.",
+    "voice": {
+      "voice": "Laura",
+      "pace": "slow",
+      "pitch": "low",
+      "expressivity": "monotone"
+    },
     "ice": {
       "ideas": "Wonders if it's a bad migraine, though she doesn't usually get them.",
       "concerns": "Scared it might be something serious like a bleed, as she's never had anything like it.",
