@@ -1,29 +1,75 @@
-import { TTS_MINI_V1_EN_PARLER_TTS_Q8_0, cancel, loadModel, textToSpeech } from '@qvac/sdk'
+import { TTS_MULTILINGUAL_SUPERTONIC3_Q8_0, cancel, loadModel, textToSpeech, unloadModel } from '@qvac/sdk'
 import type { PatientVoice } from '@shared/stationSchema'
 import { speakableText, speechParts } from '@shared/speech'
 import { OptionalModel } from './optionalModel'
 
 /**
- * Parler TTS mini v1 (English, Q8_0, 44.1 kHz). On Apple Silicon it runs on Metal at about real time;
- * on the CPU it takes roughly twice as long as the audio it produces.
+ * Supertonic 3 (Q8_0, 44.1 kHz). On Apple Silicon it runs on Metal at about 35x real time, so a
+ * sentence is ready in well under a second; loading it takes under a second once downloaded.
  */
-const SPEECH_MODEL = TTS_MINI_V1_EN_PARLER_TTS_Q8_0
+const SPEECH_MODEL = TTS_MULTILINGUAL_SUPERTONIC3_Q8_0
 
-/** Reads patient replies aloud for the optional spoken-replies setting (~1.2 GB). */
+/** Used until the first station is spoken. */
+const DEFAULT_VOICE: PatientVoice = { voice: 'F1' }
+
+const voiceKey = (v: PatientVoice): string => `${v.voice}/${v.pace ?? 'moderate'}`
+
+/** Reads patient replies aloud for the optional spoken-replies setting (~127 MB). */
 class SpeechManager extends OptionalModel {
   private requestId: string | null = null
   /** Bumped on every new reply or stop, so audio from a superseded reply is never forwarded. */
   private turn = 0
+  /** The voice the next load uses, and the one the loaded model speaks in. */
+  private voice = DEFAULT_VOICE
+  private loadedVoice = ''
+  /** Voice switches run one at a time, so two quick replies cannot load two models. */
+  private switching: Promise<void> = Promise.resolve()
 
   constructor() {
-    super(SPEECH_MODEL, 'Parler TTS mini v1 (English, Q8_0)')
+    super(SPEECH_MODEL, 'Supertonic 3 (Q8_0)')
   }
 
-  protected load(): Promise<string> {
+  private loadVoice(voice: PatientVoice): Promise<string> {
     return loadModel({
       modelSrc: SPEECH_MODEL,
-      modelConfig: { ttsEngine: 'parler', useGPU: process.arch === 'arm64' }
+      modelConfig: {
+        ttsEngine: 'supertonic',
+        language: 'en',
+        voice: voice.voice,
+        ...(voice.pace ? { pace: voice.pace } : {}),
+        useGPU: process.arch === 'arm64'
+      }
     })
+  }
+
+  protected async load(): Promise<string> {
+    const voice = this.voice
+    const id = await this.loadVoice(voice)
+    this.loadedVoice = voiceKey(voice)
+    return id
+  }
+
+  /**
+   * Supertonic fixes the voice and pace when the model is loaded, so a station with a different voice
+   * loads a second copy and then frees the first.
+   */
+  private useVoice(voice: PatientVoice): Promise<void> {
+    this.voice = voice
+    const next = this.switching.then(async () => {
+      const old = this.modelId
+      if (!this.ready || !old || voiceKey(voice) === this.loadedVoice) return
+      const id = await this.loadVoice(voice)
+      if (this.modelId !== old) {
+        // Unloaded (spoken replies turned off) while this one was loading.
+        await unloadModel({ modelId: id }).catch(() => {})
+        return
+      }
+      this.modelId = id
+      this.loadedVoice = voiceKey(voice)
+      await unloadModel({ modelId: old }).catch(() => {})
+    })
+    this.switching = next.catch(() => {})
+    return next
   }
 
   /**
@@ -31,13 +77,15 @@ class SpeechManager extends OptionalModel {
    * as each is synthesised. Stops whatever was being spoken before. Resolves when done or stopped.
    */
   async speak(reply: string, voice: PatientVoice, onAudio: (pcm: Uint8Array, sampleRate: number) => void): Promise<void> {
-    await this.stop()
+    // Read the turn before awaiting, so a reply that starts meanwhile supersedes this one.
+    const stopped = this.stop()
     const turn = this.turn
-    // The SDK's own sentence streaming returns a short reply as one piece, so the first words would
-    // wait for the whole reply; splitting here gets the first sentence playing within a few seconds.
+    await stopped
+    if (turn !== this.turn) return
+    await this.useVoice(voice)
     for (const part of speechParts(speakableText(reply))) {
       if (turn !== this.turn || !this.ready) return
-      const run = textToSpeech({ modelId: this.modelId!, text: part, inputType: 'text', stream: false, ...voice })
+      const run = textToSpeech({ modelId: this.modelId!, text: part, inputType: 'text', stream: false })
       this.requestId = run.requestId
       try {
         const samples = await run.buffer
@@ -63,6 +111,7 @@ class SpeechManager extends OptionalModel {
 
   override async unload(): Promise<void> {
     await this.stop()
+    await this.switching
     await super.unload()
   }
 }

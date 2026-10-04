@@ -21,10 +21,8 @@
     "demeanour": "Anxious, fidgety, talks quickly, seeks reassurance repeatedly. Relieved if taken seriously.",
     "speechStyle": "Fast, worried, lots of 'what if' questions. Everyday language.",
     "voice": {
-      "voice": "Lauren",
-      "pace": "fast",
-      "pitch": "high",
-      "emotion": "fear"
+      "voice": "F2",
+      "pace": "fast"
     },
     "ice": {
       "ideas": "Believes she might have a heart problem that the ECG missed.",

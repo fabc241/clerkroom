@@ -53,11 +53,11 @@ const voice: VoiceStatus = {
 
 const speech: VoiceStatus = {
   phase: 'idle',
-  modelName: 'Parler TTS mini v1',
-  sizeBytes: 1.16e9,
+  modelName: 'Supertonic 3 (Q8_0)',
+  sizeBytes: 1.27e8,
   downloadPercent: 0,
   downloadedBytes: 0,
-  totalBytes: 1.16e9,
+  totalBytes: 1.27e8,
   cached: false
 }
 

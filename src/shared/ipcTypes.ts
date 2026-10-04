@@ -38,7 +38,7 @@ export interface Settings {
   skipReadingTime: boolean
   /** Optional dictation with the local Parakeet speech-to-text model. Off until the user enables it. */
   voiceInput: boolean
-  /** Optional spoken patient replies with the local Parler TTS model. Off until the user enables it. */
+  /** Optional spoken patient replies with the local Supertonic TTS model. Off until the user enables it. */
   speakReplies: boolean
   /** Light or dark appearance, or follow macOS. */
   appearance: Appearance

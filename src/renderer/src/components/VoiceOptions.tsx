@@ -7,7 +7,7 @@ export interface VoiceKit {
   settings: Settings
   /** Parakeet, for dictating to the patient. */
   voice: VoiceStatus
-  /** Parler, for hearing the patient's replies. */
+  /** Supertonic, for hearing the patient's replies. */
   speech: VoiceStatus
   updateSettings: (patch: Partial<Settings>) => Promise<void>
 }

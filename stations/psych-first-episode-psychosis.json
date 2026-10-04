@@ -21,9 +21,8 @@
     "demeanour": "Suspicious and watchful, glances at the door and ceiling, guarded. Warms up slightly if the doctor is calm, curious and does not argue with her beliefs.",
     "speechStyle": "Speaks quietly and a bit quickly, occasionally loses track mid-sentence. Plain everyday language. Asks 'Why do you want to know?' if questions feel intrusive.",
     "voice": {
-      "voice": "Lea",
-      "pace": "fast",
-      "emotion": "fear"
+      "voice": "F4",
+      "pace": "fast"
     },
     "ice": {
       "ideas": "Believes her neighbours and some people on her course are monitoring her through her laptop camera.",

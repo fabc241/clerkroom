@@ -1,24 +1,24 @@
 import { describe, expect, it } from 'vitest'
-import { PARLER_SPEAKERS } from '../../src/shared/constants'
+import { SPEECH_VOICES } from '../../src/shared/constants'
 import { MAX_SPOKEN_CHARS, patientVoice, speakableText, speechParts } from '../../src/shared/speech'
 import { loadBundledStations } from './helpers'
 
 describe('patientVoice', () => {
   it("uses the station's voice when it sets one", () => {
-    const voice = { voice: 'Gary', pace: 'slow', emotion: 'sad' } as const
+    const voice = { voice: 'M5', pace: 'slow' } as const
     expect(patientVoice({ sex: 'male', voice })).toBe(voice)
   })
 
-  it('falls back to one named Parler speaker per sex, so the voice stays the same all station', () => {
+  it('falls back to one voice per sex, so the voice stays the same all station', () => {
     for (const sex of ['female', 'male', 'other'] as const) {
       const { voice } = patientVoice({ sex })
-      expect(PARLER_SPEAKERS).toContain(voice)
+      expect(SPEECH_VOICES).toContain(voice)
       expect(patientVoice({ sex })).toEqual({ voice })
     }
   })
 
-  it('gives every bundled station a valid speaker', () => {
-    for (const s of loadBundledStations()) expect(PARLER_SPEAKERS).toContain(patientVoice(s.patient).voice)
+  it('gives every bundled station a valid voice', () => {
+    for (const s of loadBundledStations()) expect(SPEECH_VOICES).toContain(patientVoice(s.patient).voice)
   })
 })
 
@@ -44,15 +44,9 @@ describe('speechParts', () => {
     ])
   })
 
-  it('cuts a long first sentence at a comma so the voice starts sooner', () => {
+  it('keeps a long sentence whole rather than pausing at a comma', () => {
     expect(speechParts('I’ve just been feeling really flat lately, and my partner said I should come and talk to someone.')).toEqual([
-      'I’ve just been feeling really flat lately,',
-      'and my partner said I should come and talk to someone.'
-    ])
-    // Only the first part: later ones are made while earlier ones play.
-    expect(speechParts('It started this morning at work. It’s been going on for hours now, and it keeps getting worse.')).toEqual([
-      'It started this morning at work.',
-      'It’s been going on for hours now, and it keeps getting worse.'
+      'I’ve just been feeling really flat lately, and my partner said I should come and talk to someone.'
     ])
   })
 

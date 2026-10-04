@@ -21,11 +21,8 @@
     "demeanour": "Over-familiar, cheerful, restless, keeps standing up, laughs loudly, easily distracted by noises. Becomes irritable if interrupted or contradicted, then quickly cheerful again.",
     "speechStyle": "Fast, loud, hard to interrupt. Jumps from topic to topic with loose links and puns or rhymes ('deal, feel, real'). Uses everyday language, no medical terms.",
     "voice": {
-      "voice": "Mike",
-      "pace": "fast",
-      "pitch": "high",
-      "expressivity": "expressive",
-      "emotion": "happy"
+      "voice": "M1",
+      "pace": "fast"
     },
     "ice": {
       "ideas": "Thinks he has never felt better and has finally 'unlocked his potential'.",

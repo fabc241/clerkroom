@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { TTS_PACES, TTS_PARLER_EMOTIONS } from '@qvac/sdk'
+import { TTS_PACES } from '@qvac/sdk'
 import {
   formatIssues,
   stationSchema,
-  PARLER_EMOTIONS,
-  PARLER_PACES,
-  SPECIALTIES
+  SPECIALTIES,
+  SPEECH_PACES
 } from '../../src/shared/stationSchema'
 import { normalizeForMatch } from '../../src/shared/rubric'
 import { buildPatientSystemPrompt } from '../../src/main/prompts/patientPrompt'
@@ -102,37 +101,40 @@ describe('patient voice', () => {
     expect(stationSchema.parse(s).patient.voice).toBeUndefined()
   })
 
-  it('gives each bundled patient a speaker of their own', () => {
-    const speakers = stations.map((s) => s.patient.voice?.voice)
-    expect(speakers.every(Boolean)).toBe(true)
-    expect(new Set(speakers).size).toBe(stations.length)
+  it('gives each bundled patient a voice that fits their sex, and no two the same voice and pace', () => {
+    for (const s of stations) {
+      const voice = s.patient.voice?.voice
+      expect(voice, s.id).toBeTruthy()
+      if (s.patient.sex !== 'other') expect(voice![0], s.id).toBe(s.patient.sex === 'female' ? 'F' : 'M')
+    }
+    const voices = stations.map((s) => `${s.patient.voice?.voice}/${s.patient.voice?.pace ?? 'moderate'}`)
+    expect(new Set(voices).size).toBe(stations.length)
   })
 
-  it('accepts a speaker with Parler voice controls', () => {
-    const voice = { voice: 'Jon', pace: 'slow', pitch: 'low', expressivity: 'monotone', emotion: 'sad' }
-    expect(stationSchema.parse(withVoice(voice)).patient.voice).toEqual(voice)
-    expect(stationSchema.parse(withVoice({ voice: 'Laura' })).patient.voice).toEqual({ voice: 'Laura' })
+  it('accepts a Supertonic voice with a pace', () => {
+    expect(stationSchema.parse(withVoice({ voice: 'M2', pace: 'slow' })).patient.voice).toEqual({ voice: 'M2', pace: 'slow' })
+    expect(stationSchema.parse(withVoice({ voice: 'F5' })).patient.voice).toEqual({ voice: 'F5' })
   })
 
-  it('needs a speaker so replies keep the same voice', () => {
-    expect(stationSchema.safeParse(withVoice({ emotion: 'sad' })).success).toBe(false)
-    expect(stationSchema.safeParse(withVoice({ voice: 'jon' })).success).toBe(false)
+  it('needs a voice so replies keep the same voice', () => {
+    expect(stationSchema.safeParse(withVoice({ pace: 'slow' })).success).toBe(false)
+    expect(stationSchema.safeParse(withVoice({ voice: 'm1' })).success).toBe(false)
+    expect(stationSchema.safeParse(withVoice({ voice: 'F6' })).success).toBe(false)
   })
 
-  it("rejects wording the Parler engine doesn't accept", () => {
-    for (const bad of [{ pitch: 'low-pitched' }, { expressivity: 'very expressive' }, { emotion: 'angry' }, { pace: 'quick' }]) {
-      const res = stationSchema.safeParse(withVoice({ voice: 'Jon', ...bad }))
-      expect(res.success, JSON.stringify(bad)).toBe(false)
-      expect(formatIssues(res.error!).join('\n')).toContain(`patient.voice.${Object.keys(bad)[0]}`)
+  it("rejects a pace the engine doesn't accept", () => {
+    const res = stationSchema.safeParse(withVoice({ voice: 'M1', pace: 'quick' }))
+    expect(res.success).toBe(false)
+    expect(formatIssues(res.error!).join('\n')).toContain('patient.voice.pace')
+  })
+
+  it('rejects keys Supertonic has no control for instead of dropping them', () => {
+    for (const extra of [{ pich: 'low' }, { pitch: 'low' }, { emotion: 'sad' }, { expressivity: 'monotone' }]) {
+      expect(stationSchema.safeParse(withVoice({ voice: 'M1', ...extra })).success, JSON.stringify(extra)).toBe(false)
     }
   })
 
-  it('rejects misspelt keys instead of dropping them', () => {
-    expect(stationSchema.safeParse(withVoice({ voice: 'Jon', pich: 'low' })).success).toBe(false)
-  })
-
-  it('matches the emotions and paces the QVAC SDK accepts', () => {
-    expect([...PARLER_EMOTIONS]).toEqual([...TTS_PARLER_EMOTIONS])
-    expect([...PARLER_PACES]).toEqual([...TTS_PACES])
+  it('matches the paces the QVAC SDK accepts', () => {
+    expect([...SPEECH_PACES]).toEqual([...TTS_PACES])
   })
 })

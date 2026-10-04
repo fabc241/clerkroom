@@ -21,9 +21,7 @@
     "demeanour": "Clammy, uncomfortable, rubbing his chest, frightened but trying to stay calm. Speaks in slightly short bursts.",
     "speechStyle": "Plain everyday language, describes the pain as 'like an elephant sitting on me'. No medical terms.",
     "voice": {
-      "voice": "Gary",
-      "pitch": "low",
-      "emotion": "fear"
+      "voice": "M5"
     },
     "ice": {
       "ideas": "Hopes it's indigestion from a big breakfast.",

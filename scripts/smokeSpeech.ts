@@ -1,9 +1,9 @@
-// Smoke test: download (if needed) + load Parler TTS mini, then speak a station's opening statement in
+// Smoke test: download (if needed) + load Supertonic 3, then speak a station's opening statement in
 // the station's patient voice, sentence by sentence as the app does, and write the audio to a WAV file.
 // Usage: npx tsx scripts/smokeSpeech.ts [station-id] [--cpu] [--out file.wav]
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { TTS_MINI_V1_EN_PARLER_TTS_Q8_0, close, loadModel, textToSpeech, unloadModel } from '@qvac/sdk'
+import { TTS_MULTILINGUAL_SUPERTONIC3_Q8_0, close, loadModel, textToSpeech, unloadModel } from '@qvac/sdk'
 import { stationSchema } from '../src/shared/stationSchema'
 import { patientVoice, speakableText, speechParts } from '../src/shared/speech'
 
@@ -40,8 +40,8 @@ async function main(): Promise<void> {
   let lastPct = -1
   const t0 = Date.now()
   const modelId = await loadModel({
-    modelSrc: TTS_MINI_V1_EN_PARLER_TTS_Q8_0,
-    modelConfig: { ttsEngine: 'parler', useGPU },
+    modelSrc: TTS_MULTILINGUAL_SUPERTONIC3_Q8_0,
+    modelConfig: { ttsEngine: 'supertonic', language: 'en', voice: voice.voice, ...(voice.pace ? { pace: voice.pace } : {}), useGPU },
     onProgress: (p) => {
       const pct = Math.floor(p.percentage)
       if (pct !== lastPct && pct % 10 === 0) {
@@ -58,7 +58,7 @@ async function main(): Promise<void> {
   const chunks: number[][] = []
   let sampleRate = 44_100
   for (const part of speechParts(speakableText(text))) {
-    const run = textToSpeech({ modelId, text: part, inputType: 'text', stream: false, ...voice })
+    const run = textToSpeech({ modelId, text: part, inputType: 'text', stream: false })
     const samples = await run.buffer
     sampleRate = (await run.sampleRate) ?? sampleRate
     chunks.push(samples)

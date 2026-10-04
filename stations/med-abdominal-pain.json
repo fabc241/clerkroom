@@ -21,9 +21,8 @@
     "demeanour": "Lying very still, winces when he moves or coughs, a bit embarrassed to be making a fuss.",
     "speechStyle": "Casual, young, uses words like 'tummy', 'properly bad', 'dunno'.",
     "voice": {
-      "voice": "Eric",
-      "pace": "slow",
-      "expressivity": "slightly expressive"
+      "voice": "M1",
+      "pace": "slow"
     },
     "ice": {
       "ideas": "Thinks it might be a dodgy kebab.",

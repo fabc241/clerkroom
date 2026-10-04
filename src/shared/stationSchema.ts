@@ -5,13 +5,10 @@ import { z } from 'zod'
 import {
   DIFFICULTIES,
   DOMAINS,
-  PARLER_EMOTIONS,
-  PARLER_EXPRESSIVITIES,
-  PARLER_PACES,
-  PARLER_PITCHES,
-  PARLER_SPEAKERS,
   SENSITIVE_TOPICS,
   SPECIALTIES,
+  SPEECH_PACES,
+  SPEECH_VOICES,
   STATION_TYPES
 } from './constants'
 
@@ -36,14 +33,11 @@ export const hiddenFactSchema = z.object({
 })
 export type HiddenFact = z.infer<typeof hiddenFactSchema>
 
-/** How the patient sounds when replies are spoken with Parler TTS mini. Leave out for text only. */
+/** How the patient sounds when replies are spoken with Supertonic 3. Leave out to use the default for the patient's sex. */
 export const patientVoiceSchema = z
   .object({
-    voice: z.enum(PARLER_SPEAKERS).describe('Parler speaker name; the same name keeps the voice consistent'),
-    pace: z.enum(PARLER_PACES).optional(),
-    pitch: z.enum(PARLER_PITCHES).optional(),
-    expressivity: z.enum(PARLER_EXPRESSIVITIES).optional(),
-    emotion: z.enum(PARLER_EMOTIONS).optional()
+    voice: z.enum(SPEECH_VOICES).describe('Supertonic voice: F1-F5 (female) or M1-M5 (male)'),
+    pace: z.enum(SPEECH_PACES).optional()
   })
   // A misspelt key would otherwise be dropped and the patient would quietly sound different.
   .strict()

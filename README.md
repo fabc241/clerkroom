@@ -42,10 +42,10 @@ formative feedback. Everything runs locally and offline on the Mac, powered by t
   Speech is transcribed on the Mac by **Parakeet Unified 0.6B** (`PARAKEET_UNIFIED_0_6B_Q8_0`,
   English, 741 MB) through the QVAC SDK's built-in transcription. The text lands in the text box
   for review and is never sent automatically. Off by default; turn it on under **Model**.
-- **Optional spoken replies**: the patient's replies are read aloud on the Mac by **Parler TTS
-  mini v1** (`TTS_MINI_V1_EN_PARLER_TTS_Q8_0`, English, 1.16 GB, Metal on Apple Silicon) in the
-  voice the station sets in `patient.voice`, one sentence at a time so the first words play within
-  a few seconds. The text stays on screen; the audio is played, never saved. Sending your next
+- **Optional spoken replies**: the patient's replies are read aloud on the Mac by **Supertonic 3**
+  (`TTS_MULTILINGUAL_SUPERTONIC3_Q8_0`, English, 127 MB, Metal on Apple Silicon) in the voice the
+  station sets in `patient.voice`, one sentence at a time so the first words play in well under a
+  second. The text stays on screen; the audio is played, never saved. Sending your next
   message, stopping the reply or ending the station stops the voice. Off by default; turn it on
   under **Model**.
 - **Offline & private**: no accounts, telemetry or remote calls apart from the one-time model
@@ -95,7 +95,7 @@ automatically.
 | `npm run eval` | Scripted evaluation of patient role-play and examiner against the real model |
 | `npx tsx scripts/smokeModel.ts` | Download/load MedPsy and stream one completion |
 | `npx tsx scripts/smokeVoice.ts` | Download/load Parakeet Unified and transcribe a sentence spoken by macOS `say` |
-| `npx tsx scripts/smokeSpeech.ts [station-id]` | Download/load Parler TTS mini and speak a station's opening line in its patient voice to `speech.wav` |
+| `npx tsx scripts/smokeSpeech.ts [station-id]` | Download/load Supertonic 3 and speak a station's opening line in its patient voice to `speech.wav` |
 | `npm run bundle-worker` | Regenerate the dev QVAC worker in `qvac/` from `qvac.config.json` |
 | `npm run build:unlock` | Compile the Touch ID / password helper (`native/unlock.swift`); `dev`, `package` and `make` run it |
 | `npm run package` / `npm run make` | Package an arm64 `.app` / build `.zip` and `.dmg` (use Node 22, see below) |
@@ -145,7 +145,7 @@ Renderer (React, sandboxed)  ──IPC (contextBridge)──►  Main process (N
                                                          ├─ PatientEngine  (role-play + character guard)
                                                          ├─ ExaminerEngine (checklist, answers, summary)
                                                          ├─ VoiceManager   (Parakeet speech-to-text)
-                                                         ├─ SpeechManager  (Parler text-to-speech)
+                                                         ├─ SpeechManager  (Supertonic text-to-speech)
                                                          ├─ Station/Session/Settings stores (JSON files)
                                                          └─ @qvac/sdk ──► Bare worker (llama.cpp, Metal)
 ```
@@ -159,10 +159,11 @@ Renderer (React, sandboxed)  ──IPC (contextBridge)──►  Main process (N
   validates it and calls `transcribe()` on Parakeet, which runs on the CPU so it does not compete
   with MedPsy for Metal memory.
 - Spoken replies: when a patient reply is final, `src/main/qvac/speaker.ts` splits it into sentences
-  and synthesises them one after another with `textToSpeech()` on Parler, sending each as 44.1 kHz
+  and synthesises them one after another with `textToSpeech()` on Supertonic, sending each as 44.1 kHz
   s16le PCM on `patient:audio`. The renderer queues the parts back to back with Web Audio
-  (`src/renderer/src/lib/player.ts`). Parler and MedPsy can share the GPU, but running both at once
-  slows each down, so a new message stops the reply that is still being read.
+  (`src/renderer/src/lib/player.ts`). Supertonic fixes the voice and pace when
+  it loads, so a station with a different voice loads a fresh copy (under a second) and frees the
+  old one. A new message stops the reply that is still being read.
 - `src/main/prompts/` — prompt builders. MedPsy's chat template always adds its own "medical
   assistant" persona, so the patient prompt explicitly overrides that identity.
 - `stations/` — bundled station JSON files. User stations live in the app's data folder.
@@ -222,20 +223,18 @@ Stations are JSON files validated by `src/shared/stationSchema.ts`. Tips:
 - List the diagnosis and related jargon in `forbiddenTerms`. The patient won't say them until the
   candidate does.
 - Keep cases fictional. Never base a station on a real, identifiable person.
-- An optional `patient.voice` block sets how the patient sounds when replies are spoken with Parler
-  TTS mini, for example `{ "voice": "Jon", "pace": "slow", "pitch": "low", "expressivity": "monotone", "emotion": "sad" }`.
-  `voice` is required and must be one of Parler's 34 named speakers (see `PARLER_SPEAKERS` in
-  `src/shared/constants.ts`); keeping the same speaker keeps the voice consistent from reply to
-  reply. The other fields are optional and use the engine's exact words: `pace` is `slow`,
-  `moderate` or `fast`; `pitch` is `low`, `moderate` or `high`; `expressivity` is `monotone`,
-  `slightly expressive` or `expressive`; `emotion` is one of Parler's 12 emotions, such as `sad`,
-  `fear`, `anger` (not "angry") or `neutral`.
+- An optional `patient.voice` block sets how the patient sounds when replies are spoken with
+  Supertonic 3, for example `{ "voice": "M2", "pace": "slow" }`. `voice` is required and is one of
+  Supertonic's ten voices, `F1`-`F5` (female) or `M1`-`M5` (male); `SPEECH_VOICES` in
+  `src/shared/constants.ts` lists them with their measured pitch. `pace` is optional: `slow`,
+  `moderate` or `fast`. Without the block, the patient gets `F1` (female), `M1` (male) or `F3`
+  (other).
 
 ## Licences
 
 - App code: Apache-2.0.
 - QVAC SDK: Apache-2.0 (Tether).
 - Parakeet Unified speech model: see its QVAC registry entry for licence terms.
-- Parler TTS mini v1 speech model: Apache-2.0 (Hugging Face).
+- Supertonic 3 speech model: OpenRAIL-M (Supertone).
 - MedPsy model: Apache-2.0 "for research and educational purposes"; its synthetic training data is
   CC-BY-NC 4.0. **Distribute this app free of charge and for non-commercial use only.**

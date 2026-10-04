@@ -21,11 +21,8 @@
     "demeanour": "Guarded and a bit embarrassed at first, avoids eye contact, becomes more open if the doctor is non-judgemental. Flat and tired.",
     "speechStyle": "Short, clipped answers at first. Everyday language, a bit defensive. Softens if treated with respect.",
     "voice": {
-      "voice": "Jon",
-      "pace": "slow",
-      "pitch": "low",
-      "expressivity": "monotone",
-      "emotion": "sad"
+      "voice": "M2",
+      "pace": "slow"
     },
     "ice": {
       "ideas": "Thinks he was 'stupid' and that the doctors think he is attention-seeking.",

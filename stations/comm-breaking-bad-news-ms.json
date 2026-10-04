@@ -21,8 +21,7 @@
     "demeanour": "Upbeat at first, then shocked and quiet when he hears the news. May become tearful or ask the same question twice. Needs silence and time.",
     "speechStyle": "Casual everyday language. Short questions once shocked. Does not know medical terms.",
     "voice": {
-      "voice": "Will",
-      "expressivity": "slightly expressive"
+      "voice": "M4"
     },
     "ice": {
       "ideas": "Thought it was a trapped nerve and eye strain.",

@@ -110,7 +110,7 @@ export function About({
             MedPsy is not a substitute for clinical judgement.
           </p>
           <p>Optional voice input: Parakeet Unified 0.6B speech recognition, from the QVAC registry.</p>
-          <p>Optional spoken replies: Parler TTS mini v1 by Hugging Face (Apache-2.0), from the QVAC registry.</p>
+          <p>Optional spoken replies: Supertonic 3 by Supertone (OpenRAIL-M), from the QVAC registry.</p>
           <p>Typefaces: Barlow and Barlow Condensed by Jeremy Tribby, SIL Open Font License 1.1.</p>
           <p>
             The bundled stations are fictional teaching cases written for this app, structured around common clinical

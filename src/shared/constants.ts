@@ -33,33 +33,13 @@ export const SENSITIVE_TOPICS = [
   'abuse'
 ] as const
 
-// Parler TTS mini v1 voice controls for the patient's spoken replies (`patient.voice`).
+// Supertonic 3 voice controls for the patient's spoken replies (`patient.voice`).
 
-/** The named speakers Parler mini v1 was trained on. Reusing one name keeps the voice the same across replies. */
-export const PARLER_SPEAKERS = [
-  'Laura', 'Gary', 'Jon', 'Lea', 'Karen', 'Rick', 'Brenda', 'David', 'Eileen', 'Jordan', 'Mike',
-  'Yann', 'Joy', 'James', 'Eric', 'Lauren', 'Rose', 'Will', 'Jason', 'Aaron', 'Naomie', 'Alisa',
-  'Patrick', 'Jerry', 'Tina', 'Jenna', 'Bill', 'Tom', 'Carol', 'Barbara', 'Rebecca', 'Anna',
-  'Bruce', 'Emily'
-] as const
-// The lists below mirror the QVAC tts-ggml addon, which rejects any other value at synthesis time.
-// Emotions and paces are pinned against the SDK in tests/unit/stations.test.ts. Pitch and
-// expressivity are only checked natively; the addon renders them as "with a <pitch> pitch" and
-// "in a <expressivity> manner".
-export const PARLER_PACES = ['slow', 'moderate', 'fast'] as const
-export const PARLER_PITCHES = ['low', 'moderate', 'high'] as const
-export const PARLER_EXPRESSIVITIES = ['monotone', 'slightly expressive', 'expressive'] as const
-export const PARLER_EMOTIONS = [
-  'command',
-  'anger',
-  'narration',
-  'conversation',
-  'disgust',
-  'fear',
-  'happy',
-  'neutral',
-  'proper noun',
-  'news',
-  'sad',
-  'surprise'
-] as const
+/**
+ * The voices baked into the Supertonic 3 model. Measured median pitch on the same sentence:
+ * F2 ~200 Hz, F4 ~190, F1 ~180, F3 and F5 ~160; M1 ~125, M4 ~120, M3 ~95, M2 and M5 ~85.
+ * F4 and M3 also speak a little faster than the rest.
+ */
+export const SPEECH_VOICES = ['F1', 'F2', 'F3', 'F4', 'F5', 'M1', 'M2', 'M3', 'M4', 'M5'] as const
+/** Speaking rate. Mirrors the QVAC SDK's `TTS_PACES` (pinned in tests/unit/stations.test.ts). */
+export const SPEECH_PACES = ['slow', 'moderate', 'fast'] as const
