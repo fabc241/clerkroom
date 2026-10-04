@@ -3,7 +3,7 @@
   "productName": "Clerkroom",
   "version": "0.1.0",
   "description": "Digital simulated patient for offline clinical education. Not a medical device.",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "private": true,
   "main": "./dist/main/index.js",
   "scripts": {
