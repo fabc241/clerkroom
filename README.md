@@ -7,7 +7,7 @@
 </h1>
 
 <p align="center">
-  <img src="docs/clerkroom-demo.gif" width="800"
+  <img src="docs/clerkroom-demo-v2.gif" width="800"
        alt="Clerkroom demo: two students on a campus bench, one asking who to practise OSCEs with and the other suggesting Clerkroom; then picking the chest pain station offline, asking the AI patient a question by voice, the patient answering in text and out loud, and the marked feedback with a 100% pass">
 </p>
 
