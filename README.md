@@ -197,7 +197,7 @@ Stations are JSON files validated by `src/shared/stationSchema.ts`. Tips:
 
 ## Licences
 
-- App code: Apache-2.0.
+- App code: MIT (see [LICENSE](LICENSE)).
 - QVAC SDK: Apache-2.0 (Tether).
 - Parakeet Unified speech model: see its QVAC registry entry for licence terms.
 - MedPsy model: Apache-2.0 "for research and educational purposes"; its synthetic training data is
