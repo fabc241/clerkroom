@@ -31,6 +31,9 @@ module.exports = {
       /^\/video/,
       /^\/build/,
       /^\/native/,
+      // README images and smoke-script output (speech.wav)
+      /^\/docs/,
+      /^\/[^/]+\.wav$/,
       /\.md$/,
       /^\/tsconfig/,
       /^\/\./,
